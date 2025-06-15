@@ -1,0 +1,127 @@
+let AffixName=[{
+    fieldName:'FIGHT_PROP_HP',
+    icon:'IconHP',
+    type:'hp',
+    name:'生命值',
+    percent:false,
+    range:[209,239,269,299]
+},{
+    fieldName:'FIGHT_PROP_HP_PERCENT',
+    icon:'IconHP',
+    type:'hp',
+    name:'生命值%數',
+    percent:true,
+    range:[4.1,4.7,5.3,5.8]
+},{
+    fieldName:'FIGHT_PROP_DEFENSE',
+    icon:'IconDefense',
+    type:'def',
+    name:'防禦力',
+    percent:false,
+    range:[16,19,21,23]
+},{
+    fieldName:'FIGHT_PROP_DEFENSE_PERCENT',
+    icon:'IconDefense',
+    type:'def',
+    name:'防禦力%數',
+    percent:true,
+    range:[5.1,5.8,6.6,7.3]
+},{
+    fieldName:'FIGHT_PROP_ATTACK',
+    icon:'IconAttack',
+    type:'atk',
+    name:'攻擊力',
+    percent:false,
+    range:[16,19,21,23]
+},{
+    fieldName:'FIGHT_PROP_ATTACK_PERCENT',
+    icon:'IconAttack',
+    type:'atk',
+    name:'攻擊力%數',
+    percent:true,
+    range:[5.1,5.8,6.6,7.3]
+},{
+    fieldName:'FIGHT_PROP_ELEMENT_MASTERY',
+    icon:'IconMastery',
+    type:'elem',
+    name:'元素精通',
+    percent:false,
+    range:[16,19,21,23]
+},{
+    fieldName:'FIGHT_PROP_CHARGE_EFFICIENCY',
+    icon:'IconChargeEfficiency',
+    type:'charge',
+    name:'元素充能效率',
+    percent:true,
+    range:[4.5,5.2,5.8,6.5]
+},{
+    fieldName:'FIGHT_PROP_CRITICAL',
+    icon:'IconCritical',
+    type:'crit',
+    name:'暴擊率',
+    percent:true,
+    range:[2.7,3.1,3.5,3.9]
+},{
+    fieldName:'FIGHT_PROP_CRITICAL_HURT',
+    icon:'IconCriticalHurt',
+    type:'crit_dmg',
+    name:'暴擊傷害',
+    percent:true,
+    range:[5.4,6.2,7.0,7.8]
+},{
+    fieldName:'FIGHT_PROP_FIRE_ADD_HURT',
+    icon:'IconFire',
+    type:'fire_dmg',
+    name:'火屬性傷害加成',
+    percent:true
+},{
+    fieldName:'FIGHT_PROP_GRASS_ADD_HURT',
+    icon:'IconGrass',
+    type:'grass_dmg',
+    name:'草屬性傷害加成',
+    percent:true
+},{
+    fieldName:'FIGHT_PROP_WATER_ADD_HURT',
+    icon:'IconWater',
+    type:'water_dmg',
+    name:'水屬性傷害加成',
+    percent:true
+},{
+    fieldName:'FIGHT_PROP_ELEC_ADD_HURT',
+    icon:'IconElec',
+    type:'elec_dmg',
+    name:'雷屬性傷害加成',
+    percent:true
+},{
+    fieldName:'FIGHT_PROP_ROCK_ADD_HURT',
+    icon:'IconRock',
+    type:'rock_dmg',
+    name:'岩屬性傷害加成',
+    percent:true
+},{
+    fieldName:'FIGHT_PROP_WIND_ADD_HURT',
+    icon:'IconWind',
+    type:'wind_dmg',
+    name:'風屬性傷害加成',
+    percent:true
+},{
+    fieldName:'FIGHT_PROP_ICE_ADD_HURT',
+    icon:'IconIce',
+    type:'ice_dmg',
+    name:'冰屬性傷害加成',
+    percent:true
+},{
+    fieldName:'FIGHT_PROP_PHYSICAL_ADD_HURT',
+    icon:'IconPhysics',
+    type:'phy_dmg',
+    name:'物理傷害加成',
+    percent:true
+},{
+    fieldName:'FIGHT_PROP_HEAL_ADD',
+    icon:'IconHeal',
+    type:'heal_rate',
+    name:'治療加成',
+    percent:true
+}];
+
+export default AffixName;

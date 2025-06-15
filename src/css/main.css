@@ -1,0 +1,96 @@
+@import "tailwindcss";
+.processBtn {
+  @apply text-white border-white border-2 rounded-md px-1;
+}
+
+.processBtn:hover {
+  color: #f59e0b;
+  border-color: #f59e0b;
+}
+
+.deleteBtn {
+  color: #dc2626;
+  border-color: #dc2626;
+  border-radius: 0.375rem;
+  border-width: 2px;
+}
+
+.deleteBtn:hover {
+  color: #ef4444;
+  border-color: #ef4444;
+  border-radius: 0.375rem;
+}
+
+.hiddenScrollBar {
+  scrollbar-width: none;
+}
+
+button:disabled {
+  opacity: 0.5;
+}
+
+.processBtn:disabled:hover {
+  color: white;
+  border-color: inherit;
+}
+
+.linedHref{
+  cursor: pointer;
+  color:orange;
+  border-bottom: 1px solid orange;
+}
+
+select.graySelect {
+  background-color: inherit;
+  outline: none;
+  border-bottom: 1px solid white;
+  color: white;
+}
+
+select.graySelect option {
+  background-color: rgb(36, 36, 36);
+  color: white;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.bgInput {
+  background-color: inherit;
+  color: white;
+  border-bottom-color: white;
+  border-bottom-width: 1px;
+  outline: none;
+}
+
+.css-rbklcn-MuiResponsiveChart-container svg {
+  width: 200px;
+  height: 200px;
+}
+
+.hintIcon {
+  width: 20px;
+  height: 20px;
+  background-color: rgb(36, 35, 35);
+  color: white;
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none; /* IE 和 Edge（舊） */
+  scrollbar-width: none; /* Firefox */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome、Safari、Edge（新） */
+}
+
+.shadowBox{
+    box-shadow: 0 10px 30px #00000080;
+}

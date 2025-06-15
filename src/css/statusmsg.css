@@ -1,0 +1,32 @@
+/* 淡入淡出動畫 */
+@keyframes slideFadeIn {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideFadeOut {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+
+/* 顯示時的 class */
+.toast-enter {
+  animation: slideFadeIn 0.8s ease forwards;
+}
+
+/* 隱藏時的 class */
+.toast-exit {
+  animation: slideFadeOut 0.8s ease forwards;
+}
