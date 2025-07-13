@@ -105,3 +105,12 @@ input[type="number"]::-webkit-outer-spin-button {
     background-position: center;     /* 讓鎖頭居中 */
     opacity: 0.5;
 }
+
+.showLock-release{
+    position: relative;              /* 讓內部文字能絕對定位或正常對齊 */
+    background-image: url('/image/lock.svg');
+    background-size: 20px 20px;
+    background-repeat: no-repeat;
+    background-position: center;     /* 讓鎖頭居中 */
+    opacity: 0.5;
+}

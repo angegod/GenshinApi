@@ -1,8 +1,10 @@
+
 import React, {  useContext, useState } from 'react';
 import AffixName from '../data/AffixName';
 import SiteContext from '../context/SiteContext';
 import { useStatusToast } from '@/context/StatusMsg';
 import Image from 'next/image';
+
 
 const StandDetails=React.memo(()=>{
     const {standDetails} = useContext(SiteContext);
@@ -40,6 +42,8 @@ const StandDetails=React.memo(()=>{
 
 //顯示你所輸入的標準
 const ShowStand=React.memo(({lock})=>{
+    //引用專案位置
+    const basePath = process.env.NEXT_PUBLIC_BASE_PATH || ''
     const {selfStand,setSelfStand,isChangeAble} = useContext(SiteContext);
     // 共用statusMsg 
     const {showStatus,updateStatus,hideStatus}=useStatusToast();
@@ -66,7 +70,7 @@ const ShowStand=React.memo(({lock})=>{
                          <div
                             className={`absolute inset-0 opacity-50 bg-center bg-no-repeat bg-contain pointer-events-none
                                         ${s.SelectPriority > 0 ? '' : 'hidden group-hover:block'}`}
-                            style={{ backgroundImage: "url('/image/lock.svg')" }}
+                            style={{ backgroundImage: `url('${basePath}/image/lock.svg')` }}
                         ></div>
                         <span className={`relative z-10 text-xs font-bold text-gray-300 flex items-center justify-center w-full h-full`}>
                             {(s.SelectPriority>0)?s.SelectPriority:''}
