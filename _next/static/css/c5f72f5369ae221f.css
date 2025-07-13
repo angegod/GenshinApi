@@ -1,0 +1,1 @@
+@keyframes slideFadeIn{0%{transform:translateY(-100%);opacity:0}to{transform:translateY(0);opacity:1}}@keyframes slideFadeOut{0%{transform:translateY(0);opacity:1}to{transform:translateY(-100%);opacity:0}}.toast-enter{animation:slideFadeIn .8s ease forwards}.toast-exit{animation:slideFadeOut .8s ease forwards}
