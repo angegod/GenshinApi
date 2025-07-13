@@ -1,9 +1,11 @@
 'use client';
 import React, { useContext } from 'react';
 import AffixName from '../data/AffixName';
+import EquipType from '@/data/EquipType';
 import { Tooltip } from 'react-tooltip';
 import { useRouter } from 'next/navigation';
 import SiteContext from '../context/SiteContext';
+import RelicDataHint from './Hint/RelicDataHint';
 
 
 //顯示儀器分數區間
@@ -26,70 +28,24 @@ const RelicData=React.memo(({mode,button})=>{
     }
 
     if(relic!==undefined){
-        const mainaffixImglink=AffixName.find((a)=>a.name===relic.main_affix.name).icon;
-
-        const mainaffixImg=<img src={`https://raw.githubusercontent.com/Mar-7th/StarRailRes/master/icon/property/${mainaffixImglink}.png`} 
-            width={24} height={24} />
-
+        const MainAffixName = AffixName.find((a)=>a.fieldName===relic.flat.reliquaryMainstat.mainPropId).name;
+        const reliclink = `https://enka.network/ui/${relic.flat.icon}.png`;
         const list=[];
-        const reliclink = `https://raw.githubusercontent.com/Mar-7th/StarRailRes/master/icon/relic/${parseInt(relic.set_id)}.png`;
-
-        relic.sub_affix.forEach((s)=>{
+        relic.flat.reliquarySubstats.forEach((s)=>{
             let markcolor="";
             let isBold=(standDetails.find((st)=>st.name===s.name)!==undefined)?true:false;
+            let targetAffix = AffixName.find((a)=>a.fieldName===s.appendPropId)
             
-            if(s.name==="攻擊力"&&s.display.includes('%')){
-                s.name="攻擊力%數";
-            }
-            else if(s.name==="防禦力"&&s.display.includes('%')){
-                s.name="防禦力%數";
-            }else if(s.name==="生命值"&&s.display.includes('%')){
-                s.name="生命值%數";
-            }
-
-
-            //var IconName = AffixName.find((a)=>a.name===s.name).icon;
-            
-            //var imglink=`https://raw.githubusercontent.com/Mar-7th/StarRailRes/master/icon/property/${IconName}.png`;
-            
-
-            switch(s.count-1){
-                case 0:
-                    markcolor='rgb(122, 122, 122)';
-                    break;
-                case 1:
-                    markcolor='rgb(67, 143, 67)';
-                    break;
-                case 2:
-                    markcolor='rgb(23, 93, 232)';
-                    break;
-                case 3:
-                    markcolor='rgb(67, 17, 184)';
-                    break;
-                case 4:
-                    markcolor='rgb(219, 171, 15)';
-                    break;
-                case 5:
-                    markcolor='#FF55FF';
-                    break;
-                default:
-                    break;
-            }
+            s.name = targetAffix.name;
 
             list.push(
                 <div className='flex flex-row' key={'Subaffix_'+s.name}>
-                    <div className='flex justify-center items-center'>
-                        <span className='mr-0.5 text-white w-[20px] h-[20px] rounded-[20px]
-                            flex justify-center items-center' style={{backgroundColor:markcolor}}>
-                            {s.count-1}
-                        </span>
-                    </div>
                     <div className='w-[150px] flex flex-row'>
                         <span className={`${(isBold)?'text-yellow-500 font-bold':'text-white'} text-left flex` }>{s.name}</span>
                     </div>
                     <div className='flex w-[70px]'>
                         <span className='mr-1'>:</span>
-                        <span className='text-right text-white '>{s.display}</span>
+                        <span className='text-right text-white '>{s.statValue}{(targetAffix.percent)?'%':''}</span>
                     </div>
                 </div>
                 
@@ -105,27 +61,19 @@ const RelicData=React.memo(({mode,button})=>{
                         <span className='text-white'>?</span>
                     </div>
                 </div>
-                <div>
-                    <span className='text-stone-400'>套裝</span><br/>
-                    <div className='flex flex-row'>
-                        <img src={reliclink} width={24} height={24} alt={relic.set_id}/>
-                        <span className='text-white'>{relic.set_name}</span>
-                    </div>
-                </div>
                 <div className='mt-1 flex flex-col'>
                     <span className='text-stone-400'>部位</span>
                     <div className='flex flex-row'>
-                        <span className='text-white'>{(relic.type===5)?partArr[5]:(relic.type===6)?partArr[4]:partArr[relic.type-1]}</span>   
+                        <span className='text-white'>{partArr[EquipType[relic.flat.EQUIP_BRACER]]}</span>   
                     </div>
                 </div>
                 <div className='mt-1'>
                     <span className='text-stone-400'>主詞條</span><br/>
                     <div className='flex flex-row'>
                         <div className='flex flex-row max-w-[140px]'>
-                            {mainaffixImg}
-                            <span className='text-white whitespace-nowrap overflow-hidden text-ellipsis'>{relic.main_affix.name}</span>
+                            <span className='text-white whitespace-nowrap overflow-hidden text-ellipsis'>{MainAffixName}</span>
                         </div>
-                        <span className='text-stone-400'>:{relic.main_affix.display}</span>
+                        <span className='text-stone-400'>:{relic.flat.reliquaryMainstat.statValue}</span>
                     </div>
                        
                 </div>
@@ -165,8 +113,7 @@ const RelicData=React.memo(({mode,button})=>{
 });
 
 const RelicData_simuldate=React.memo(({mode,button})=>{
-    const {relic,Rrank,Rscore,standDetails,isChangeAble} = useContext(SiteContext);
-    const partArr=['Head 頭部','Hand 手部','Body 軀幹','Feet 腳部','Ball 位面球','Rope 連結繩'];
+    const {relic,Rrank,Rscore,standDetails,isChangeAble,partArr} = useContext(SiteContext);
     const router = useRouter();
     //導航至模擬強化頁面
     function navEnchant(){
@@ -184,10 +131,6 @@ const RelicData_simuldate=React.memo(({mode,button})=>{
     }
 
     if(relic!==undefined){
-        //const mainaffixImglink=AffixName.find((a)=>a.name===relic.main_affix).icon;
-
-        //const mainaffixImg=<img src={`https://raw.githubusercontent.com/Mar-7th/StarRailRes/master/icon/property/${mainaffixImglink}.png`} width={24} height={24}/>
-
         const list=[];
 
         relic.subaffix.forEach((s)=>{
@@ -197,7 +140,7 @@ const RelicData_simuldate=React.memo(({mode,button})=>{
 
             var IconName = AffixName.find((a)=>a.name===s.subaffix).icon;
 
-            var imglink=`https://raw.githubusercontent.com/Mar-7th/StarRailRes/master/icon/property/${IconName}.png`;
+            //var imglink=`https://raw.githubusercontent.com/Mar-7th/StarRailRes/master/icon/property/${IconName}.png`;
             switch(s.count){
                 case 0:
                     markcolor='rgb(122, 122, 122)';
@@ -246,20 +189,19 @@ const RelicData_simuldate=React.memo(({mode,button})=>{
                     </div>
                 </div>
                 <div className='mt-1 flex flex-col'>
-                    <span>部位</span>
+                    <span className='text-stone-400 font-bold'>部位</span>
                     <div className='flex flex-row'>
                         <span className='text-white'>{partArr[relic.type-1]}</span>   
                     </div>
                 </div>
                 <div className='mt-1 flex flex-col'>
-                    <span>主詞條</span>
+                    <span className='text-stone-400 font-bold'>主詞條</span>
                     <div className='flex flex-row'>
-                        {mainaffixImg}
                         <span className='text-white'>{relic.main_affix}</span>   
                     </div>
                 </div>
                 <div className='mt-2'>
-                    <span>副詞條</span>
+                    <span className='text-stone-400 font-bold'>副詞條</span>
                     <div className='flex flex-col w-[200px]'>
                         {list}
                     </div>
@@ -267,6 +209,11 @@ const RelicData_simuldate=React.memo(({mode,button})=>{
                 {(button)?<div className='mt-3'>
                     <button className='processBtn' onClick={()=>navEnchant()}  disabled={!isChangeAble}>重洗模擬</button>
                 </div>:<></>}
+                <Tooltip id="RelicDataHint"  
+                        place="right-start"
+                        render={()=>
+                            <RelicDataHint />
+                        }/>
             </div>
         )
     }else{

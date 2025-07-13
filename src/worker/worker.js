@@ -10,19 +10,36 @@ onmessage = function (event) {
     let partsIndex=parseInt(event.data.partsIndex);
     let MainAffix=AffixName.find((a)=>a.name===event.data.MainData);
     let deviation=(event.data.deviation!==undefined)?event.data.deviation:0;
+    let limit = event.data.limit;
+    let selfStand = event.data.standard;
+    let enchanceCount = event.data.enchanceCount;
+
+    //標準根據優先度升冪排列
+    selfStand = selfStand.sort((a, b) => a.SelectPriority - b.SelectPriority);
     
 
-    //計算可用強化次數
-    var enchanceCount=0;
-    SubData.forEach(sb=>{    
-        enchanceCount=enchanceCount+Number(sb.count);
+    //計算可用強化次數 
+    //透過詞條 優先度計算被選定的詞條
+    let selectAffix = [];
+    selfStand.filter((s) => s.SelectPriority != null && s.SelectPriority !== 0).forEach((s,i)=>{
+        if(selectAffix.length<2){
+            let targetSubdataIndex = SubData.findIndex((sb)=>sb.subaffix === s.name);
+            if(targetSubdataIndex >=0)
+                selectAffix.push(targetSubdataIndex);
+        }
     });
 
+    //進入simulator
+    if(selectAffix.length === 0){
+        SubData.filter((s) => s.isSelect).forEach((s,i)=>{
+            selectAffix.push(i);
+        });
+    }
 
     //計算可能的強化組合
-    let combination=findCombinations(enchanceCount,SubData.length);
+    let combination=findCombinations(enchanceCount,SubData.length,selectAffix,limit);
 
-    let charStandard=calStand(event.data.standard);
+    let charStandard=calStand(selfStand);
     //分數誤差 目前先預設少半個有效詞條
 
     let coeEfficent=[];//當前遺器係數arr
@@ -31,18 +48,16 @@ onmessage = function (event) {
         coeEfficent.push({
             type:SubAffixType.type,
             fieldName:SubAffixType.fieldName,
-            num:Number(charStandard[SubAffixType.type]),
-            locked:(sub.locked)?true:false
+            num:Number(charStandard[SubAffixType.type])
         });
     });
-
     //將沒有被鎖住不可計算的詞條倒裝
     //coeEfficent.sort((a,b)=>)
-
     let MainData=charStandard[MainAffix.type];
     let result =[];
     let origin=relicScore(partsIndex,charStandard,SubData,MainData);
     //先算原本的遺器的分數
+    //console.log(calPartWeights(charStandard,partsIndex))
 
     let p1=new Promise(async (resolve,reject)=>{
         combination.forEach((c,i)=>{
@@ -63,10 +78,12 @@ onmessage = function (event) {
                     let targetRange=AffixName.find((st)=>st.fieldName===sub.fieldName).range;
 
                     //如果該詞條所獲得的強化次數為0 可以推測該數值為初始詞條數值 則直接繼承使用
-                    if(SubData[i].count===0)
+                    /*if(SubData[i].count===0)
                         total=SubData[i].data;
                     else
-                        total=targetRange[1];//詞條模擬出來的總和，初始為最中間的值
+                        total=targetRange[1];//詞條模擬出來的總和，初始為最中間的值*/
+
+                    total=targetRange[1];//詞條模擬出來的總和，初始為最中間的值
                     
                     el.forEach((num)=>total+=targetRange[num]);
 
@@ -118,30 +135,36 @@ onmessage = function (event) {
         let relicrank=undefined;
         let returnData=[]
         
-        //console.log(result);
         //根據標準去分類
         scoreStand.forEach((stand,i)=>{
             //區分符合區間跟不符合的 並一步步拿掉前面篩選過的區間
             let match=copy.filter((num)=>num>=stand.stand);
             copy=copy.filter((num)=>num<stand.stand);
 
+            let standRate = Number((parseFloat(match.length/result.length)*100).toFixed(2));
             returnData.push({
                 label:stand.tag,
-                value:Number((parseFloat(match.length/result.length)*100).toFixed(2)),
+                value:(!standRate)?0:standRate,
                 color:stand.color,
                 tag:stand.rank
             });
 
 
             //接著去找尋這個分數所屬的區間
-            if(stand.stand<=origin&&relicrank===undefined)
+            if(stand.stand<=origin&&relicrank===undefined){
                 relicrank=stand;
-
+            }
+                
         });
 
+        //如果該聖遺物計算出來所有區間均為0 則要給予分數所屬區間100%
+        if(returnData.filter((r)=>r.value !==0).length===0){
+            returnData.find((r)=>r.label === relicrank.rank).value =100;
+        }
+
+
         /*
-        //如果區間數量為0 則不予顯示
-        returnData=returnData.filter((r)=>r.value>0);*/
+        //如果區間數量為0 則不予顯示*/
         this.postMessage({
             expRate:(!expRate)?0:expRate,//期望值
             relicscore:score,//遺器分數
@@ -171,7 +194,7 @@ function relicScore(partsIndex,charStandard,SubData,MainData){
         
         //獲得有效詞條
         let affixmutl=parseFloat(charStandard[SubAffixType.type]*cal);
-        //let smallAffix=caltype.find((ct)=>ct.type===SubAffixType.type);
+       
 
         caltype.push({
             type:SubAffixType.fieldName,
@@ -186,6 +209,7 @@ function relicScore(partsIndex,charStandard,SubData,MainData){
         if(ms.type!=='FIGHT_PROP_HP'&&ms.type!=='FIGHT_PROP_DEFENSE'&&ms.type!=='FIGHT_PROP_ATTACK')
             weight+=ms.affixmutl;
     });
+
     let relicscore=0;
 
     //接下來根據部位調整分數
@@ -205,7 +229,7 @@ function calPartWeights(charstandard,partIndex){
     .sort((a, b) => b[1] - a[1]);
 
     //主詞條 抓最大*3 剩下依序遞補 最多四個
-    //頭跟手會跳過
+    //花跟羽毛會跳過
     if(partIndex!==1&&partIndex!==2){
         charstandard.forEach(([key,value])=>{
             let unique=!weight[partIndex].sub.includes(key);

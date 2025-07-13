@@ -1,4 +1,5 @@
 @import "tailwindcss";
+
 .processBtn {
   @apply text-white border-white border-2 rounded-md px-1;
 }
@@ -74,7 +75,7 @@ input[type="number"]::-webkit-outer-spin-button {
 .hintIcon {
   width: 20px;
   height: 20px;
-  background-color: rgb(36, 35, 35);
+  background-color: rgb(65, 65, 65);
   color: white;
   border-radius: 50px;
   display: flex;
@@ -95,12 +96,12 @@ input[type="number"]::-webkit-outer-spin-button {
     box-shadow: 0 10px 30px #00000080;
 }
 
-/*過往紀錄UI*/
-.PastPreview {
-    @apply flex flex-row flex-wrap max-[400px]:flex-nowrap;
 
-    @apply min-w-[100px] max-w-[300px] max-[800px]:max-w-[280px];
-    @apply max-[800px]:w-4/5 max-[400px]:w-[85%];
-
-    @apply max-h-[120px] bg-slate-700 rounded-md p-2 m-2;
+.showLock{
+    position: relative;              /* 讓內部文字能絕對定位或正常對齊 */
+    background-image: url('/image/lock.svg');
+    background-size: 20px 20px;
+    background-repeat: no-repeat;
+    background-position: center;     /* 讓鎖頭居中 */
+    opacity: 0.5;
 }

@@ -1,11 +1,11 @@
 "use client"
 import React,{useContext, useState,useEffect, useRef} from 'react';
 import AffixList from '../data/AffixList';
-//import dynamic from "next/dynamic";
-//const Select = dynamic(() => import("react-select"), { ssr: false });
+import characters from '@/data/characters';
 import SiteContext from '../context/SiteContext';
 import { Tooltip } from 'react-tooltip';
-
+import dynamic from "next/dynamic";
+const Select = dynamic(() => import("react-select"), { ssr: false });
 
 //部位選擇器
 const PartSelect=React.memo(()=>{
@@ -61,7 +61,7 @@ const MainAffixSelect = React.memo(() => {
     if (range.length === 1) {
         return (
             <div className='w-[150px]'>
-                <span className='text-white'>{range[0]}</span>;
+                <span className='text-white'>{range[0]}</span>
             </div>
         )
     } else {
@@ -150,7 +150,7 @@ const SubAffixSelect=({index})=>{
         
         
         return(
-            <div className='my-1 flex flex-row items-center' key={'SubAffixSelect'}>
+            <div className='my-1 flex flex-row items-center' key={'SubAffixSelect'+index}>
                 <select defaultValue={SubData[index].subaffix} 
                         onChange={(event)=>updateSubAffix(event.target.value,index)} 
                         className='graySelect'
@@ -180,6 +180,71 @@ const SubAffixSelect=({index})=>{
         return(<></>)
     }   
 };
+
+//腳色選擇器
+const CharSelect=React.memo(()=>{
+    const {charID,setCharID,setIsSaveAble,isChangeAble}=useContext(SiteContext);
+    let options=[];
+
+    const customStyles={
+        control: (provided) => ({
+            ...provided,
+            backgroundColor: 'inherit', // 繼承背景顏色
+            outline:'none',
+        }),
+        input: (provided) => ({
+            ...provided,
+            color: 'white', // 這裡設定 input 文字的顏色為白色
+            backgroundColor:'inherit'
+        }),
+        option: (provided, state) => ({
+            ...provided,
+            backgroundColor: state.isSelected
+              ? 'darkgray'
+              : state.isFocused
+              ? 'gray'
+              : 'rgb(36, 36, 36)',
+            color: state.isSelected ? 'white' : 'black'
+        }),
+        menu: (provided) => ({
+            ...provided,
+            backgroundColor: 'rgb(36, 36, 36)',
+        })
+    }
+    
+    characters.forEach((c)=>{
+        options.push({
+            value: c.charId, 
+            label: c.cn_name,
+            engLabel:c.name,
+            icon: `https://enka.network/ui/UI_AvatarIcon_${c.name}.png`
+        })
+    })
+
+    //自訂義篩選
+    const customFilterOption = (option, inputValue) => {
+        const lowerInput = inputValue.toLowerCase();
+        return option.data.label.toLowerCase().includes(lowerInput) || option.data.engLabel.toLowerCase().includes(lowerInput);
+    };
+
+    const selectedOption = options.find((option) => option.value === charID);
+    
+    
+    return(<Select options={options} 
+                className='w-[200px]' 
+                onChange={(option)=>{setCharID(option.value);setIsSaveAble(false);}}
+                value={selectedOption} 
+                isDisabled={!isChangeAble}
+                styles={customStyles}
+                getOptionLabel={(e) => (
+                    <div style={{ display: "flex", alignItems: "center"  }}>
+                        <img src={e.icon} alt={e.label} style={{ width: 30, height: 30, marginRight: 8 ,borderRadius:"25px" }} />
+                        <span className='text-white'>{e.label}</span>
+                    </div>
+                )}
+                filterOption={customFilterOption}/>)
+});
+
 
 //標準選擇
 const StandardSelect=React.memo(()=>{
@@ -211,7 +276,6 @@ const StandardSelect=React.memo(()=>{
 
     //添加標準 目前設定先不超過六個有效 且不重複
     function addAffix(selectAffix){
-        console.log()
         //如果該詞條沒有出現在arr裡則加入 反之則移除
         if(!selfStand.some((s) => s.name === selectAffix)){
             //如果為預設選項則不予選擇
@@ -247,12 +311,12 @@ const StandardSelect=React.memo(()=>{
                 <div className='my-0.5 mx-1 hover:bg-stone-500 hover:text-white cursor-pointer flex flex-row items-center'
                     onClick={()=>addAffix(m)}
                     key={"options"+i}>
-                    <div className='mr-1 flex items-center'>
-                        <input  type='checkbox' checked={exists} 
-                                className='border-[0px] w-4 h-4 accent-[dimgrey]' 
-                                onChange={(event)=>console.log(event.target.vaue)}
-                                disabled={!exists&&selfStand.length===6}/>
-                    </div>
+                        <div className='mr-1 flex items-center'>
+                            <input  type='checkbox' checked={exists} 
+                                    className='border-[0px] w-4 h-4 accent-[dimgrey]' 
+                                    onChange={(event)=>console.log(event.target.vaue)}
+                                    disabled={!exists&&selfStand.length===6}/>
+                        </div>
                     <div>
                         <span className='text-white text-sm'>{m}</span>
                     </div>
@@ -302,4 +366,41 @@ const StandardSelect=React.memo(()=>{
     }
 });
 
-export {StandardSelect,MainAffixSelect,SubAffixSelect,PartSelect}
+//遺器選擇
+const RelicSelect=React.memo(()=>{
+    const {RelicDataArr,relicIndex,setRelicIndex,AffixCount}=useContext(SiteContext);
+    if(RelicDataArr.length !==0){
+        let list = RelicDataArr.map((r,i)=>{
+            const reliclink =  `https://enka.network/ui/${r[AffixCount].relic.flat.icon}.png`;
+    
+            return(
+                <div className={`rounded-[50px] mx-2 mb-2 cursor-pointer p-2 border-[3px] max-[500px]:mx-1 max-[500px]:p-1 max-[500px]:border-[2px] ${(relicIndex === i)?"border-yellow-600":"border-gray-300"}`} 
+                    key={'RelicSelect'+i}
+                    onClick={()=>setRelicIndex(i)}>
+                    <img src={reliclink} alt='relic' className='w-[50px] max-[500px]:w-[40px] '/>
+                </div>
+            )
+        })
+    
+        return(
+            <div className='w-4/5 flex flex-col pt-1 max-[500px]:w-[100%]'>
+                <div className='flex flex-row items-baseline max-[500px]:w-4/5 max-[500px]:mx-auto'>
+                    <span className='text-red-600 font-bold text-lg'>遺器匹配結果</span>
+                    <div className='hintIcon ml-2 overflow-visible'
+                        data-tooltip-id="RelicSelectHint">
+                        <span className='text-white'>?</span>
+                    </div>
+                </div>
+                <div className='flex flex-row flex-wrap max-[500px]:justify-center my-2 max-[900px]:w-[100%]'>
+                    {list}
+                </div>
+            </div>
+        )
+    }else{
+        return(<></>)
+    }
+});
+
+
+
+export {StandardSelect,MainAffixSelect,SubAffixSelect,PartSelect,CharSelect,RelicSelect}

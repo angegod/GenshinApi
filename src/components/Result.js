@@ -1,8 +1,10 @@
-import React,{useMemo} from 'react';
+import React,{useContext, useMemo} from 'react';
 import { Tooltip } from 'react-tooltip';
 import { PieChart } from '@mui/x-charts/PieChart';
+import SiteContext from '@/context/SiteContext';
 
-const Result = React.memo(({ ExpRate, Rrank, PieNums, Rscore }) => {
+const Result = React.memo(() => {
+    const { ExpRate, Rrank, PieNums, Rscore } = useContext(SiteContext);
     const hue = ExpRate * 120;
     const bgColor =`hsl(${hue}, 100%, 50%)`;
     const renderContent = useMemo(() => {

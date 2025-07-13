@@ -57,7 +57,7 @@ let AffixName=[{
 },{
     fieldName:'FIGHT_PROP_CRITICAL',
     icon:'IconCritical',
-    type:'crit',
+    type:'crit_rate',
     name:'暴擊率',
     percent:true,
     range:[2.7,3.1,3.5,3.9]
