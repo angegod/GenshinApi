@@ -38,7 +38,6 @@ onmessage = function (event) {
 
     //計算可能的強化組合
     let combination=findCombinations(enchanceCount,SubData.length,selectAffix,limit);
-
     let charStandard=calStand(selfStand);
     //分數誤差 目前先預設少半個有效詞條
 

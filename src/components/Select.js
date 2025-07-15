@@ -292,9 +292,6 @@ const StandardSelect=React.memo(()=>{
         }
     }
 
-    function clearAffix(){
-        setSelfStand([]);
-    }
 
     if(partsIndex!==undefined){
         //依據所選部位 給出不同的選澤

@@ -21,6 +21,7 @@ import HistoryStore from '@/model/historyStore';
 
 import HintHistory from '@/components/Hint/HintHistory';
 import HintImporter from '@/components/Hint/HintImporter';
+import HintStandDetails from '@/components/Hint/HintStandDetails';
 
 
 function Importer(){
@@ -74,7 +75,7 @@ function Importer(){
     const [isChangeAble,setIsChangeAble]=useState(true);
     const [isSaveAble,setIsSaveAble]=useState(false);
     
-    const partArr=['Head 頭部','Hand 手部','Body 軀幹','Feet 腳部','Ball 位面球','Rope 連結繩'];
+    const partArr = ['生之花','死之羽','時之沙','空之杯','理之冠'];
 
     //評級標準
     const scoreStand=[
@@ -89,7 +90,7 @@ function Importer(){
     
     useEffect(()=>{
         //初始化歷史紀錄
-        initHistory();
+        init();
     },[pathname]);
 
     //當遺器資料更新時
@@ -123,9 +124,11 @@ function Importer(){
     },[relic]);
 
 
-    function initHistory(){
+    function init(){
         //標記歷史紀錄尚未處理完
         setIsLoad(false);
+        //將保底次數設為2
+        setLimit(2);
 
         //清空儲存的歷史紀錄
         resetHistory();
@@ -565,6 +568,7 @@ function Importer(){
         RelicDataArr:RelicDataArr,
         relicIndex:relicIndex,
         isLoad:isLoad,
+        limit:limit,
         
         //RelicData
         relic:relic,
@@ -608,7 +612,8 @@ function Importer(){
                                                 bg-inherit text-white outline-none border-b border-white' 
                                         id="userId"
                                         onChange={(e)=>userID.current=e.target.value}
-                                        disabled={!isChangeAble}/>
+                                        disabled={!isChangeAble}
+                                        autoComplete="off"/>
                             </div>
                             <div className='flex flex-row items-center [&>*]:mr-2 my-3 max-[400px]:!flex-col'>
                                 <div className='text-right w-[200px]  max-[400px]:text-left max-[600px]:w-[120px]'>
@@ -721,6 +726,9 @@ function Importer(){
                         </div>
                     }
                     clickable={true}/>
+            <Tooltip id="StandDetailsHint" 
+                    place='right-start'
+                    render={()=><HintStandDetails />}/>
         </div>
             
     </SiteContext.Provider>)

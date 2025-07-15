@@ -10,7 +10,7 @@ import RelicDataHint from './Hint/RelicDataHint';
 
 //顯示儀器分數區間
 const RelicData=React.memo(({mode,button})=>{
-    const {relic,Rrank,Rscore,standDetails,isChangeAble,partArr} = useContext(SiteContext);
+    const {relic,Rrank,Rscore,standDetails,isChangeAble,partArr,limit} = useContext(SiteContext);
     const router = useRouter();
     
     //導航至模擬強化頁面
@@ -29,12 +29,14 @@ const RelicData=React.memo(({mode,button})=>{
 
     if(relic!==undefined){
         const MainAffixName = AffixName.find((a)=>a.fieldName===relic.flat.reliquaryMainstat.mainPropId).name;
+        //主詞條是否要顯示百分比?
+        const isMainPercent = AffixName.find((a)=>a.fieldName === relic.flat.reliquaryMainstat.mainPropId).percent;
         const reliclink = `https://enka.network/ui/${relic.flat.icon}.png`;
         const list=[];
         relic.flat.reliquarySubstats.forEach((s)=>{
             let markcolor="";
             let isBold=(standDetails.find((st)=>st.name===s.name)!==undefined)?true:false;
-            let targetAffix = AffixName.find((a)=>a.fieldName===s.appendPropId)
+            let targetAffix = AffixName.find((a)=>a.fieldName===s.appendPropId);
             
             s.name = targetAffix.name;
 
@@ -50,7 +52,7 @@ const RelicData=React.memo(({mode,button})=>{
                 </div>
                 
             )
-        })
+        });
         
         
         return(
@@ -64,7 +66,7 @@ const RelicData=React.memo(({mode,button})=>{
                 <div className='mt-1 flex flex-col'>
                     <span className='text-stone-400'>部位</span>
                     <div className='flex flex-row'>
-                        <span className='text-white'>{partArr[EquipType[relic.flat.EQUIP_BRACER]]}</span>   
+                        <span className='text-white'>{partArr[EquipType[relic.flat?.equipType]-1]}</span>   
                     </div>
                 </div>
                 <div className='mt-1'>
@@ -73,9 +75,12 @@ const RelicData=React.memo(({mode,button})=>{
                         <div className='flex flex-row max-w-[140px]'>
                             <span className='text-white whitespace-nowrap overflow-hidden text-ellipsis'>{MainAffixName}</span>
                         </div>
-                        <span className='text-stone-400'>:{relic.flat.reliquaryMainstat.statValue}</span>
+                        <span className='text-stone-400'>:{relic.flat.reliquaryMainstat.statValue}{(isMainPercent)?'%':''}</span>
                     </div>
-                       
+                </div>
+                <div className='mt-2 flex flex-col'>
+                    <span className='text-stone-400'>強化保底次數</span>
+                    <span className='text-white'>{limit}</span>
                 </div>
                 <div className='mt-2'>
                     <span className='text-stone-400'>副詞條</span>
@@ -83,12 +88,14 @@ const RelicData=React.memo(({mode,button})=>{
                         {list}
                     </div>
                 </div>
+                
                 {(button)?
                     <div className='mt-3'>
                         <button className='processBtn' onClick={navEnchant} disabled={!isChangeAble}>重洗模擬</button>
                     </div>:<></>}
                 <Tooltip id="RelicDataHint"  
                         place="right-start"
+                        style={{ zIndex: 99 }}
                         render={()=>
                             <div className='flex flex-col [&>span]:text-white max-w-[250px] p-1'>
                                 <div>
