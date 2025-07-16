@@ -157,7 +157,7 @@ function Importer(){
     }
     
 
-    //   獲得遺器資料
+    //獲得遺器資料
     async function getRecord(sendData = undefined ,standard = undefined){
         
         let apiLink=(window.location.origin==='http://localhost:3000')?`http://localhost:5000/artifact/get`:`https://expressapi-o9du.onrender.com/artifact/get`;
@@ -279,7 +279,11 @@ function Importer(){
         //對應到強化次數4次跟5次
         for (const r of relicArr) {
             let calData = {};
-
+            let checkSubstat = checkRelic(r,standard);
+            if(!checkSubstat){
+                continue;
+            }
+                
             for(var i=3;i<=4;i++){
                 
                 const ExpData = await calscore(r,standard,i+1);  
@@ -289,12 +293,33 @@ function Importer(){
             
             temparr.push(calData);
         }
+        //如果是剛查詢完的 則改成可以儲存
+        if(temparr.length === 0){
+            updateStatus("該腳色身上的聖遺物不符合重洗條件!!","default");
+            setIsChangeAble(true);
+        }
         setRelicDataArr(temparr);
         RelicDataArrRef.current=temparr;
-        //如果是剛查詢完的 則改成可以儲存
+        //如果全部的遺器都不符合條件 則直接回傳訊息
+        
+
+        
         setIsSaveAble(true);
        
     }
+
+    //檢查該遺器是否含有至少指定副詞條
+    function checkRelic(targetRelic, standard) {
+        const substats = targetRelic.flat.reliquarySubstats;
+        const matched = substats.filter(sub => 
+            standard.some(std => std.name === AffixName.find((a)=>a.fieldName ===sub.appendPropId).name)
+        );
+
+        //console.log(targetRelic, standard);
+
+        return matched.length === 2;
+    }
+
 
     //切換成3詞條或4詞條模擬模式
     function changeAffixCount(){

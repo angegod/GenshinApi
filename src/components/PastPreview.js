@@ -11,7 +11,6 @@ const PastPreview=React.memo(({index,data})=>{
     //const textColor =`hsl(${hue}, 100%, 50%)`;
     let BaseLink=`https://enka.network/ui/UI_AvatarIcon_${data.char.name}.png`;
     
-    
     return(
         <div className={`PastPreview clip-both-corners`}>
             <div className='flex flex-col'>
@@ -19,7 +18,7 @@ const PastPreview=React.memo(({index,data})=>{
                     <img src={BaseLink} alt='iconChar' className='w-[70px] rounded-[50px] max-[400px]:min-w-[50px] max-[400px]:w-[50px]'/>
                 </div>
                 <div className='text-center'>
-                    <span style={{color:data.avgRank.color}} className='font-bold text-xl max-[400px]:text-lg'>{data.avgScore}</span>
+                    <span style={{color:data.avgRank?.color}} className='font-bold text-xl max-[400px]:text-lg'>{data.avgScore}</span>
                 </div>
             </div>
             <div className={`flex flex-col mx-1 min-w-[200px] max-[900px]:min-w-[150px]`} >

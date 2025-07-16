@@ -339,6 +339,7 @@ function Main(){
         relic:relic,
         ExpRate:ExpRate,
         PieNums:PieNums,
+        limit:limit,
 
         checkDetails:checkDetails,
         deleteHistoryData:deleteHistoryData,

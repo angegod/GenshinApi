@@ -11,7 +11,8 @@ import AffixList from '@/data/AffixList';
 
 const StandDetails=React.memo(()=>{
     const {standDetails} = useContext(SiteContext);
-    
+    const showLock = (standDetails.filter((s)=>s.SelectPriority > 0).length>0)?true:false;
+
     if(standDetails!==undefined){
         const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
         const list=standDetails.map((s)=>{
@@ -20,16 +21,18 @@ const StandDetails=React.memo(()=>{
                 <div className='flex flex-row' key={'StandDetails_'+s.name}>
                     <div className='flex justify-between w-[15vw] min-w-[150px] mt-0.5'>
                         <div className='flex flex-row'>
-                            <div className="relative w-[20px] h-[20px]">
-                                <div
-                                    className={`absolute inset-0 opacity-30 bg-center bg-no-repeat bg-contain ${
-                                        s.SelectPriority > 0 ? '' : 'hidden'}`}
-                                    style={{ backgroundImage: `url('${basePath}/image/lock.svg')` }}>    
-                                </div>
-                                <span className="relative top-[2px] text-xs font-bold text-stone-300 flex items-center justify-center w-full h-full">
-                                    {s.SelectPriority > 0 ? s.SelectPriority : ''}
-                                </span>
-                            </div>
+                            {(showLock)?
+                                <div className="relative w-[20px] h-[20px]">
+                                    <div
+                                        className={`absolute inset-0 opacity-30 bg-center bg-no-repeat bg-contain ${
+                                            s.SelectPriority > 0 ? '' : 'hidden'}`}
+                                        style={{ backgroundImage: `url('${basePath}/image/lock.svg')` }}>    
+                                    </div>
+                                    <span className="relative top-[2px] text-xs font-bold text-stone-300 flex items-center justify-center w-full h-full">
+                                        {s.SelectPriority > 0 ? s.SelectPriority : ''}
+                                    </span>
+                                </div>:null
+                            }
                             <div className='flex flex-row'>
                                 <span className='whitespace-nowrap overflow-hidden text-ellipsis text-stone-400'>{s.name}</span>
                             </div>

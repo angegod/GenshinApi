@@ -120,7 +120,7 @@ const RelicData=React.memo(({mode,button})=>{
 });
 
 const RelicData_simuldate=React.memo(({mode,button})=>{
-    const {relic,Rrank,Rscore,standDetails,isChangeAble,partArr} = useContext(SiteContext);
+    const {relic,Rrank,Rscore,standDetails,isChangeAble,partArr,limit} = useContext(SiteContext);
     const router = useRouter();
     //導航至模擬強化頁面
     function navEnchant(){
@@ -206,6 +206,10 @@ const RelicData_simuldate=React.memo(({mode,button})=>{
                     <div className='flex flex-row'>
                         <span className='text-white'>{relic.main_affix}</span>   
                     </div>
+                </div>
+                <div className='mt-2 flex flex-col'>
+                    <span className='text-stone-400'>強化保底次數</span>
+                    <span className='text-white'>{limit}</span>
                 </div>
                 <div className='mt-2'>
                     <span className='text-stone-400 font-bold'>副詞條</span>
