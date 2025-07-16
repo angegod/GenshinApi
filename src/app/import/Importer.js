@@ -302,22 +302,18 @@ function Importer(){
         RelicDataArrRef.current=temparr;
         //如果全部的遺器都不符合條件 則直接回傳訊息
         
-
-        
         setIsSaveAble(true);
        
     }
 
-    //檢查該遺器是否含有至少指定副詞條
+    //檢查該遺器是否含有至少指定副詞條2個以上
     function checkRelic(targetRelic, standard) {
         const substats = targetRelic.flat.reliquarySubstats;
         const matched = substats.filter(sub => 
             standard.some(std => std.name === AffixName.find((a)=>a.fieldName ===sub.appendPropId).name)
         );
 
-        //console.log(targetRelic, standard);
-
-        return matched.length === 2;
+        return matched.length >= 2;
     }
 
 
