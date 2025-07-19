@@ -1,4 +1,10 @@
-let AffixList=[{
+interface AffixListItem {
+    id:number,
+    main: string[];
+    sub: string[];
+}
+
+let AffixList:AffixListItem[]=[{
     id:1,
     main:["生命值"],
     sub:['生命值%數','攻擊力','攻擊力%數','防禦力','防禦力%數','暴擊率', '暴擊傷害','元素精通','元素充能效率']   

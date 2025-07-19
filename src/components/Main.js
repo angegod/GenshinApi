@@ -273,7 +273,7 @@ function Main(){
         if(errors) return;
         
         //將運行結果丟到背景執行
-        let worker=new Worker(new URL('../worker/worker.js', import.meta.url));
+        let worker=new Worker(new URL('../worker/worker.ts', import.meta.url));
         let postData={
             MainData:MainSelectOptions,
             SubData:SubData,
@@ -339,6 +339,10 @@ function Main(){
         ExpRate:ExpRate,
         PieNums:PieNums,
         limit:limit,
+        
+        //RelicData 
+        mode:"Simulator",
+        button:false,
 
         checkDetails:checkDetails,
         deleteHistoryData:deleteHistoryData,
@@ -453,7 +457,7 @@ function Main(){
                 <div className='w-full my-2'>
                     <div className={`w-full flex flex-row bg-[rgba(0,0,0,0.5)] p-2 rounded-md flex-wrap ${(PieNums===undefined)?'hidden':''}`}>
                         <div className={`flex flex-row flex-wrap w-[18vw]  max-[700px]:w-[50%] ${(PieNums===undefined)?'hidden':''} max-[500px]:w-4/5 max-[500px]:mx-auto`} >
-                            <RelicData  mode={'Simulator'} button={false}/>
+                            <RelicData  />
                         </div>
                         <div className={`w-1/4 max-[700px]:w-[50%] ${(PieNums===undefined)?'hidden':''} max-[500px]:w-4/5 max-[500px]:mx-auto`} >
                             <StandDetails />
