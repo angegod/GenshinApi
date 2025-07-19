@@ -4,7 +4,7 @@ import { useState,useEffect,useRef } from 'react';
 import { CharSelect, MainAffixSelect,PartSelect,StandardSelect,SubAffixSelect } from './Select';
 import { ShowStand } from './StandDetails';
 import { useStatusToast } from '@/context/StatusMsg';
-import { RelicData_simuldate as RelicData } from './RelicData';
+import { RelicData_simulate as RelicData } from './RelicData';
 import { StandDetails } from './StandDetails';
 import { PastPreviewList_simulator } from './PastPreviewList';
 import Result from './Result';
@@ -211,7 +211,6 @@ function Main(){
         let history = getHistory();
 
         localStorage.setItem(dataStorageLocation,JSON.stringify(history));
-
     }
 
     //計算聖遺物分數
@@ -329,11 +328,11 @@ function Main(){
         partsIndex:partsIndex,
         standDetails:standDetails.current,
         
-        relic:relic,
         selfStand:selfStand,
         charID:charID,
         isLoad:isLoad,
 
+        //聖遺物資料
         Rrank:Rrank,
         Rscore:Rscore,
         relic:relic,
@@ -356,7 +355,7 @@ function Main(){
 
     return(
         <SiteContext.Provider value={MainStatus}>
-            <div className='w-4/5 mx-auto mt-3 '>
+            <div className='w-4/5 mx-auto mt-3 max-[600px]:w-[90%]'>
                 <div className='flex flex-row flex-wrap'>
                     <div className='w-2/5 bg-[rgba(0,0,0,0.5)] p-2 rounded-md max-[1200px]:w-full'>
                         <div>
@@ -364,7 +363,7 @@ function Main(){
                         </div>
                         <div>
                             <div className='flex flex-row my-3 items-center'>
-                                <div className='w-[200px] text-right'>
+                                <div className='w-[200px] text-right max-[400px]:text-left max-[600px]:w-[120px]'>
                                     <span className='text-white'>Char 腳色:</span>
                                 </div>
                                 <div className='ml-1 flex flex-row items-center'>
@@ -375,7 +374,7 @@ function Main(){
                                 </div>
                             </div>
                             <div className='flex flex-row my-3'>
-                                <div className='w-[200px] text-right'>
+                                <div className='w-[200px] text-right max-[400px]:text-left max-[600px]:w-[120px]'>
                                     <span className='text-white'>Parts 部位:</span>
                                 </div>
                                 <div className='ml-1'>
@@ -383,27 +382,33 @@ function Main(){
                                 </div>
                             </div>
                             <div className={`flex flex-row my-3 ${(partsIndex===undefined)?'hidden':''}`}>
-                                <div className='w-[200px] text-right'>
+                                <div className='w-[200px] text-right max-[400px]:text-left max-[600px]:w-[120px]'>
                                     <span className='text-white'>Main 主詞條:</span>
                                 </div>
                                 <div className='ml-1'>
                                     <MainAffixSelect />
                                 </div>
                             </div>
-                            <div className={`flex flex-row my-3 ${(!MainSelectOptions)?'hidden':''}`}>
-                                <div className='w-[200px] text-right'>
+                            <div className={`flex flex-row my-3 max-[600px]:flex-wrap ${(!MainSelectOptions)?'hidden':''}`}>
+                                <div className='w-[200px] text-right max-[400px]:text-left max-[600px]:w-[120px]'>
                                     <span className='text-white'>Sub 副詞條:</span>
                                 </div>
-                                <SubAffixList lock={false}/>
+                                <div className='flex flex-row max-[600px]:mx-auto'>
+                                    <SubAffixList lock={false}/>
+                                    <div className='hintIcon ml-2 overflow-visible'
+                                        data-tooltip-id="SubAffixHint">
+                                        <span className='text-white'>?</span>
+                                    </div>
+                                </div>
                             </div>
-                            <div className={`flex flex-row my-3 ${(!MainSelectOptions)?'hidden':''}`}>
-                                <div className='w-[200px] text-right'>
+                            <div className={`flex flex-row my-3 items-center ${(!MainSelectOptions)?'hidden':''}`}>
+                                <div className='w-[200px] text-right max-[400px]:text-left max-[600px]:w-[120px]'>
                                     <span className='text-white'>Affix 有效詞條:</span>
                                 </div>
                                 <StandardSelect />
                             </div>
                             <div className={`flex flex-row my-3 ${(!MainSelectOptions)?'hidden':''}`}>
-                                <div className='w-[200px] text-right'>
+                                <div className='w-[200px] text-right max-[400px]:text-left max-[600px]:w-[120px]'>
                                     <span className='text-white'>Limit 保底次數:</span>
                                 </div>
                                 <div className='pl-1 flex flex-row items-center'>

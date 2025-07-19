@@ -119,7 +119,7 @@ const RelicData=React.memo(({mode,button})=>{
     }
 });
 
-const RelicData_simuldate=React.memo(({mode,button})=>{
+const RelicData_simulate=React.memo(({mode,button})=>{
     const {relic,Rrank,Rscore,standDetails,isChangeAble,partArr,limit} = useContext(SiteContext);
     const router = useRouter();
     //導航至模擬強化頁面
@@ -196,13 +196,13 @@ const RelicData_simuldate=React.memo(({mode,button})=>{
                     </div>
                 </div>
                 <div className='mt-1 flex flex-col'>
-                    <span className='text-stone-400 font-bold'>部位</span>
+                    <span className='text-stone-400'>部位</span>
                     <div className='flex flex-row'>
                         <span className='text-white'>{partArr[relic.type-1]}</span>   
                     </div>
                 </div>
                 <div className='mt-1 flex flex-col'>
-                    <span className='text-stone-400 font-bold'>主詞條</span>
+                    <span className='text-stone-400'>主詞條</span>
                     <div className='flex flex-row'>
                         <span className='text-white'>{relic.main_affix}</span>   
                     </div>
@@ -232,4 +232,4 @@ const RelicData_simuldate=React.memo(({mode,button})=>{
     }
 })
 
-export  {RelicData,RelicData_simuldate};
+export  {RelicData,RelicData_simulate};

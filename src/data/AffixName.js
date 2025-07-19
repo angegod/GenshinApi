@@ -44,7 +44,7 @@ let AffixName=[{
     type:'atk',
     name:'攻擊力%數',
     percent:true,
-    range:[5.1,5.8,6.6,7.3],
+    range:[4.1,4.7,5.3,5.8],
     isMain:false
 },{
     fieldName:'FIGHT_PROP_ELEMENT_MASTERY',

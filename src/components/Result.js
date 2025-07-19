@@ -21,7 +21,7 @@ const Result = React.memo(() => {
                                 <span className='text-white'>?</span>
                             </div>
                         </div>
-                        <div className={`${(ExpRate !== undefined) ? '' : 'hidden'} mt-2 flex flex-row items-center`}>
+                        <div className={`${(ExpRate !== null) ? '' : 'hidden'} mt-2 flex flex-row items-center`}>
                             <span className={`text-white`}>重洗詞條翻盤機率:
                                 <label style={{ color: bgColor, marginLeft: '4px' }} className='font-bold'>{`${(ExpRate * 100).toFixed(1)}%`}</label>
                             </span>
@@ -92,7 +92,7 @@ const Result = React.memo(() => {
 
 //圓餅圖
 const Pie=React.memo(({PieNums})=>{;
-    if(PieNums!==undefined){
+    if(PieNums!==undefined&&PieNums!==null){
         const pieParams = {
             height: 200,
             margin:{ top: 10, right: 0, bottom: 0, left: -20 },

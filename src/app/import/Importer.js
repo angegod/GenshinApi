@@ -26,7 +26,7 @@ import HintStandDetails from '@/components/Hint/HintStandDetails';
 
 function Importer(){
     //版本序號
-    const version="1.4";
+    const version="1.5";
     const maxHistoryLength = 6;
 
     //玩家ID跟腳色ID
@@ -102,10 +102,8 @@ function Importer(){
             setRscore(RelicDataArr[relicIndex][AffixCount].Rscore)
             setPieNums(RelicDataArr[relicIndex][AffixCount].PieNums);
             setRank(RelicDataArr[relicIndex][AffixCount].Rank);
-            updateStatus('資料顯示完畢',"success");
 
-            standDetails.current=RelicDataArr[relicIndex][AffixCount].standDetails;
-
+            standDetails.current=JSON.parse(JSON.stringify(RelicDataArr[relicIndex][AffixCount].standDetails));
             //還原至初始狀態
             setIsChangeAble(true);
         }
@@ -199,7 +197,7 @@ function Importer(){
         }
 
         if(!standard)
-            standard = selfStand;
+            standard = [...selfStand];
 
         //送出之前先清空一次資料
         setIsSaveAble(false);
@@ -279,11 +277,7 @@ function Importer(){
         //對應到強化次數4次跟5次
         for (const r of relicArr) {
             let calData = {};
-            let checkSubstat = checkRelic(r,standard);
-            if(!checkSubstat){
-                continue;
-            }
-                
+
             for(var i=3;i<=4;i++){
                 
                 const ExpData = await calscore(r,standard,i+1);  
@@ -293,10 +287,13 @@ function Importer(){
             
             temparr.push(calData);
         }
+        console.log(temparr);
         //如果是剛查詢完的 則改成可以儲存
         if(temparr.length === 0){
             updateStatus("該腳色身上的聖遺物不符合重洗條件!!","default");
             setIsChangeAble(true);
+        }else{
+            updateStatus('資料顯示完畢',"success");
         }
         setRelicDataArr(temparr);
         RelicDataArrRef.current=temparr;
@@ -331,6 +328,7 @@ function Importer(){
         setRank({color:undefined,rank:undefined});
         setPieNums(undefined);
         setRscore(undefined);
+        setRelicDataArr([]);
         setRelic();
     }
 
@@ -343,7 +341,8 @@ function Importer(){
         setRelicIndex(0);
         setLimit(data.limit);
         setAffixCount(3);
-        setIsSaveAble(false); 
+        setIsSaveAble(false);
+        updateStatus('資料顯示完畢',"success"); 
 
         //避免第一次顯示區塊 而導致滾動失常
         requestAnimationFrame(()=>{
@@ -473,6 +472,8 @@ function Importer(){
                     deviation+=0.2;
             })*/
             //制定送出資料格式
+
+
             let postData={
                 charID:charID,
                 MainData:MainAffix.name,
@@ -484,6 +485,8 @@ function Importer(){
             };
             
             if(isCheck){
+                let checkSubstat = checkRelic(relic,standard);
+
                 showStatus('數據計算處理中......');
                 worker.postMessage(postData);
 
@@ -491,9 +494,9 @@ function Importer(){
                 worker.onmessage = function (event) {
                     let returnData = {
                         relic:relic,
-                        ExpRate:event.data.expRate,
+                        ExpRate:(checkSubstat)?event.data.expRate:null,
                         Rscore:event.data.relicscore,
-                        PieNums:event.data.returnData,
+                        PieNums:(checkSubstat)?event.data.returnData:null,
                         Rank:event.data.relicrank,
                         standDetails:standard
                     };
@@ -532,16 +535,27 @@ function Importer(){
         //計算平均分數與平均機率
         let sum = 0;
         let sum2 = 0;
-        RelicDataArr.forEach((r)=>{
+
+        let copyRelicDataArr = [...RelicDataArr];
+        copyRelicDataArr = copyRelicDataArr.filter((r)=>{
+            for(var i = 3;i<=4;i++){
+                //如果該遺器並沒有計算出機率 則會跳過
+                if(r[i].Rscore ===null||r[i].PieNums === null)
+                    return false;
+            }
+            return true;
+        })
+
+        copyRelicDataArr.forEach((r)=>{
            for(var i = 3;i<=4;i++){
                 sum +=Number(r[i].Rscore);
                 sum2 += r[i].ExpRate;
            }
         });
-        let avgScore = Number(parseFloat(sum/(RelicDataArr.length*2)).toFixed(1));
+        let avgScore = Number(parseFloat(sum/(copyRelicDataArr.length*2)).toFixed(1));
         let calDate=new Date();
         let avgRank = undefined;
-        let avgRate = Number((sum2*100/(RelicDataArr.length*2)).toFixed(1));
+        let avgRate = Number((sum2*100/(copyRelicDataArr.length*2)).toFixed(1));
         
         scoreStand.forEach((stand)=>{
             //接著去找尋這個分數所屬的區間
@@ -694,19 +708,23 @@ function Importer(){
                     </div>
                 </div>
             </div>
-            <div className={`flex flex-row flex-wrap mt-2 w-[100%] ${(!PieNums)?'hidden':''} bg-[rgba(0,0,0,0.5)] shadowBox px-2 mb-5 rounded-md`} >
-                <div className={`w-[100%] ${(PieNums===undefined)?'hidden':''} max-[500px]:justify-center`}>
+            <div className={`flex flex-row flex-wrap mt-2 w-[100%] ${(!RelicDataArr||RelicDataArr.length===0)?'hidden':''} bg-[rgba(0,0,0,0.5)] shadowBox px-2 mb-5 rounded-md`} >
+                <div className={`w-[100%] ${(RelicDataArr===undefined)?'hidden':''} max-[500px]:justify-center`}>
                     <RelicSelect />
                 </div>
-                <div className={`mt-3 flex flex-row flex-wrap w-1/4  max-[700px]:w-[50%] ${(!PieNums)?'hidden':''} max-[500px]:w-4/5 max-[500px]:mx-auto`}>
+                <div className={`mt-3 flex flex-row flex-wrap w-1/4  max-[700px]:w-[50%] ${(!relic)?'hidden':''} max-[500px]:w-4/5 max-[500px]:mx-auto`}>
                     <RelicData  mode={'Importer'} button={false}/>
                 </div>
-                <div className={`mt-3 w-1/4 max-[700px]:w-[50%] ${(!PieNums)?'hidden':''} max-[500px]:w-4/5 max-[500px]:mx-auto`} >
+                <div className={`mt-3 w-1/4 max-[700px]:w-[50%] ${(!standDetails.current)?'hidden':''} max-[500px]:w-4/5 max-[500px]:mx-auto`} >
                     <StandDetails />
                 </div>
                 <div className={`mt-3 flex flex-col flex-wrap w-1/2 max-[700px]:w-[100%] ${(!PieNums)?'hidden':''} max-[500px]:w-4/5 max-[500px]:mx-auto`} id="resultDetails">
-                    <div>
+                    <div className='flex flex-row items-center'>
                         <button className='underline cursor-pointer' onClick={()=>changeAffixCount()}>{(AffixCount===3)?'目前為3詞條':'目前為4詞條'}</button>
+                        <div className='hintIcon ml-2 overflow-visible'
+                            data-tooltip-id="AffixCountChangeHint">
+                            <span className='text-white'>?</span>
+                        </div>
                     </div>
                     <Result />
                 </div>
@@ -750,6 +768,20 @@ function Importer(){
             <Tooltip id="StandDetailsHint" 
                     place='right-start'
                     render={()=><HintStandDetails />}/>
+            <Tooltip id="AffixCountChangeHint" 
+                    place='right-start'
+                    render={()=>{
+                        return(
+                            <div className='max-w-[300px]'>
+                                <div>
+                                    <span>此按鈕可以切換該聖遺物至3詞條或4詞條模式</span>
+                                </div>
+                                <div className='mt-2'>
+                                    <span className='text-yellow-400'>目前API無法提供該聖遺物屬於初始3或4詞條，才會設計切換按鈕。</span>
+                                </div>
+                            </div>
+                        )
+                    }}/>
         </div>
             
     </SiteContext.Provider>)

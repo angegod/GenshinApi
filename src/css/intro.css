@@ -1,0 +1,11 @@
+@import "tailwindcss";
+
+.question{
+    @apply text-stone-400 italic font-bold
+}
+
+.intro{
+    background-color: rgba(0,0,0,0.5);
+
+    box-shadow: 0 20px 30px #00000080;
+}
