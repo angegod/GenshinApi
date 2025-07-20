@@ -6,12 +6,12 @@ function Intro(){
     //之後intro頁面可能會改成json控管
     return(
         <div className='w-4/5 mx-auto'>
-            <div className='intro p-[1rem] mb-3 rounded-md [&>div]:my-1 w-1/2 flex flex-col h-[90vh] justify-around max-[800px]:!w-[95%] max-[800px]:h-fit'>
+            <div className='intro p-[1rem] mb-3 rounded-md [&>div]:my-1 w-1/2 flex flex-col justify-around max-[1000px]:!w-[95%] max-[800px]:h-fit'>
                 <div className='flex flex-col'>
                     <span className='text-2xl text-red-500 font-bold'>常見Q&A</span>
                     <span className='text-white'>這裡列出比較常見的幾個問題，如果有其他問題也歡迎利用巴哈私訊我</span>
                 </div>
-                <div className='flex flex-col [&>div]:my-1'>
+                <div className='flex flex-col over [&>div]:my-1'>
                     <div className='flex flex-row items-center'>
                         <span className='question'>Q:甚麼是重洗?</span>
                         <img src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/image/good.png`}
@@ -45,7 +45,7 @@ function Intro(){
                     </div>
                     <div className='flex flex-col'>
                         <span className='text-white'>A:這個就是為何要使用本工具了!本工具不僅可以根據你想要的詞條配置</span>
-                        <span>
+                        <span className='text-white'>
                             計算出<span className='text-red-500 font-bold'>每件聖遺物所有可能的強化組合</span>
                             以及<span className='text-red-500 font-bold'>計算出在這些組合中翻盤的機率</span></span>
                         <span className='text-white'></span>              

@@ -672,7 +672,13 @@ function Importer(){
                                 <div className='text-right w-[200px] max-[400px]:text-left max-[600px]:w-[120px]'>
                                     <span className='text-white'>Params 參數:</span>
                                 </div>
-                                <ShowStand />
+                                <div className='flex flex-row items-baseline'>
+                                    <ShowStand />
+                                    <div className='hintIcon ml-2 overflow-visible'
+                                        data-tooltip-id="StandDetailsHint">
+                                        <span className='text-white'>?</span>
+                                    </div>
+                                </div>
                             </div>
                             <div className={`flex flex-row my-3`}>
                                 <div className='w-[200px] text-right'>

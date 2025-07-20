@@ -67,7 +67,7 @@ const ShowStand = React.memo(({ lock }) => {
     const { selfStand, setSelfStand, isChangeAble,partsIndex } = useContext(SiteContext);
     const { updateStatus } = useStatusToast();
 
-    // 每次 selfStand 變動時，自動重新整理 SelectPriority（保證連續性）
+    // 每次 selfStand 變動時，自動重新整理 SelectPriority（保證連續性
     useEffect(() => {
         const locked = selfStand
             .map((item, i) => ({ ...item, __index: i }))
@@ -150,7 +150,7 @@ const ShowStand = React.memo(({ lock }) => {
     // 渲染每一項
     const list = selfStand?.map((s, i) => (
         <div className="flex flex-row" key={'StandDetails' + i}>
-            <div className="flex justify-between w-[170px] max-w-[300px] mt-0.5 mr-2 max-[400px]:w-[70%]">
+            <div className="flex justify-between w-[150px] max-w-[300px] mt-0.5 mr-2 max-[400px]:w-[70%]">
                 <span className="whitespace-nowrap overflow-hidden text-white text-ellipsis text-left w-[100px]" title={s.name}>
                     {s.name}
                 </span>
@@ -158,13 +158,12 @@ const ShowStand = React.memo(({ lock }) => {
                     type="number"
                     min={0}
                     max={1}
-                    className="ml-2 text-center max-h-[30px] min-w-[40px] bgInput"
+                    className="ml-2 text-center max-h-[30px] min-w-[30px] bgInput"
                     defaultValue={s.value}
                     title="最小值為 0，最大為 1"
                     onChange={(e) => changeVal(i, e.target.value, e)}
                 />
             </div>
-
             <div className="flex items-center">
                 {lock !== false ? (
                     <div className="relative w-[20px] h-[20px] cursor-pointer group" onClick={() => lockAffix(i)}>
@@ -179,7 +178,6 @@ const ShowStand = React.memo(({ lock }) => {
                         </span>
                     </div>
                 ) : null}
-
                 <Image
                     src={`${basePath}/image/delete.svg`}
                     alt="刪除"
