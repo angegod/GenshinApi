@@ -31,26 +31,24 @@ const RelicData=React.memo(({mode,button})=>{
         const MainAffixName = AffixName.find((a)=>a.fieldName===relic.flat.reliquaryMainstat.mainPropId).name;
         //主詞條是否要顯示百分比?
         const isMainPercent = AffixName.find((a)=>a.fieldName === relic.flat.reliquaryMainstat.mainPropId).percent;
-        const reliclink = `https://enka.network/ui/${relic.flat.icon}.png`;
+        //const reliclink = `https://enka.network/ui/${relic.flat.icon}.png`;
         const list=[];
         relic.flat.reliquarySubstats.forEach((s)=>{
-            let markcolor="";
             let isBold=(standDetails.find((st)=>st.name===s.name)!==undefined)?true:false;
             let targetAffix = AffixName.find((a)=>a.fieldName===s.appendPropId);
             
-            s.name = targetAffix.name;
+            let showAffix = targetAffix.name;
 
             list.push(
                 <div className='flex flex-row' key={'Subaffix_'+s.name}>
                     <div className='w-[150px] flex flex-row'>
-                        <span className={`${(isBold)?'text-yellow-500 font-bold':'text-white'} text-left flex` }>{s.name}</span>
+                        <span className={`${(isBold)?'text-yellow-500 font-bold':'text-white'} text-left flex` }>{showAffix}</span>
                     </div>
                     <div className='flex w-[70px]'>
                         <span className='mr-1'>:</span>
                         <span className='text-right text-white '>{s.statValue}{(targetAffix.percent)?'%':''}</span>
                     </div>
                 </div>
-                
             )
         });
         
