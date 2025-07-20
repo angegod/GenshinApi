@@ -297,21 +297,20 @@ function Importer(){
         }
         setRelicDataArr(temparr);
         RelicDataArrRef.current=temparr;
-        //如果全部的遺器都不符合條件 則直接回傳訊息
         
         setIsSaveAble(true);
        
     }
 
     //檢查該遺器是否含有至少指定副詞條2個以上
-    function checkRelic(targetRelic, standard) {
+    /*function checkRelic(targetRelic, standard) {
         const substats = targetRelic.flat.reliquarySubstats;
         const matched = substats.filter(sub => 
             standard.some(std => std.name === AffixName.find((a)=>a.fieldName ===sub.appendPropId).name)
         );
 
         return matched.length >= 2;
-    }
+    }*/
 
 
     //切換成3詞條或4詞條模擬模式
@@ -485,7 +484,7 @@ function Importer(){
             };
             
             if(isCheck){
-                let checkSubstat = checkRelic(relic,standard);
+                //let checkSubstat = checkRelic(relic,standard);
 
                 showStatus('數據計算處理中......');
                 worker.postMessage(postData);
@@ -494,9 +493,9 @@ function Importer(){
                 worker.onmessage = function (event) {
                     let returnData = {
                         relic:relic,
-                        ExpRate:(checkSubstat)?event.data.expRate:null,
+                        ExpRate:event.data.expRate,
                         Rscore:event.data.relicscore,
-                        PieNums:(checkSubstat)?event.data.returnData:null,
+                        PieNums:event.data.returnData,
                         Rank:event.data.relicrank,
                         standDetails:standard
                     };
@@ -718,14 +717,16 @@ function Importer(){
                 <div className={`mt-3 w-1/4 max-[700px]:w-[50%] ${(!standDetails.current)?'hidden':''} max-[500px]:w-4/5 max-[500px]:mx-auto`} >
                     <StandDetails />
                 </div>
-                <div className={`mt-3 flex flex-col flex-wrap w-1/2 max-[700px]:w-[100%] ${(!PieNums)?'hidden':''} max-[500px]:w-4/5 max-[500px]:mx-auto`} id="resultDetails">
-                    <div className='flex flex-row items-center'>
-                        <button className='underline cursor-pointer' onClick={()=>changeAffixCount()}>{(AffixCount===3)?'目前為3詞條':'目前為4詞條'}</button>
-                        <div className='hintIcon ml-2 overflow-visible'
-                            data-tooltip-id="AffixCountChangeHint">
-                            <span className='text-white'>?</span>
-                        </div>
-                    </div>
+                <div className={`mt-3 flex flex-col flex-wrap w-1/2 max-[700px]:w-[100%] ${(!Rscore)?'hidden':''} max-[500px]:w-4/5 max-[500px]:mx-auto`} id="resultDetails">
+                    {(PieNums)?
+                        <div className='flex flex-row items-center'>
+                            <button className='underline cursor-pointer' onClick={()=>changeAffixCount()}>{(AffixCount===3)?'目前為3詞條':'目前為4詞條'}</button>
+                            <div className='hintIcon ml-2 overflow-visible'
+                                data-tooltip-id="AffixCountChangeHint">
+                                <span className='text-white'>?</span>
+                            </div>
+                        </div>:null
+                    }
                     <Result />
                 </div>
             </div>

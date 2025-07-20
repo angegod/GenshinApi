@@ -29,12 +29,24 @@ onmessage = function (event) {
         }
     });
 
-    //進入simulator
+        //進入simulator
     if(selectAffix.length === 0){
         SubData.filter((s) => s.isSelect).forEach((s,i)=>{
             selectAffix.push(i);
         });
     }
+
+        // 如果選定的詞條仍不足 2 個，自動補齊
+    if (selectAffix.length < 2) {
+        for (let i = 0; i < SubData.length; i++) {
+            if (!selectAffix.includes(i)) {
+                selectAffix.push(i);
+                if (selectAffix.length === 2) break;
+            }
+        }
+        console.log(selectAffix);
+    }
+
 
     //計算可能的強化組合
     let combination=findCombinations(enchanceCount,SubData.length,selectAffix,limit);

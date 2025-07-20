@@ -29,6 +29,9 @@ const Result = React.memo(() => {
                                 <span className='text-white'>?</span>
                             </div>
                         </div>
+                        <div className={`${(ExpRate === null&&PieNums===null) ? '' : 'hidden'} mt-2 flex flex-col`}>
+                            <span className='text-white'>該遺器不符合重洗條件!!</span>
+                        </div>
                     </div>
                     <div className='max-w-[500px] flex flex-row mt-2'>
                         <Pie PieNums={PieNums} />
@@ -80,9 +83,7 @@ const Result = React.memo(() => {
                 </div>
             );
         } else {
-            return (
-                <></>
-            );
+            return null
         }
     }, [ExpRate, Rrank, PieNums, Rscore, bgColor]);
 
@@ -128,7 +129,7 @@ const Pie=React.memo(({PieNums})=>{;
         );
 
     }else{
-        return(<></>)
+        return null
     }
 });
 
