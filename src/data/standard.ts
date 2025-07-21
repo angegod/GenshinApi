@@ -1,4 +1,15 @@
-let standard=[{
+interface standardItems{
+    type:string,
+    data:propsItem[]
+}
+
+interface propsItem{
+    name:string,
+    data:number,
+    percent:boolean
+}
+
+let standard :standardItems[]=[{
     type:'main',
     data:[{
         name:'FIGHT_PROP_HP',

@@ -1,5 +1,5 @@
 import standard from '../data/standard';
-import weight from '../data/weight';
+import weight from '../data/weight.ts';
 import AffixName from '../data/AffixName';
 import {findCombinations,EnchanceAllCombinations} from '../data/combination';
 
@@ -10,7 +10,6 @@ onmessage = function (event) {
     let SubData=event.data.SubData;
     let partsIndex=parseInt(event.data.partsIndex);
     let MainAffix=AffixName.find((a)=>a.name===event.data.MainData);
-    //let deviation=(event.data.deviation!==undefined)?event.data.deviation:0;
     
 
     //計算可用強化次數

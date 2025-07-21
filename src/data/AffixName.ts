@@ -1,4 +1,14 @@
-let AffixName=[{
+interface AffixItem {
+    fieldName: string;
+    icon: string;
+    type: string;
+    name: string;
+    percent: boolean;
+    range?: number[];    
+    isMain?: boolean;   
+}
+
+let AffixName:AffixItem[]=[{
     fieldName:'FIGHT_PROP_HP',
     icon:'IconHP',
     type:'hp',
