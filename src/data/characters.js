@@ -30,7 +30,7 @@ let characters =    [
     {
         "charId": "10000007",
         "name": "PlayerGirl",
-        "cn_name": "旅行者_空(荧)",
+        "cn_name": "旅行者_荧(風)",
         "element": "Wind",
         "rarity": 5
     },

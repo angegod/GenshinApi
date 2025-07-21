@@ -77,7 +77,7 @@ function Main(){
 
     //初始化
     function init(){
-        showStatus('正在載入過往紀錄中......');
+        showStatus('正在載入過往紀錄中......','process');
         let initSubData =SubData;
         for(var i=0;i<=3;i++){
             let data={
@@ -286,7 +286,7 @@ function Main(){
         setIsSaveAble(false);
         setProcessBtn(false);
         setIsChangeAble(false);
-        showStatus('數據計算處理中!!');
+        showStatus('數據計算處理中!!','process');
         clearData();
         worker.postMessage(postData);
 

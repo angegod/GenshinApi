@@ -138,7 +138,7 @@ function Importer(){
             return;
         }
 
-        showStatus('正在載入過往紀錄中......');
+        showStatus('正在載入過往紀錄中......','process');
         
         //為了避免更新迭代而造成歷史紀錄格式上的問題 
         //必須要核對重大版本代號 如果版本不一致也不予顯示並且刪除
@@ -201,7 +201,7 @@ function Importer(){
 
         //送出之前先清空一次資料
         setIsSaveAble(false);
-        showStatus('正在尋找匹配資料......');
+        showStatus('正在尋找匹配資料......','process');
         setIsChangeAble(false);
         clearData();
 
@@ -354,7 +354,7 @@ function Importer(){
 
     //更新紀錄
     const updateDetails=useCallback(async (index)=>{
-        showStatus('正在更新資料中');
+        showStatus('正在更新資料中','process');
         let data = getHistory(index);
 
         let sendData={
@@ -486,7 +486,7 @@ function Importer(){
             if(isCheck){
                 //let checkSubstat = checkRelic(relic,standard);
 
-                showStatus('數據計算處理中......');
+                showStatus('數據計算處理中......','process');
                 worker.postMessage(postData);
 
                 // 接收 Worker 返回的訊息
@@ -773,7 +773,7 @@ function Importer(){
                     }
                     clickable={true}/>
             <Tooltip id="StandDetailsHint" 
-                    place='right-start'
+                    place='right'
                     render={()=><HintStandDetails />}/>
             <Tooltip id="AffixCountChangeHint" 
                     place='right-start'
