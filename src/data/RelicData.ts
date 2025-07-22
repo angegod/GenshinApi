@@ -5,6 +5,13 @@ export interface Rank{
     tag:string |undefined
 }
 
+export interface Stand{
+    rank:string,
+    stand:number,
+    color:string,
+    tag:string
+}
+
 export type PieNums = Rank[] | undefined;  // PieNums 就等於一個 Rank 陣列
 
 export interface RelicScoreStand{
@@ -79,7 +86,7 @@ export interface hisoryData{
     char:characters,
     dataArr:RelicDataArr,
     avgScore:number,
-    avgRank:Rank,
+    avgRank:Rank|undefined,
     avgRate:number,
     limit:number
 }
@@ -121,6 +128,17 @@ export interface characters {
     rarity:4 | 5,
 }
 
+export interface sendData{
+    uid:string,
+    charID:string,
+    partsIndex?:number
+}
+
+//計算總共有幾個詞條
+export interface caltype{
+    type:string,
+    affixmutl:number
+}
 
 
 

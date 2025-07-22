@@ -22,7 +22,7 @@ import HistoryStore from '@/model/historyStore';
 import HintHistory from '@/components/Hint/HintHistory';
 import HintImporter from '@/components/Hint/HintImporter';
 import HintStandDetails from '@/components/Hint/HintStandDetails';
-import { AffixItem, hisoryData, PieNums, Rank, RelicDataArr, RelicDataItem, RelicDataMap, selfStand, standDetails, SubData } from '@/data/RelicData';
+import { AffixItem, hisoryData, PieNums, Rank, RelicDataArr, RelicDataItem, RelicDataMap, selfStand, sendData, Stand, standDetails, SubData } from '@/data/RelicData';
 
 
 function Importer(){
@@ -157,7 +157,7 @@ function Importer(){
     
 
     //獲得遺器資料
-    async function getRecord(sendData:any = undefined ,standard:selfStand|undefined = undefined){
+    async function getRecord(sendData:sendData|undefined = undefined ,standard:selfStand|undefined = undefined){
         
         let apiLink=(window.location.origin==='http://localhost:3000')?`http://localhost:5000/artifact/get`:`https://expressapi-o9du.onrender.com/artifact/get`;
 
@@ -303,22 +303,6 @@ function Importer(){
        
     }
 
-    //檢查該遺器是否含有至少指定副詞條2個以上
-    /*function checkRelic(targetRelic: any, standard: selfStand): boolean {
-        if (!standard || !Array.isArray(standard)) return false;
-
-        const substats = targetRelic?.flat?.reliquarySubstats ?? [];
-
-        const matched = substats.filter((sub: { appendPropId: string }) => {
-            const affix = AffixName.find(a => a.fieldName === sub.appendPropId);
-            return affix ? standard.some(std => std.name === affix.name) : false;
-        });
-
-        return matched.length >= 2;
-    }*/
-
-
-
     //切換成3詞條或4詞條模擬模式
     function changeAffixCount(){
         if(AffixCount === 3)
@@ -392,7 +376,7 @@ function Importer(){
                 });
                 let avgScore = Math.round((sum / (RelicDataArrRef.current.length * 2)) * 10) / 10;
                 let calDate=new Date();
-                let avgRank:any = undefined;
+                let avgRank:Stand|undefined = undefined;
                 let avgRate = Number((sum2*100/(RelicDataArrRef.current.length*2)).toFixed(1));
                 
                 scoreStand.forEach((stand)=>{
@@ -460,7 +444,7 @@ function Importer(){
             let SubData:SubData=[];
 
             relic.flat.reliquarySubstats.forEach((s:any,i:number)=>{
-                let typeName:any=AffixName.find((a)=>a.fieldName===s.appendPropId);
+                let typeName:AffixItem=AffixName.find((a)=>a.fieldName===s.appendPropId)!;
 
                 let val= s.statValue;
                 
@@ -493,14 +477,12 @@ function Importer(){
             };
             
             if(isCheck){
-                //let checkSubstat = checkRelic(relic,standard);
-
                 showStatus('數據計算處理中......','process');
                 worker.postMessage(postData);
 
                 // 接收 Worker 返回的訊息
                 worker.onmessage = function (event) {
-                    let returnData = {
+                    let returnData:RelicDataItem = {
                         relic:relic,
                         ExpRate:event.data.expRate,
                         Rscore:event.data.relicscore,
@@ -562,7 +544,7 @@ function Importer(){
         });
         let avgScore = Math.round((sum / (copyRelicDataArr.length * 2)) * 10) / 10;
         let calDate= new Date();
-        let avgRank:any = undefined;
+        let avgRank:Stand|undefined = undefined;
         let avgRate = Number((sum2*100/(copyRelicDataArr.length*2)).toFixed(1));
         
         scoreStand.forEach((stand)=>{

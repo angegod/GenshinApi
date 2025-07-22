@@ -1,4 +1,4 @@
-interface AffixItem {
+export interface AffixItem {
     fieldName: string;
     icon: string;
     type: string;
