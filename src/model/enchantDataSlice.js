@@ -1,27 +1,13 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { create } from 'zustand'
 
+const EnchantDataStore = create((set, get) => ({
+    enchantData: {},
 
-const initialState = {
-    enchantData: {} // 要模擬的資料原版數據
-};
+    // 正確地設定 enchantData 欄位
+    setEnchantData: (data) => set({ enchantData: data }),
 
-const enchantDataSlice = createSlice({
-    name:'enchantData',
-    initialState,
-    reducers:{
-        //設置要模擬的數據原版
-        setEnchantData:(state,action)=>{
-            state.enchantData = action.payload;
-        },
-        //獲得模擬數據原版資料
-        getEnchantData:(state)=>{
-            return state.enchantData;
-        },
-        deleteEnchantData:(state)=>{
-            state.enchantData = {};
-        }
-    }
-});
+    // 回傳整個 enchantData 內容
+    getEnchantData: () => get().enchantData,
+}));
 
-export const {setEnchantData,getEnchantData,deleteEnchantData} = enchantDataSlice.actions;
-export default enchantDataSlice.reducer;
+export default EnchantDataStore;

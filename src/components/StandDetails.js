@@ -4,16 +4,17 @@ import AffixName from '../data/AffixName';
 import SiteContext from '../context/SiteContext';
 import { useStatusToast } from '@/context/StatusMsg';
 import Image from 'next/image';
-import { Tooltip } from '@mui/material';
-import AffixList from '@/data/AffixList';
+import { Tooltip } from 'react-tooltip';
+import HintStandDetails from './Hint/HintStandDetails';
 
 
 
 const StandDetails=React.memo(()=>{
     const {standDetails} = useContext(SiteContext);
-    const showLock = (standDetails.filter((s)=>s.SelectPriority > 0).length>0)?true:false;
-
-    if(standDetails!==undefined){
+   
+    if(standDetails!==undefined&&standDetails.length!==0){
+        console.log(standDetails);
+        const showLock = (standDetails.filter((s)=>s.SelectPriority > 0).length>0)?true:false;
         const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
         const list=standDetails.map((s)=>{
             
@@ -57,6 +58,12 @@ const StandDetails=React.memo(()=>{
                 <div>
                     {list}
                 </div>
+                <Tooltip
+                    id="StandDetailsHint"
+                    place="right"
+                    render={() => <HintStandDetails />}
+                    style={{ zIndex: 9999 }} 
+                    />
             </div>)
     }
 });

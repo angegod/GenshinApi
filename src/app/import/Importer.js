@@ -22,6 +22,7 @@ import HistoryStore from '@/model/historyStore';
 import HintHistory from '@/components/Hint/HintHistory';
 import HintImporter from '@/components/Hint/HintImporter';
 import HintStandDetails from '@/components/Hint/HintStandDetails';
+import HintParams from '@/components/Hint/HintParams';
 
 
 function Importer(){
@@ -108,19 +109,6 @@ function Importer(){
             setIsChangeAble(true);
         }
     },[RelicDataArr,relicIndex,AffixCount]);
-
-    //當遺器被選擇時
-    useEffect(()=>{
-        if(relic){
-            requestAnimationFrame(()=>{
-                window.scrollTo({
-                    top: document.body.scrollHeight,
-                    behavior: 'smooth'
-                });
-            });
-        }
-    },[relic]);
-
 
     function init(){
         //標記歷史紀錄尚未處理完
@@ -411,10 +399,7 @@ function Importer(){
 
                 updateStatus('已更新','success');
                 setIsSaveAble(false);
-            }
-
-
-            
+            }   
         }).catch((error)=>{
             console.error("錯誤發生：", error);             // 原始錯誤物件
             console.error("錯誤訊息：", error.message);     // 錯誤文字
@@ -484,7 +469,6 @@ function Importer(){
             };
             
             if(isCheck){
-                //let checkSubstat = checkRelic(relic,standard);
 
                 showStatus('數據計算處理中......','process');
                 worker.postMessage(postData);
@@ -604,6 +588,9 @@ function Importer(){
         isLoad:isLoad,
         limit:limit,
         
+        //父物件是誰
+        mode:"Importer",
+
         //RelicData
         relic:relic,
         Rscore:Rscore,
@@ -675,13 +662,13 @@ function Importer(){
                                 <div className='flex flex-row items-baseline'>
                                     <ShowStand />
                                     <div className='hintIcon ml-2 overflow-visible'
-                                        data-tooltip-id="StandDetailsHint">
+                                        data-tooltip-id="ParamsHint">
                                         <span className='text-white'>?</span>
                                     </div>
                                 </div>
                             </div>
                             <div className={`flex flex-row my-3`}>
-                                <div className='w-[200px] text-right'>
+                                <div className='w-[200px] text-right max-[400px]:text-left max-[600px]:w-[120px]'>
                                     <span className='text-white'>Limit 保底次數:</span>
                                 </div>
                                 <div className='pl-1 flex flex-row items-center'>
@@ -718,7 +705,7 @@ function Importer(){
                     <RelicSelect />
                 </div>
                 <div className={`mt-3 flex flex-row flex-wrap w-1/4  max-[700px]:w-[50%] ${(!relic)?'hidden':''} max-[500px]:w-4/5 max-[500px]:mx-auto`}>
-                    <RelicData  mode={'Importer'} button={false}/>
+                    <RelicData  mode={'Importer'} button={true}/>
                 </div>
                 <div className={`mt-3 w-1/4 max-[700px]:w-[50%] ${(!standDetails.current)?'hidden':''} max-[500px]:w-4/5 max-[500px]:mx-auto`} >
                     <StandDetails />
@@ -764,6 +751,10 @@ function Importer(){
                     place='right-start'
                     render={()=><HintImporter/>}
                     clickable={true}/>
+            <Tooltip id="ParamsHint" 
+                    place='right-start'
+                    render={()=><HintParams />}
+                    clickable={true}/>
             <Tooltip id="LimitHint" 
                     place='right-start'
                     render={()=>
@@ -772,9 +763,6 @@ function Importer(){
                         </div>
                     }
                     clickable={true}/>
-            <Tooltip id="StandDetailsHint" 
-                    place='right'
-                    render={()=><HintStandDetails />}/>
             <Tooltip id="AffixCountChangeHint" 
                     place='right-start'
                     render={()=>{

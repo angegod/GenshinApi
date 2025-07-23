@@ -30,12 +30,21 @@ function HintEnchant(){
                     <span className='text-stone-400'>將重洗次數以及遺器配置重設為一開始的配置。</span>
                 </div>
             </div>
+            <div className="mt-2 flex flex-col">
+                <div>
+                    <span className='text-md font-bold text-white'>更改模式</span>
+                </div>
+                <div>
+                    <span className='text-stone-400'>主要目的是模擬在不同強化次數的情況下所產生的結果為何，點選即可切換成另外一個模式。</span>
+                </div>
+            </div>
             <div className='mt-2 flex flex-col'>
                 <div>
                     <span className='text-md font-bold text-white'>注意事項</span>
                 </div>
                 <div className='flex flex-col'>
-                    <span className='!text-yellow-500'>重洗後的相關數據均存在誤差的可能，實際請以遊戲顯示的數值為主。</span>
+                    <span className='!text-yellow-500'>1.重洗後的相關數據均存在誤差的可能，實際請以遊戲顯示的數值為主。</span>
+                    <span className="!text-yellow-500">2.只有從Importer那邊過來的才會有更改模式按鈕。</span>
                 </div>
             </div>
         </div>

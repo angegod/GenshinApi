@@ -10,18 +10,42 @@ onmessage = function (event) {
     let SubData=event.data.SubData;
     let partsIndex=parseInt(event.data.partsIndex);
     let MainAffix=AffixName.find((a)=>a.name===event.data.MainData);
-    //let deviation=(event.data.deviation!==undefined)?event.data.deviation:0;
-    
+    let limit = event.data.limit;
+    let enchanceCount = event.data.enchanceCount;
+    let selfStand = event.data.standard;
 
-    //計算可用強化次數
-    var enchanceCount=0;
-    SubData.forEach(sb=>{    
-        enchanceCount=enchanceCount+Number(sb.count);
+
+    //計算可用強化次數 
+    //透過詞條 優先度計算被選定的詞條
+    let selectAffix = [];
+    selfStand.filter((s) => s.SelectPriority != null && s.SelectPriority !== 0).forEach((s,i)=>{
+        if(selectAffix.length<2){
+            let targetSubdataIndex = SubData.findIndex((sb)=>sb.subaffix === s.name);
+            if(targetSubdataIndex >=0)
+                selectAffix.push(targetSubdataIndex);
+        }
     });
 
+        //進入simulator
+    if(selectAffix.length === 0){
+        SubData.filter((s) => s.isSelect).forEach((s,i)=>{
+            selectAffix.push(i);
+        });
+    }
+
+        // 如果選定的詞條仍不足 2 個，自動補齊
+    if (selectAffix.length < 2) {
+        for (let i = 0; i < SubData.length; i++) {
+            if (!selectAffix.includes(i)) {
+                selectAffix.push(i);
+                if (selectAffix.length === 2) break;
+            }
+        }
+        console.log(selectAffix);
+    }
 
     //計算可能的強化組合
-    let combination=findCombinations(enchanceCount,SubData.filter((s)=>!s.locked).length);
+    let combination=findCombinations(enchanceCount,SubData.filter((s)=>!s.locked).length,selectAffix,limit);
 
     //根據強化組合的個數，隨機抽取一個(這個數值已經是索引值)
     let randomNum = Math.floor(Math.random() * combination.length);
@@ -104,7 +128,7 @@ onmessage = function (event) {
         });
 
         caltype.forEach((ms)=>{
-            if(ms.type!=='AttackDelta'&&ms.type!=='DefenceDelta'&&ms.type!=='HPDelta')
+            if(ms.type!=='FIGHT_PROP_HP'&&ms.type!=='FIGHT_PROP_DEFENSE'&&ms.type!=='FIGHT_PROP_ATTACK')
                 res+=ms.affixmutl;
         });
         
@@ -216,21 +240,19 @@ function calStand(stand){
         hp: 0,
         atk: 0,
         def: 0,
-        spd: 0,
         crit_rate: 0,
         crit_dmg: 0,
-        break_dmg: 0,
-        heal_rate: 0,
-        sp_rate: 0,
-        effect_hit: 0,
-        effect_res: 0,
-        physical_dmg: 0,
-        fire_dmg: 0,
-        ice_dmg: 0,
-        lightning_dmg: 0,
-        wind_dmg: 0,
-        quantum_dmg: 0,
-        imaginary_dmg: 0
+        elem:0,
+        charge:0,
+        fire_dmg:0,
+        ice_dmg:0,
+        water_dmg:0,
+        elec_dmg:0,
+        rock_dmg:0,
+        wind_dmg:0,
+        grass_dmg:0,
+        phy_dmg:0,
+        heal_rate:0
     };
 
     //根據有效詞條關鍵字

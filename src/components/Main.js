@@ -17,6 +17,7 @@ import { Tooltip } from 'react-tooltip';
 
 import SubAffixHint from './Hint/SubAffixHint';
 import HintSimulator from './Hint/HintSimulator';
+import HintParams from './Hint/HintParams';
 
 function Main(){
     //紀錄版本號
@@ -327,10 +328,12 @@ function Main(){
         isSaveAble:isSaveAble,
         partsIndex:partsIndex,
         standDetails:standDetails.current,
-        
         selfStand:selfStand,
         charID:charID,
         isLoad:isLoad,
+
+        //父物件是誰
+        mode:"Simulator",
 
         //聖遺物資料
         Rrank:Rrank,
@@ -423,7 +426,14 @@ function Main(){
                                 <div className='text-right w-[200px] max-[600px]:max-w-[120px] max-[400px]:text-left'>
                                     <span className='text-white'>Params 參數:</span>
                                 </div>
-                                <ShowStand lock={false}/>
+                                <div className='flex flex-row'>
+                                    <ShowStand lock={false}/>
+                                    <div className='hintIcon ml-2 overflow-visible'
+                                        data-tooltip-id="ParamsHint"> 
+                                        <span className='text-white'>?</span>
+                                    </div>
+                                </div>
+
                             </div>
                             <div className={`${(Number.isInteger(parseInt(partsIndex)))?'':'hidden'} mt-2 mb-2 max-w-[400px] flex flex-row [&>*]:mr-2 justify-end max-[400px]:justify-start`}>
                                 <div className='flex flex-row mt-1'>
@@ -453,7 +463,7 @@ function Main(){
                 <div className='w-full my-2'>
                     <div className={`w-full flex flex-row bg-[rgba(0,0,0,0.5)] p-2 rounded-md flex-wrap ${(PieNums===undefined)?'hidden':''}`}>
                         <div className={`flex flex-row flex-wrap w-[18vw]  max-[700px]:w-[50%] ${(PieNums===undefined)?'hidden':''} max-[500px]:w-4/5 max-[500px]:mx-auto`} >
-                            <RelicData  mode={'Simulator'} button={false}/>
+                            <RelicData  mode={'Simulator'} button={true}/>
                         </div>
                         <div className={`w-1/4 max-[700px]:w-[50%] ${(PieNums===undefined)?'hidden':''} max-[500px]:w-4/5 max-[500px]:mx-auto`} >
                             <StandDetails />
@@ -486,6 +496,11 @@ function Main(){
                         place="right-start" 
                         render={()=>
                             <SubAffixHint />
+                        }/>
+                <Tooltip id="ParamsHint"  
+                        place="right-start" 
+                        render={()=>
+                            <HintParams />
                         }/>
                 <Tooltip id="HistoryHint"  
                     place="top-center"
@@ -526,13 +541,6 @@ function Main(){
                         render={()=>
                             <div>
                                 <span>指定詞條強化保底次數，可以根據個人目前使用強化情況調整</span>
-                            </div>
-                        }
-                        clickable={true}/>
-                <Tooltip id="LimitHint" 
-                        place='right-start'
-                        render={()=>
-                            <div>
                                 <span>指定詞條們的共享保底次數，最低為2，最高為4</span>
                             </div>
                         }

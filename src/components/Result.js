@@ -10,7 +10,7 @@ const Result = React.memo(() => {
     const renderContent = useMemo(() => {
         if (ExpRate !== undefined && Rrank !== undefined && PieNums !== undefined && Rscore !== undefined) {
             return (
-                <div className={`w-[100%] min-w-[400px] mb-5 my-1 ${(ExpRate !== undefined) ? '' : 'hidden'} max-[500px]:w-[330px] max-[400px]:w-[95%] max-[600px]:min-w-0 max-[600px]:w-[100vw]`}>
+                <div className={`w-full min-w-[300px] mb-5 my-1 ${(ExpRate !== undefined) ? '' : 'hidden'} max-[500px]:w-[330px] max-[400px]:w-[95%] max-[600px]:min-w-0 max-[600px]:w-[100vw]`}>
                     <div className='flex flex-col'>
                         <div className={`${(ExpRate !== undefined) ? '' : 'hidden'} mt-2 flex flex-row items-center`}>     
                             <div className='text-white flex flex-row'>
@@ -96,13 +96,13 @@ const Pie=React.memo(({PieNums})=>{;
     if(PieNums!==undefined&&PieNums!==null){
         const pieParams = {
             height: 200,
-            margin:{ top: 10, right: 0, bottom: 0, left: -20 },
+            margin:{ top: 10, right: 0, bottom: 0, left: 0 },
             slotProps: { legend: { hidden: true } },
         };
 
         return(
-           <div className='w-[100%] flex flex-row flex-wrap'>
-                <div className='min-w-[250px]'>
+           <div className='w-full flex flex-row flex-wrap max-[900px]:flex-col-reverse'>
+                <div className='w-[200px]'>
                     <PieChart  
                     series={[
                         {

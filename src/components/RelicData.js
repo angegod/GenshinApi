@@ -4,6 +4,7 @@ import AffixName from '../data/AffixName';
 import EquipType from '@/data/EquipType';
 import { Tooltip } from 'react-tooltip';
 import { useRouter } from 'next/navigation';
+import EnchantDataStore from '@/model/enchantDataSlice';
 import SiteContext from '../context/SiteContext';
 import RelicDataHint from './Hint/RelicDataHint';
 
@@ -12,6 +13,9 @@ import RelicDataHint from './Hint/RelicDataHint';
 const RelicData=React.memo(({mode,button})=>{
     const {relic,Rrank,Rscore,standDetails,isChangeAble,partArr,limit} = useContext(SiteContext);
     const router = useRouter();
+
+    //獲取enchant資料
+    const {setEnchantData} = EnchantDataStore();
     
     //導航至模擬強化頁面
     function navEnchant(){
@@ -20,10 +24,11 @@ const RelicData=React.memo(({mode,button})=>{
             Rrank:Rrank,
             Rscore:Rscore,
             standDetails:standDetails,
+            limit:2,
             mode:mode
         }
-        console.log(sendData);
-        localStorage.setItem('EnchantData',JSON.stringify(sendData));
+        setEnchantData(sendData);
+        
         router.push('./enchant');
     }
 
@@ -118,6 +123,10 @@ const RelicData=React.memo(({mode,button})=>{
 const RelicData_simulate=React.memo(({mode,button})=>{
     const {relic,Rrank,Rscore,standDetails,isChangeAble,partArr,limit} = useContext(SiteContext);
     const router = useRouter();
+
+    //獲取enchant資料
+    const {setEnchantData} = EnchantDataStore();
+
     //導航至模擬強化頁面
     function navEnchant(){
         let sendData={
@@ -127,9 +136,8 @@ const RelicData_simulate=React.memo(({mode,button})=>{
             standDetails:standDetails,
             mode:mode
         }
-
-        localStorage.setItem('EnchantData',JSON.stringify(sendData));
-
+        setEnchantData(sendData);
+        
         router.push('./enchant');
     }
 
