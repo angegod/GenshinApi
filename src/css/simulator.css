@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 .processBtn {
-  @apply text-white border-white border-2 rounded-md px-1;
+  @apply text-white border-white border-2 rounded-md px-1 cursor-pointer;
 }
 
 .processBtn:hover {
@@ -20,6 +20,10 @@
   color: #ef4444;
   border-color: #ef4444;
   border-radius: 0.375rem;
+}
+
+.processBtn:disabled,.deleteBtn:disabled{
+  @apply cursor-auto;
 }
 
 .hiddenScrollBar {

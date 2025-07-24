@@ -619,7 +619,7 @@ function Importer(){
                 <div className='flex flex-row flex-wrap max-[600px]:w-[95%] '>
                     <div className='flex flex-col w-2/5 bg-[rgba(0,0,0,0.5)] rounded-md max-[1250px]:w-[100%] test'>
                         <div className='flex flex-row items-center ml-2 mt-2'>
-                            <h1 className='text-red-600 font-bold text-2xl'>遺器匯入</h1>
+                            <h1 className='text-red-600 font-bold text-2xl'>聖遺物重洗匯入</h1>
                             <div className='hintIcon ml-2 overflow-visible' 
                                 data-tooltip-id="ImporterHint">
                                 <span className='text-white'>?</span>
@@ -744,7 +744,10 @@ function Importer(){
                         <div className='flex flex-col [&>span]:text-white max-w-[250px] p-1'>
                             <span>下方會顯示出該腳色符合條件的所有遺器</span>
                             <span>點選遺器即可查看個別資訊</span>
-                            <span className='!text-red-600 font-bold'>僅顯示符合條件的五星滿等遺器遺器</span>
+                            <div className='mt-2 flex flex-col'>
+                                <span className='text-white font-bold'>注意事項</span>
+                                <span className='!text-red-600 font-bold'>僅顯示符合條件的五星滿等遺器遺器</span>
+                            </div>
                         </div>
                     }/>
             <Tooltip id="ImporterHint" 

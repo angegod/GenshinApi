@@ -352,8 +352,11 @@ const StandardSelect=React.memo(()=>{
                             <div className='flex flex-col'>
                                 <span className='text-white'>根據個人需求</span>
                                 <span className='text-yellow-400'>選擇不重複的詞條種類(包含主詞條)</span>
-                                <span className='!text-red-500'>"有效詞條"選擇最多保有6個。</span>
-                                <span className='text-red-500'>如果已選擇6項，則其餘選項將無法選取。</span>
+                                <div className='mt-2 flex flex-col'>
+                                    <span className='font-bold text-white'>注意事項</span>
+                                    <span className='!text-red-500'>有效詞條選擇最多保有6個。</span>
+                                    <span className='text-red-500'>如果已選擇6項，則其餘選項將無法選取。</span>
+                                </div>
                             </div>
                         }/>
                 </div>

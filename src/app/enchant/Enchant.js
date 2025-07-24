@@ -17,11 +17,15 @@ import HintEnchant from '@/components/Hint/HintEnchant';
 //此物件為單次模擬隨機強化後的結果
 const Enchant=React.memo(()=>{
 
+    //從enchantstore取得
     const [data,setData] = useState();
     const {relic,standDetails,Rscore,Rrank,mode}=data || {};
     
     const relicBackUp =useRef(null);
     const [isChangeAble,setIsChangeAble]=useState(true);
+    //是否啟用還原狀態
+    const [isRecoverable,setRecoverable]=useState(false);
+
     //模擬強化相關數據
     const [simulatorData,setSimulatorData]=useState({oldData:null,newData:null});
     const [statics,setStatics]=useState(undefined);
@@ -37,6 +41,7 @@ const Enchant=React.memo(()=>{
     //成功翻盤次數
     const [successCount,setSuccessCount]=useState(0);
 
+    //分數及標準
     const scoreStand=[
         {rank:'S+',stand:85,color:'rgb(239, 68, 68)',tag:'S+'},
         {rank:'S',stand:70,color:'rgb(239, 68, 68)',tag:'S'},
@@ -302,6 +307,7 @@ const Enchant=React.memo(()=>{
             });
 
             setSuccessCount(0);
+            setRecoverable(true);
         }
     }
 
@@ -317,6 +323,8 @@ const Enchant=React.memo(()=>{
             default:
                 break;
         }
+
+        setRecoverable(true);
     }
 
     //回到初始狀態
@@ -324,6 +332,9 @@ const Enchant=React.memo(()=>{
         //將counter歸0
         setCount(0);
         setSuccessCount(0);
+
+        //將還原按鈕關閉
+        setRecoverable(false);
 
         //還原至一開始記錄
         setSimulatorData({oldData:relicBackUp.current,newData:null});
@@ -400,7 +411,7 @@ const Enchant=React.memo(()=>{
                                         ?<button className='processBtn ml-2' onClick={()=>AffixCountChange()}>更改模式</button>
                                         :null
                                 }
-                                <button className='processBtn ml-2' onClick={()=>reInit()}>還原</button>
+                                <button className='processBtn ml-2' onClick={()=>reInit()} disabled={!isRecoverable}>還原</button>
                             </div>
                         </div>
                         <div className='my-2 flex flex-row'>
