@@ -2,7 +2,7 @@ import standard from '../data/standard';
 import weight from '../data/weight';
 import AffixName from '../data/AffixName';
 import {findCombinations,EnchanceAllCombinations} from '../data/combination';
-import { AffixItem, PieNums, RelicScoreStand, selfStand, SubData } from '@/data/RelicData';
+import { AffixItem, caltype, PieNums, RelicScoreStand, selfStand, SubData } from '@/data/RelicData';
 
 onmessage = function (event) {
     //宣告變數
@@ -66,7 +66,6 @@ onmessage = function (event) {
         });
     });
     //將沒有被鎖住不可計算的詞條倒裝
-    //coeEfficent.sort((a,b)=>)
     let MainData=charStandard[MainAffix.type];
     let result:number[] = [];
     let origin=relicScore(partsIndex,charStandard,SubData,MainData);
@@ -84,7 +83,7 @@ onmessage = function (event) {
                     res=3*MainData;
                 
                 let total=0;
-                let caltype:any=[];//已經計算過的詞條種類
+                let caltype:caltype[]=[];//已經計算過的詞條種類
 
                 s.forEach((el:any,i:number) => {//對每個屬性詞條開始進行模擬計算
                     let sub=coeEfficent[i];
@@ -118,7 +117,7 @@ onmessage = function (event) {
                     });    
                 });
 
-                caltype.forEach((ms:any)=>{
+                caltype.forEach((ms:caltype)=>{
                     if(ms.type!=='FIGHT_PROP_HP'&&ms.type!=='FIGHT_PROP_DEFENSE'&&ms.type!=='FIGHT_PROP_ATTACK')
                         res+=ms.affixmutl;
                 });
@@ -188,7 +187,7 @@ onmessage = function (event) {
 function relicScore(partsIndex:number,charStandard:any,SubData:SubData,MainData:number){
     let weight = 0
     var mutl=3*MainData;//直接默認強化至滿等
-    let caltype:any=[];
+    let caltype:caltype[]=[];
 
     //如果是手跟頭則不套用主詞條加分
     if(partsIndex!==1&&partsIndex!==2){
@@ -214,7 +213,7 @@ function relicScore(partsIndex:number,charStandard:any,SubData:SubData,MainData:
     //計算這件遺器的最大有效詞條數
 
     //計算分數
-    caltype.forEach((ms:any)=>{
+    caltype.forEach((ms:caltype)=>{
         if(ms.type!=='FIGHT_PROP_HP'&&ms.type!=='FIGHT_PROP_DEFENSE'&&ms.type!=='FIGHT_PROP_ATTACK')
             weight+=ms.affixmutl;
     });
