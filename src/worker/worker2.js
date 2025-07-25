@@ -1,5 +1,5 @@
 import standard from '../data/standard';
-import weight from '../data/weight';
+import weight from '../data/weight.ts';
 import AffixName from '../data/AffixName';
 import {findCombinations,EnchanceAllCombinations} from '../data/combination';
 

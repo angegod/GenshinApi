@@ -12,6 +12,7 @@ const Select = dynamic(() => import("react-select"), { ssr: false });
 const PartSelect=React.memo(()=>{
 
     const {partArr,partsIndex,setPartsIndex,setIsSaveAble,isChangeAble}=useContext(SiteContext);
+    
     let options=[<option value={'undefined'} key={'PartsUndefined'}>請選擇</option>];
 
     partArr.forEach((a,i)=>{

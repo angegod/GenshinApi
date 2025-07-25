@@ -10,8 +10,8 @@ import RelicDataHint from './Hint/RelicDataHint';
 
 
 //顯示儀器分數區間
-const RelicData=React.memo(({mode,button})=>{
-    const {relic,Rrank,Rscore,standDetails,isChangeAble,partArr,limit} = useContext(SiteContext);
+const RelicData=React.memo(()=>{
+    const {relic,Rrank,Rscore,standDetails,isChangeAble,partArr,limit,mode,button} = useContext(SiteContext);
     const router = useRouter();
 
     //獲取enchant資料

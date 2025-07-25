@@ -1,4 +1,12 @@
-let characters =    [
+interface characters {
+    charId:string,
+    name:string,
+    cn_name:string,
+    element:"Fire"|"Ice"|"Wind"|"Electric"|"Water"|"Rock"|"Grass",
+    rarity:4 | 5,
+}
+
+let characters:characters[]= [
     {
         "charId": "10000002",
         "name": "Ayaka",

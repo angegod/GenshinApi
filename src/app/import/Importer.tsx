@@ -23,6 +23,7 @@ import HintHistory from '@/components/Hint/HintHistory';
 import HintImporter from '@/components/Hint/HintImporter';
 import HintStandDetails from '@/components/Hint/HintStandDetails';
 import HintParams from '@/components/Hint/HintParams';
+import { AffixItem, hisoryData, PieNums, Rank, RelicDataArr, RelicDataItem, RelicDataMap, selfStand, selfStandItem, standDetails, SubData } from '@/data/RelicData';
 
 
 function Importer(){
@@ -44,15 +45,15 @@ function Importer(){
     const [limit,setLimit]=useState(2);
 
     //期望值、儀器分數、評級、圖表資料、以及 切換成3詞條或4詞條模擬模式
-    const [ExpRate,setExpRate]=useState(undefined);
-    const [Rscore,setRscore]=useState(undefined);
-    const [Rrank,setRank]=useState({color:undefined,rank:undefined});
-    const [PieNums,setPieNums]=useState(undefined);
+    const [ExpRate,setExpRate]=useState<number | undefined>(undefined);
+    const [Rscore,setRscore]=useState<number | undefined>(undefined);
+    const [Rrank,setRank]=useState<Rank>({label:undefined,tag:undefined,color:undefined,value:undefined});
+    const [PieNums,setPieNums]=useState<PieNums>(undefined);
     const [AffixCount,setAffixCount]=useState(3);
 
     // 找到所有遺器後計算的所有數據，包含期望值、分數等
-    const [RelicDataArr,setRelicDataArr]=useState([]);
-    const RelicDataArrRef = useRef(null);
+    const [RelicDataArr,setRelicDataArr]=useState<RelicDataArr>([]);
+    const RelicDataArrRef = useRef<RelicDataArr>(null);
     
     // 共用statusMsg 
     const {showStatus,updateStatus,hideStatus}=useStatusToast();
@@ -66,7 +67,7 @@ function Importer(){
     const [isLoad,setIsLoad] = useState(false);
 
     //自訂義標準
-    const [selfStand,setSelfStand]=useState([]);
+    const [selfStand,setSelfStand]=useState<selfStand>([]);
     const standDetails=useRef([]);
 
     //router相關
@@ -118,8 +119,8 @@ function Importer(){
 
         //清空儲存的歷史紀錄
         resetHistory();
-
-        let history=JSON.parse(localStorage.getItem(dataStorageLocation));
+        const historyraw = localStorage.getItem(dataStorageLocation);
+        let history:hisoryData[]=(historyraw)?JSON.parse(historyraw):null;
         if(history===null){
             setHistory([]);
             setIsLoad(true);
@@ -144,7 +145,7 @@ function Importer(){
     
 
     //獲得遺器資料
-    async function getRecord(sendData = undefined ,standard = undefined){
+    async function getRecord(sendData:any = undefined ,standard:selfStand|undefined = undefined){
         
         let apiLink=(window.location.origin==='http://localhost:3000')?`http://localhost:5000/artifact/get`:`https://expressapi-o9du.onrender.com/artifact/get`;
 
@@ -168,7 +169,7 @@ function Importer(){
             }
 
             //如果優先鎖定的詞條種類並未滿足兩個
-            if(selfStand.filter((s)=>s.SelectPriority>0).length<2){
+            if(selfStand.filter((s:selfStandItem) => (s.SelectPriority ?? 0) > 0).length < 2){
                 updateStatus("優先指定詞條至少需要兩個!","error");
                 return;
             }
@@ -185,7 +186,7 @@ function Importer(){
         }
 
         if(!standard)
-            standard = [...selfStand];
+            standard = [...(selfStand ?? [])];
 
         //送出之前先清空一次資料
         setIsSaveAble(false);
@@ -250,21 +251,21 @@ function Importer(){
         })
     }
 
-    async function process(relicArr,standard = undefined){
+    async function process(relicArr:any,standard:selfStand){
         let temparr = [];
-
+        
         //檢查加權標準
-        standard.forEach((s)=>{
+        /*standard.forEach((s)=>{
             if(s.value===''){
                 updateStatus('加權指數不可為空或其他非法型式','error');
                 return;
             }
-        });
+        });*/
 
         //針對三詞條跟四詞條分別進行一次模擬
         //對應到強化次數4次跟5次
         for (const r of relicArr) {
-            let calData = {};
+            let calData:any= {};
 
             for(var i=3;i<=4;i++){
                 
@@ -291,14 +292,19 @@ function Importer(){
     }
 
     //檢查該遺器是否含有至少指定副詞條2個以上
-    /*function checkRelic(targetRelic, standard) {
-        const substats = targetRelic.flat.reliquarySubstats;
-        const matched = substats.filter(sub => 
-            standard.some(std => std.name === AffixName.find((a)=>a.fieldName ===sub.appendPropId).name)
-        );
+    /*function checkRelic(targetRelic: any, standard: selfStand): boolean {
+        if (!standard || !Array.isArray(standard)) return false;
+
+        const substats = targetRelic?.flat?.reliquarySubstats ?? [];
+
+        const matched = substats.filter((sub: { appendPropId: string }) => {
+            const affix = AffixName.find(a => a.fieldName === sub.appendPropId);
+            return affix ? standard.some(std => std.name === affix.name) : false;
+        });
 
         return matched.length >= 2;
     }*/
+
 
 
     //切換成3詞條或4詞條模擬模式
@@ -312,15 +318,15 @@ function Importer(){
     //刪除紀錄
     function clearData(){
         setExpRate(undefined);
-        setRank({color:undefined,rank:undefined});
+        setRank({label:undefined,tag:undefined,color:undefined,value:undefined});
         setPieNums(undefined);
         setRscore(undefined);
         setRelicDataArr([]);
-        setRelic();
+        setRelic(undefined);
     }
 
     //檢視過往紀錄
-    const checkDetails=useCallback((index)=>{
+    const checkDetails=useCallback((index:number)=>{
         
         let data= getHistory(index);
         
@@ -341,8 +347,8 @@ function Importer(){
     },[getHistory()]);
 
     //更新紀錄
-    const updateDetails=useCallback(async (index)=>{
-        showStatus('正在更新資料中','process');
+    const updateDetails=useCallback(async (index:number)=>{
+        showStatus('正在更新資料中');
         let data = getHistory(index);
 
         let sendData={
@@ -351,7 +357,10 @@ function Importer(){
             partsIndex:6
         };
 
-        let cloneDetails = data.dataArr[0][3].standDetails.map(item => ({ ...item }));
+        let cloneDetails: selfStand = data.dataArr[0][3]?.standDetails
+            ? data.dataArr[0][3].standDetails.map((item: any) => ({ ...item }))
+            : [];
+
         setLimit(data.limit);
 
         await getRecord(sendData,cloneDetails)
@@ -366,12 +375,12 @@ function Importer(){
                 RelicDataArrRef.current.forEach((r)=>{
                     for(var i = 3;i<=4;i++){
                         sum +=Number(r[i].Rscore);
-                        sum2 += r[i].ExpRate;
+                        sum2 += r[i].ExpRate!;
                     }
                 });
-                let avgScore = Number(parseFloat(sum/(RelicDataArrRef.current.length*2)).toFixed(1));
+                let avgScore = Math.round((sum / (RelicDataArrRef.current.length * 2)) * 10) / 10;
                 let calDate=new Date();
-                let avgRank = undefined;
+                let avgRank:any = undefined;
                 let avgRate = Number((sum2*100/(RelicDataArrRef.current.length*2)).toFixed(1));
                 
                 scoreStand.forEach((stand)=>{
@@ -409,9 +418,9 @@ function Importer(){
     },[getHistory()]);
 
     //刪除過往紀錄 
-    const deleteHistoryData=useCallback((index)=>{
+    const deleteHistoryData=useCallback((index:number)=>{
         //如果刪除紀錄是目前顯示的 則會清空目前畫面上的
-        let oldHistory=getHistory();
+        let oldHistory:hisoryData[]=getHistory();
 
         //呼叫store刪除該歷史紀錄
         deleteHistory(index);
@@ -425,18 +434,18 @@ function Importer(){
         }, 0);
     },[getHistory()]);
 
-    function calscore(relic,standard,enchanceCount){
+    function calscore(relic:any,standard:selfStand,enchanceCount:number){
         return new Promise((resolve)=>{
             let isCheck=true;
             //將獲得到遺器先儲存起來
 
             //將運行結果丟到背景執行
-            let worker=new Worker(new URL('../../worker/worker.js', import.meta.url));
-            let MainAffix=AffixName.find((a)=>a.fieldName===relic.flat.reliquaryMainstat.mainPropId);
-            let SubData=[];
+            let worker=new Worker(new URL('../../worker/worker.ts', import.meta.url));
+            let MainAffix:AffixItem=AffixName.find((a)=>a.fieldName===relic.flat.reliquaryMainstat.mainPropId)!;//必不為undefined
+            let SubData:SubData=[];
 
-            relic.flat.reliquarySubstats.forEach((s,i)=>{
-                let typeName=AffixName.find((a)=>a.fieldName===s.appendPropId);
+            relic.flat.reliquarySubstats.forEach((s:any,i:number)=>{
+                let typeName:any=AffixName.find((a)=>a.fieldName===s.appendPropId);
 
                 let val= s.statValue;
                 
@@ -493,7 +502,7 @@ function Importer(){
 
     //儲存紀錄
     function saveRecord(){
-        let selectChar=characters.find((c)=>c.charId===charID);
+        let selectChar:characters=characters.find((c)=>c.charId===charID)!;
 
         //如果原本紀錄超過6個 要先刪除原有紀錄
         if(getHistory().length>=maxHistoryLength)
@@ -519,11 +528,11 @@ function Importer(){
         let sum = 0;
         let sum2 = 0;
 
-        let copyRelicDataArr = [...RelicDataArr];
+        let copyRelicDataArr:RelicDataArr = [...RelicDataArr];
         copyRelicDataArr = copyRelicDataArr.filter((r)=>{
             for(var i = 3;i<=4;i++){
                 //如果該遺器並沒有計算出機率 則會跳過
-                if(r[i].Rscore ===null||r[i].PieNums === null)
+                if(r[i].ExpRate ===null||r[i].PieNums === null)
                     return false;
             }
             return true;
@@ -532,12 +541,12 @@ function Importer(){
         copyRelicDataArr.forEach((r)=>{
            for(var i = 3;i<=4;i++){
                 sum +=Number(r[i].Rscore);
-                sum2 += r[i].ExpRate;
+                sum2 += r[i].ExpRate!;//前面已經有過濾掉
            }
         });
-        let avgScore = Number(parseFloat(sum/(copyRelicDataArr.length*2)).toFixed(1));
-        let calDate=new Date();
-        let avgRank = undefined;
+        let avgScore = Math.round((sum / (copyRelicDataArr.length * 2)) * 10) / 10;
+        let calDate= new Date();
+        let avgRank:any = undefined;
         let avgRate = Number((sum2*100/(copyRelicDataArr.length*2)).toFixed(1));
         
         scoreStand.forEach((stand)=>{
@@ -548,7 +557,7 @@ function Importer(){
 
 
         //儲存紀錄
-        let data={
+        let data:hisoryData={
             version:version,
             calDate:calDate.toISOString().split('T')[0],
             userID:userID.current,
@@ -587,9 +596,8 @@ function Importer(){
         relicIndex:relicIndex,
         isLoad:isLoad,
         limit:limit,
-        
-        //父物件是誰
         mode:"Importer",
+        button:false,
 
         //RelicData
         relic:relic,
@@ -718,7 +726,7 @@ function Importer(){
                     <RelicSelect />
                 </div>
                 <div className={`mt-3 flex flex-row flex-wrap w-1/4  max-[700px]:w-[50%] ${(!relic)?'hidden':''} max-[500px]:w-4/5 max-[500px]:mx-auto`}>
-                    <RelicData  mode={'Importer'} button={true}/>
+                    <RelicData  />
                 </div>
                 <div className={`mt-3 w-1/4 max-[700px]:w-[50%] ${(!standDetails.current)?'hidden':''} max-[500px]:w-4/5 max-[500px]:mx-auto`} >
                     <StandDetails />
@@ -747,7 +755,7 @@ function Importer(){
                         </div>
                     }/>
             <Tooltip id="HistoryHint"  
-                    place="top-center"
+                    place="top-start"
                     render={()=>
                         <HintHistory />
                     }/>
