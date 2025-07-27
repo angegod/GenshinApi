@@ -10,8 +10,8 @@ const Result = React.memo(() => {
     const renderContent = useMemo(() => {
         if (ExpRate !== undefined && Rrank !== undefined && PieNums !== undefined && Rscore !== undefined) {
             return (
-                <div className={`w-full min-w-[300px] mb-5 my-1 ${(ExpRate !== undefined) ? '' : 'hidden'} max-[500px]:w-[330px] max-[400px]:w-[95%] max-[600px]:min-w-0 max-[600px]:w-[100vw]`}>
-                    <div className='flex flex-col'>
+                <div className={`${(ExpRate !== undefined) ? '' : 'hidden'} Result`}>
+                    <div className='flex flex-col w-fit max-[500px]:mx-auto'>
                         <div className={`${(ExpRate !== undefined) ? '' : 'hidden'} mt-2 flex flex-row items-center`}>     
                             <div className='text-white flex flex-row'>
                                 <span>遺器評級:</span>
@@ -33,7 +33,7 @@ const Result = React.memo(() => {
                             <span className='text-white'>該遺器不符合重洗條件!!</span>
                         </div>
                     </div>
-                    <div className='max-w-[500px] flex flex-row mt-2'>
+                    <div className='w-fit flex flex-row mt-2 max-[500px]:mx-auto'>
                         <Pie PieNums={PieNums} />
                     </div>
                     <Tooltip id="ExpRateHint"  
@@ -101,7 +101,7 @@ const Pie=React.memo(({PieNums})=>{;
         };
 
         return(
-           <div className='w-full flex flex-row flex-wrap max-[900px]:flex-col-reverse'>
+           <div className='w-fit flex flex-row mx-auto max-[500px]:flex-col-reverse'>
                 <div className='w-[200px]'>
                     <PieChart  
                     series={[
@@ -113,13 +113,13 @@ const Pie=React.memo(({PieNums})=>{;
                         }
                     ]}  {...pieParams} />
                 </div>
-                    <div className='flex flex-col w-2/5 text-center max-[500px]:w-[100%]'>
+                    <div className='flex flex-col w-fit max-[500px]:mx-auto'>
                         {PieNums.map((p,i)=>{
                             if(p.value!==0)
                                 return(
-                                    <div className='my-1 flex flex-row [&>*]:max-[500px]:w-[100px] [&>*]:max-[500px]:text-center' key={'pieNums'+i}>
+                                    <div className='my-1 w-fit flex flex-row [&>*]:max-[500px]:text-center' key={'pieNums'+i}>
                                         <div style={{color:p.color}} className='w-[30px] text-right '>{`${p.tag}`}</div>
-                                        <div style={{color:p.color}} className='w-[30px] ml-2'>{`${p.value}%`}</div>
+                                        <div style={{color:p.color}} className='w-[70px] ml-2'>{`${p.value}%`}</div>
                                     </div>
                                 )
                         })}

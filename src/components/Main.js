@@ -83,7 +83,7 @@ function Main(){
         for(var i=0;i<=3;i++){
             let data={
                 index:i, //索引
-                subaffix:0,//詞條種類
+                subaffix:"",//詞條種類
                 data:0, //詞條數值
                 count:0, //強化次數
                 isSelect:false //是否指定為共享次數
@@ -222,14 +222,14 @@ function Main(){
         //選定副詞條是否是兩個
         let errors=false;
         let enchanceCount = 0;
+        console.log(SubData);
         SubData.some((s,i)=>{
             if(s.subaffix===MainSelectOptions){
-                //alert(`第${i+1}個詞條選擇\n副詞條不可選擇與主詞條相同的詞條\n請再重新選擇!!`);
                 updateStatus(`第${i+1}個詞條:副詞條不可選擇與主詞條相同的詞條\n請再重新選擇!!`,'error');
                 errors=true;
                 return true;
             }
-            else if(s.subaffix==='undefined'||s.subaffix===0){
+            else if(s.subaffix==='undefined'||s.subaffix===""){
                 updateStatus(`您還有副詞條沒有選擇\n請再重新選擇!!`,'error');
                 errors=true;
                 return true;
@@ -462,13 +462,13 @@ function Main(){
                 </div>
                 <div className='w-full my-2'>
                     <div className={`w-full flex flex-row bg-[rgba(0,0,0,0.5)] p-2 rounded-md flex-wrap ${(PieNums===undefined)?'hidden':''}`}>
-                        <div className={`flex flex-row flex-wrap w-[18vw]  max-[700px]:w-[50%] ${(PieNums===undefined)?'hidden':''} max-[500px]:w-4/5 max-[500px]:mx-auto`} >
+                        <div className={`flex flex-row flex-wrap w-[18vw] max-[800px]:w-[50%] ${(PieNums===undefined)?'hidden':''} max-[500px]:w-4/5 max-[500px]:mx-auto`} >
                             <RelicData  mode={'Simulator'} button={true}/>
                         </div>
-                        <div className={`w-1/4 max-[700px]:w-[50%] ${(PieNums===undefined)?'hidden':''} max-[500px]:w-4/5 max-[500px]:mx-auto`} >
+                        <div className={`w-1/4 max-[800px]:w-[50%] ${(PieNums===undefined)?'hidden':''} max-[500px]:w-4/5 max-[500px]:mx-auto`} >
                             <StandDetails />
                         </div>
-                        <div className='flex flex-row flex-wrap w-1/2 max-[700px]:w-[100%] max-[500px]:w-4/5 max-[500px]:mx-auto ' id="resultDetails">
+                        <div className='flex flex-row flex-wrap w-1/2 max-[800px]:w-[100%] max-[500px]:w-4/5 max-[500px]:mx-auto ' id="resultDetails">
                             <Result />
                         </div>
                     </div>
@@ -480,14 +480,14 @@ function Main(){
                         render={()=>
                             <div className='flex flex-col'>
                                 <span className='text-white'>選擇指定腳色，可以使用中文或英文關鍵字</span>
-                                <span className='text-white'>例如:Jingliu&rarr;鏡流</span>
+                                <span className='text-white'>例如:霄宮&rarr;Yoimiya</span>
                             </div>
                         }/>
                 <Tooltip id="PartSelectHint"  
                         place="right-start" 
                         render={()=>
                             <div className='flex flex-col max-w-[230px]'>
-                                <span className='text-white'>選擇遺器部位</span>
+                                <span className='text-white'>選擇聖遺物部位</span>
                                 <span className='text-white'>"主詞條"跟"副詞條"區塊中會自動帶入該部位詞條種類</span>
                             </div>
                         }/>
@@ -511,7 +511,7 @@ function Main(){
                             </div>
                             <div className='mt-2 flex flex-col'>
                                 <span className='text-md font-bold text-white'>檢視</span>
-                                <span>可以查看曾經查詢出來的資訊、包括遺器、評分標準等</span>
+                                <span>可以查看曾經查詢出來的資訊、包括聖遺物、評分標準等</span>
                             </div>
                             <div className='mt-2 flex flex-col'>
                                 <div>
@@ -541,7 +541,7 @@ function Main(){
                         render={()=>
                             <div>
                                 <span>指定詞條強化保底次數，可以根據個人目前使用強化情況調整</span>
-                                <span>指定詞條們的共享保底次數，最低為2，最高為4</span>
+                                <span>指定詞條們的共享保底次數，最低為2、最高為4</span>
                             </div>
                         }
                         clickable={true}/>

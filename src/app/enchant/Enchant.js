@@ -20,9 +20,11 @@ const Enchant=React.memo(()=>{
     //從enchantstore取得
     const [data,setData] = useState();
     const {relic,standDetails,Rscore,Rrank,mode}=data || {};
+    const {getEnchantData} = EnchantDataStore();
     
     const relicBackUp =useRef(null);
     const [isChangeAble,setIsChangeAble]=useState(true);
+
     //是否啟用還原狀態
     const [isRecoverable,setRecoverable]=useState(false);
 
@@ -52,10 +54,34 @@ const Enchant=React.memo(()=>{
     ];
 
     const partArr = ['生之花','死之羽','時之沙','空之杯','理之冠'];
-    const {getEnchantData} = EnchantDataStore();
- 
     const router = useRouter();
 
+    //最高與最低分
+    const [MinMaxScore,setMinMaxScore] = useState({min:undefined,max:undefined});
+
+
+    //初始化
+    useEffect(()=>{
+    
+        let simulateData = getEnchantData();
+        //偵測初始化數據是否帶有指定屬性
+        if(simulateData.relic !== undefined){
+            setData(simulateData);
+            setLimit(simulateData.limit);
+
+        }
+        else{
+            alert('沒有任何模擬數據，即將導回至主頁');
+            router.push('./');
+        }
+
+        
+
+       
+    },[])
+
+
+    //必須有data 才能計算
     useEffect(()=>{
         //調整按鈕render
         (mode==="Importer")?setAffixBtn(true):setAffixBtn(false);
@@ -76,25 +102,16 @@ const Enchant=React.memo(()=>{
     },[data])
 
     useEffect(()=>{
-        let simulateData = getEnchantData();
-        console.log(simulateData);
-        //偵測初始化數據是否帶有指定屬性
-        if(simulateData.relic !== undefined){
-            setData(simulateData);
-            setLimit(simulateData.limit);
-        }
-        else{
-            alert('沒有任何模擬數據，即將導回至主頁');
-            router.push('./');
-        }
+        //新增強化紀錄
+        addStatics();
 
-        //初始紀錄
+        //備份
         if(relicBackUp.current === null){
             relicBackUp.current=simulatorData.oldData;
         }
 
-        //新增強化紀錄
-        addStatics();
+        //更新最高最低分數
+        changeMinMaxScore();
     },[simulatorData])
 
 
@@ -205,7 +222,7 @@ const Enchant=React.memo(()=>{
             worker.onmessage = function (event) {
                 setSimulatorData({
                     oldData:{
-                        relicscore:(simulatorData.oldData===null)?Rscore:simulatorData.oldData.relicscore,
+                        relicscore:(simulatorData.oldData===null)?parseInt(Rscore):parseInt(simulatorData.oldData.relicscore),
                         relicrank:(simulatorData.oldData===null)?Rrank:simulatorData.oldData.relicrank,
                         returnData:SubData
                     },
@@ -298,6 +315,31 @@ const Enchant=React.memo(()=>{
         }
     }
 
+    //判斷是否為最小或最大分數
+    function changeMinMaxScore(){
+        console.log(simulatorData.oldData!==null&&simulatorData.newData!==null);
+        if(simulatorData.oldData!==null&&simulatorData.newData!==null){
+            //如果是初次計算 直接加入到min跟max
+            if(count === 1){
+                let minScore = Math.min(simulatorData.oldData.relicscore,simulatorData.newData.relicscore);
+                let maxScore = Math.max(simulatorData.oldData.relicscore,simulatorData.newData.relicscore);
+                setMinMaxScore({min:minScore,max:maxScore});
+            }else if(count > 1){
+                let score = simulatorData.newData.relicscore;
+                console.log(score);
+                let stand = JSON.parse(JSON.stringify(MinMaxScore));
+
+                if(score > stand.max )
+                    stand.max = score;
+                else if(score < stand.min )
+                    stand.min = score
+
+                setMinMaxScore(stand);
+            }
+        }
+        
+    }
+
     //套用模擬強化的資料
     function changeToNew(){
         if(simulatorData.newData!==null){
@@ -337,7 +379,9 @@ const Enchant=React.memo(()=>{
         setRecoverable(false);
 
         //還原至一開始記錄
+        console.log(relicBackUp.current);
         setSimulatorData({oldData:relicBackUp.current,newData:null});
+        setMinMaxScore({min:undefined,max:undefined});
 
         //還原強化紀錄
         initStatics();
@@ -378,7 +422,8 @@ const Enchant=React.memo(()=>{
         PieNums:statics,
         successCount:successCount,
         count:count,
-        limit:limit
+        limit:limit,
+        MinMaxScore:MinMaxScore
     };
     
     return(
@@ -521,8 +566,7 @@ const DataList=React.memo(({standDetails,data,title})=>{
 });
 
 const Pie=React.memo(()=>{
-    const {PieNums,successCount,count} =useContext(SiteContext);
-
+    const {PieNums,successCount,count,MinMaxScore} =useContext(SiteContext);
     if(PieNums!==undefined){
         const pieParams = {
             height: (count === 0)?0:200,
@@ -531,8 +575,8 @@ const Pie=React.memo(()=>{
         };
 
         return(
-           <div className='w-[100%] flex flex-row flex-wrap'>
-                <div className='min-w-[300px]'>
+           <div className='w-[100%] flex flex-row flex-wrap justify-evenly max-[500px]:flex-col-reverse'>
+                <div className='w-[200px]'>
                     <PieChart  
                     series={[
                         {
@@ -543,31 +587,29 @@ const Pie=React.memo(()=>{
                         }
                     ]}  {...pieParams} />
                 </div>
-                <div className={`flex-col w-2/5 max-[500px]:w-[100%] mt-2 hidden ${(PieNums.find((p)=>p.value!==0)===undefined)?'hidden':''}`}>
-                    <div className='flex flex-col max-[600px]:w-3/5 max-[600px]:mx-auto'>
-                        <div>
-                            <span className='text-amber-700 font-bold text-lg'>模擬次數</span>
-                        </div>
-                        <div className='flex flex-col justify-center '>
-                            {PieNums.map((p,i)=>{
-                                if(p.value!==0)
-                                    return(
-                                        <div className='my-1 flex flex-row' key={'pieNums'+i}>
-                                            <span className='w-1/4' style={{color:p.color}}>{p.tag}</span>
-                                            <span className='w-1/4' style={{color:p.color}}>{p.value}次</span>
-                                        </div>
-                                    )
-                                })
-                            }
-                        </div>
-                        
-                    </div>
-                    <div className='flex-col justify-center hidden max-[600px]:w-3/5 max-[600px]:mx-auto'>
+                <div className={`flex-col w-2/5 max-[500px]:w-[100%] mt-2 ${(PieNums.find((p)=>p.value!==0)===undefined)?'hidden':''}`}>
+                    <div className='flex flex-row items-center max-[600px]:w-3/5 max-[600px]:mx-auto'>
                         <div className='flex justify-start'>
-                            <span className='text-amber-700 font-bold text-lg'>翻盤次數</span>
+                            <span className='text-stone-400'>翻盤次數</span>
                         </div>
-                        <div className='flex justify-start text-center'>
+                        <div className='flex justify-start text-center ml-2'>
                             <span className='text-white'>{successCount}次</span>
+                        </div>
+                    </div>
+                    <div className='flex flex-row items-center max-[600px]:w-3/5 max-[600px]:mx-auto'>
+                        <div className='flex justify-start'>
+                            <span className='text-stone-400'>最高分數</span>
+                        </div>
+                        <div className='flex justify-start text-center ml-2'>
+                            <span className='text-white'>{MinMaxScore.max}</span>
+                        </div>
+                    </div>
+                    <div className='flex flex-row items-center max-[600px]:w-3/5 max-[600px]:mx-auto'>
+                        <div className='flex justify-start'>
+                            <span className='text-stone-400'>最低分數</span>
+                        </div>
+                        <div className='flex justify-start text-center ml-2'>
+                            <span className='text-white'>{MinMaxScore.min}</span>
                         </div>
                     </div>
                 </div>

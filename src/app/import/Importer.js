@@ -672,8 +672,21 @@ function Importer(){
                                     <span className='text-white'>Limit 保底次數:</span>
                                 </div>
                                 <div className='pl-1 flex flex-row items-center'>
-                                    <input type='text-white' className='bgInput w-[40px] text-center' 
-                                            onChange={(event)=>setLimit(parseInt(event.target.value))} defaultValue={2}/>
+                                    <input
+                                            type="number"
+                                            inputMode="numeric"
+                                            pattern="\d*"
+                                            className="bgInput w-[40px] text-center"
+                                            defaultValue={2}
+                                            onChange={(event) => {
+                                                    const value = event.target.value;
+                                                    if (value !== '') {
+                                                    const intVal = parseInt(value);
+                                                    if (!isNaN(intVal)) {
+                                                        setLimit(intVal);
+                                                    }
+                                                }
+                                            }}/>
                                     <div className='hintIcon ml-1 overflow-visible'data-tooltip-id="LimitHint">
                                         <span className='text-white'>?</span>
                                     </div>

@@ -24,7 +24,7 @@ const RelicData=React.memo(({mode,button})=>{
             Rrank:Rrank,
             Rscore:Rscore,
             standDetails:standDetails,
-            limit:2,
+            limit:limit,
             mode:mode
         }
         setEnchantData(sendData);
@@ -134,7 +134,8 @@ const RelicData_simulate=React.memo(({mode,button})=>{
             Rrank:Rrank,
             Rscore:Rscore,
             standDetails:standDetails,
-            mode:mode
+            mode:mode,
+            limit:limit
         }
         setEnchantData(sendData);
         
@@ -149,9 +150,6 @@ const RelicData_simulate=React.memo(({mode,button})=>{
             
             let markcolor="";
 
-            var IconName = AffixName.find((a)=>a.name===s.subaffix).icon;
-
-            //var imglink=`https://raw.githubusercontent.com/Mar-7th/StarRailRes/master/icon/property/${IconName}.png`;
             switch(s.count){
                 case 0:
                     markcolor='rgb(122, 122, 122)';

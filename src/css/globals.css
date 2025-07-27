@@ -119,3 +119,9 @@ body{
 
     @apply max-h-[120px] bg-slate-700 rounded-md p-2 m-2;
 }
+
+.Result{
+    @apply w-full min-w-[300px] mb-5 my-1; 
+    @apply max-[500px]:w-[330px] max-[500px]:flex max-[500px]:flex-col max-[500px]:justify-center; 
+    @apply max-[400px]:w-[95%] max-[800px]:min-w-0 max-[800px]:w-[100vw];
+}

@@ -13,7 +13,6 @@ const StandDetails=React.memo(()=>{
     const {standDetails} = useContext(SiteContext);
    
     if(standDetails!==undefined&&standDetails.length!==0){
-        console.log(standDetails);
         const showLock = (standDetails.filter((s)=>s.SelectPriority > 0).length>0)?true:false;
         const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
         const list=standDetails.map((s)=>{
