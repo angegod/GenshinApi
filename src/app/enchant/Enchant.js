@@ -62,7 +62,6 @@ const Enchant=React.memo(()=>{
 
     //初始化
     useEffect(()=>{
-    
         let simulateData = getEnchantData();
         //偵測初始化數據是否帶有指定屬性
         if(simulateData.relic !== undefined){
@@ -74,10 +73,6 @@ const Enchant=React.memo(()=>{
             alert('沒有任何模擬數據，即將導回至主頁');
             router.push('./');
         }
-
-        
-
-       
     },[])
 
 
@@ -409,7 +404,7 @@ const Enchant=React.memo(()=>{
             </div>
             <DataList standDetails={standDetails} data={simulatorData.newData} title={'重洗後'} />          
         </div>
-    ):(<></>);
+    ):null;
 
     const EnchantStatus ={
         relic:relic,
@@ -429,7 +424,7 @@ const Enchant=React.memo(()=>{
     return(
         <SiteContext.Provider value={EnchantStatus}>
             <div className='flex flex-col w-4/5 mx-auto max-[600px]:w-[90%]'>
-                <div className="w-[100%] border-gray-600 my-4 justify-center flex flex-row flex-wrap max-[900px]:flex-col">
+                <div className="w-full border-gray-600 my-4 justify-center flex flex-row flex-wrap max-[900px]:flex-col">
                     <div className='flex flex-row flex-wrap w-1/2 max-[900px]:w-full justify-evenly max-[900px]:mb-2'>
                         <div className='w-[45%] h-fit flex flex-row max-[900px]:w-fit bg-[rgba(0,0,0,0.5)] p-2 rounded-md'>
                             {(mode==="Importer")?
@@ -440,7 +435,7 @@ const Enchant=React.memo(()=>{
                             <StandDetails />
                         </div>
                     </div>
-                    <div className='w-1/2 bg-[rgba(0,0,0,0.5)] h-fit p-2 rounded-md max-[900px]:w-[100%] flex flex-col max-[900px]:items-center'>
+                    <div className='w-1/2 bg-[rgba(0,0,0,0.5)] h-fit p-2 rounded-md max-[900px]:w-full flex flex-col max-[900px]:items-center'>
                         <div className='flex flex-row max-[600px]:!flex-col'>
                             <div className='items-center flex flex-row max-[600px]:justify-center max-[600px]:mb-3'>
                                 <span className='text-red-600 text-lg font-bold'>模擬強化</span>
@@ -557,12 +552,8 @@ const DataList=React.memo(({standDetails,data,title})=>{
             </div>
         )
     }else{
-        return(<></>)
-    }
-    
-    
-    
-    
+        return null
+    }    
 });
 
 const Pie=React.memo(()=>{
@@ -575,7 +566,7 @@ const Pie=React.memo(()=>{
         };
 
         return(
-           <div className='w-[100%] flex flex-row flex-wrap justify-evenly max-[500px]:flex-col-reverse'>
+           <div className='w-full flex flex-row flex-wrap justify-evenly max-[500px]:flex-col-reverse'>
                 <div className='w-[200px]'>
                     <PieChart  
                     series={[
@@ -587,7 +578,7 @@ const Pie=React.memo(()=>{
                         }
                     ]}  {...pieParams} />
                 </div>
-                <div className={`flex-col w-2/5 max-[500px]:w-[100%] mt-2 ${(PieNums.find((p)=>p.value!==0)===undefined)?'hidden':''}`}>
+                <div className={`flex-col w-2/5 max-[500px]:w-full mt-2 ${(PieNums.find((p)=>p.value!==0)===undefined)?'hidden':''}`}>
                     <div className='flex flex-row items-center max-[600px]:w-3/5 max-[600px]:mx-auto'>
                         <div className='flex justify-start'>
                             <span className='text-stone-400'>翻盤次數</span>
@@ -618,7 +609,7 @@ const Pie=React.memo(()=>{
         );
 
     }else{
-        return(<></>)
+        return null
     }
 });
 

@@ -19,7 +19,7 @@ export default function RootLayout({ children }) {
                 <title>{metadata.title}</title>
                 <meta name="description" content={metadata.description} />
                 <meta name="keywords" content={metadata.other.keywords} />
-                <link rel="icon" href="/StarRailApi/favicon.ico" />
+                <link rel="icon" href="/favicon.ico" />
             </head>
             <body>
                 <StatusToastProvider>
