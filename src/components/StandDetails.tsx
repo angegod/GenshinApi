@@ -1,11 +1,12 @@
 
 import React, {  useContext, useEffect, useState } from 'react';
-import AffixName from '../data/AffixName';
+import AffixName, { AffixItem } from '../data/AffixName';
 import SiteContext from '../context/SiteContext';
 import { useStatusToast } from '@/context/StatusMsg';
 import Image from 'next/image';
 import { Tooltip } from 'react-tooltip';
 import HintStandDetails from './Hint/HintStandDetails';
+import { selfStand, selfStandItem  } from '@/data/RelicData';
 
 
 
@@ -13,9 +14,10 @@ const StandDetails=React.memo(()=>{
     const {standDetails} = useContext(SiteContext);
    
     if(standDetails!==undefined&&standDetails.length!==0){
-        const showLock = (standDetails.filter((s)=>s.SelectPriority > 0).length>0)?true:false;
+        console.log(standDetails);
+        const showLock = (standDetails.filter((s:selfStandItem)=>s.SelectPriority! > 0).length > 0)?true:false;
         const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
-        const list=standDetails.map((s)=>{
+        const list=standDetails.map((s:selfStandItem)=>{
             
             return(
                 <div className='flex flex-row' key={'StandDetails_'+s.name}>
@@ -25,11 +27,11 @@ const StandDetails=React.memo(()=>{
                                 <div className="relative w-[20px] h-[20px]">
                                     <div
                                         className={`absolute inset-0 opacity-30 bg-center bg-no-repeat bg-contain ${
-                                            s.SelectPriority > 0 ? '' : 'hidden'}`}
+                                            s.SelectPriority! > 0 ? '' : 'hidden'}`}
                                         style={{ backgroundImage: `url('${basePath}/image/lock.svg')` }}>    
                                     </div>
                                     <span className="relative top-[2px] text-xs font-bold text-stone-300 flex items-center justify-center w-full h-full">
-                                        {s.SelectPriority > 0 ? s.SelectPriority : ''}
+                                        {s.SelectPriority! > 0 ? s.SelectPriority : ''}
                                     </span>
                                 </div>:null
                             }
@@ -67,8 +69,12 @@ const StandDetails=React.memo(()=>{
     }
 });
 
+//標準調整區
+interface showStandProps {
+    lock:boolean
+}
 
-const ShowStand = React.memo(({ lock }) => {
+const ShowStand = React.memo(({ lock }:showStandProps) => {
     const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
     const { selfStand, setSelfStand, isChangeAble,partsIndex } = useContext(SiteContext);
     const { updateStatus } = useStatusToast();
@@ -76,18 +82,18 @@ const ShowStand = React.memo(({ lock }) => {
     // 每次 selfStand 變動時，自動重新整理 SelectPriority（保證連續性
     useEffect(() => {
         const locked = selfStand
-            .map((item, i) => ({ ...item, __index: i }))
-            .filter(item => item.SelectPriority > 0)
-            .sort((a, b) => a.SelectPriority - b.SelectPriority);
+            .map((item:selfStandItem, i:number) => ({ ...item, __index: i }))
+            .filter((item:selfStandItem) => item.SelectPriority! > 0)
+            .sort((a:selfStandItem, b:selfStandItem) => a.SelectPriority! - b.SelectPriority!);
 
         // 重新排序
-        locked.forEach((item, i) => {
+        locked.forEach((item:selfStandItem, i:number) => {
             item.SelectPriority = i + 1;
         });
 
         // 將順位套回原本位置
-        const updated = selfStand.map((item, i) => {
-            const match = locked.find(l => l.__index === i);
+        const updated = selfStand.map((item:selfStandItem, i:number) => {
+            const match = locked.find((l:selfStandItem) => l.__index === i);
             return {
                 ...item,
                 SelectPriority: match ? match.SelectPriority : 0
@@ -98,7 +104,7 @@ const ShowStand = React.memo(({ lock }) => {
     }, [selfStand.length]);
 
     // 處理變更數值
-    function changeVal(index, val, event) {
+    function changeVal(index:number, val:number, event:any) {
         val = Number(val);
         if (val > 1 || val < 0 || isNaN(val)) {
             event.target.value = 1;
@@ -112,10 +118,10 @@ const ShowStand = React.memo(({ lock }) => {
     }
 
     // 點擊鎖定
-    function lockAffix(index) {
+    function lockAffix(index:number) {
         const updated = [...selfStand];
         const current = updated[index].SelectPriority ?? 0;
-        const currentAffix = AffixName.find((a)=>a.name === updated[index].name);
+        const currentAffix:AffixItem = AffixName.find((a)=>a.name === updated[index].name)!;
 
         //如何該詞條只會出現在主詞條，則不予指定
         if(currentAffix.isMain){
@@ -149,12 +155,12 @@ const ShowStand = React.memo(({ lock }) => {
     }
 
     // 移除詞條
-    function removeAffix(index) {
-        setSelfStand(arr => arr.filter((_, i) => i !== index));
+    function removeAffix(index:number) {
+        setSelfStand((arr:selfStand) => arr.filter((_, i) => i !== index));
     }
 
     // 渲染每一項
-    const list = selfStand?.map((s, i) => (
+    const list = selfStand?.map((s:selfStandItem, i:number) => (
         <div className="flex flex-row" key={'StandDetails' + i}>
             <div className="flex justify-between w-[150px] max-w-[300px] mt-0.5 mr-2 max-[400px]:w-[70%]">
                 <span className="whitespace-nowrap overflow-hidden text-white text-ellipsis text-left w-[100px]" title={s.name}>
@@ -167,7 +173,7 @@ const ShowStand = React.memo(({ lock }) => {
                     className="ml-2 text-center max-h-[30px] min-w-[30px] bgInput"
                     defaultValue={s.value}
                     title="最小值為 0，最大為 1"
-                    onChange={(e) => changeVal(i, e.target.value, e)}
+                    onChange={(e) => changeVal(i, parseInt(e.target.value), e)}
                 />
             </div>
             <div className="flex items-center">
@@ -175,12 +181,12 @@ const ShowStand = React.memo(({ lock }) => {
                     <div className="relative w-[20px] h-[20px] cursor-pointer group" onClick={() => lockAffix(i)}>
                         <div
                             className={`absolute inset-0 opacity-30 bg-center bg-no-repeat bg-contain pointer-events-none ${
-                                s.SelectPriority > 0 ? '' : 'hidden group-hover:block'
+                                s.SelectPriority! > 0 ? '' : 'hidden group-hover:block'
                             }`}
                             style={{ backgroundImage: `url('${basePath}/image/lock.svg')` }}
                         ></div>
                         <span className="relative top-[2px] z-10 text-xs font-bold text-gray-300 flex items-center justify-center w-full h-full">
-                            {s.SelectPriority > 0 ? s.SelectPriority : ''}
+                            {s.SelectPriority! > 0 ? s.SelectPriority : ''}
                         </span>
                     </div>
                 ) : null}

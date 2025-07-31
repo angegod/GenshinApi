@@ -4,9 +4,9 @@ import AffixList from '../data/AffixList';
 import characters from '@/data/characters';
 import SiteContext from '../context/SiteContext';
 import { Tooltip } from 'react-tooltip';
-import dynamic from "next/dynamic";
 import LazyImage from './LazyImage';
-const Select = dynamic(() => import("react-select"), { ssr: false });
+import { AffixListItem, RelicDataItem, selfStand, selfStandItem, SubSimulateDataItem } from '@/data/RelicData';
+import Select, { SingleValue, ActionMeta } from 'react-select';
 
 //部位選擇器
 const PartSelect=React.memo(()=>{
@@ -15,7 +15,7 @@ const PartSelect=React.memo(()=>{
     
     let options=[<option value={'undefined'} key={'PartsUndefined'}>請選擇</option>];
 
-    partArr.forEach((a,i)=>{
+    partArr.forEach((a:string,i:number)=>{
         options.push(
             <option value={i+1} key={`PartSelect${i}`} >{a}</option>       
         )
@@ -40,11 +40,11 @@ const PartSelect=React.memo(()=>{
 //主詞條選擇
 const MainAffixSelect = React.memo(() => {
     const { partsIndex, MainSelectOptions, setMainSelectOptions, isChangeAble } = useContext(SiteContext);
-    const [range, setRange] = useState(null);
+    const [range, setRange] = useState<string[]|null>(null);
 
     useEffect(() => {
         if (Number.isInteger(parseInt(partsIndex)) && partsIndex !== undefined) {
-            const found = AffixList.find((s) => s.id === parseInt(partsIndex));
+            const found:AffixListItem = AffixList.find((s) => s.id === parseInt(partsIndex))!;
             if (found) setRange(found.main);
         } else {
             setRange(null);
@@ -89,8 +89,13 @@ const MainAffixSelect = React.memo(() => {
     }
 });
 
+type SubAffixSelectProps = {
+  index: number;
+};
+
+
 //副詞條選擇
-const SubAffixSelect=({index})=>{
+const SubAffixSelect=({index}:SubAffixSelectProps)=>{
     const {SubData,MainSelectOptions,partsIndex,isChangeAble,setSubData}=useContext(SiteContext);
     const [SubAffixData,setSubAffixData]=useState(0);//副詞條數值 顯示用
     const [SubCount,setSubCount]=useState(0);//副詞條強化次數 顯示用
@@ -98,43 +103,40 @@ const SubAffixSelect=({index})=>{
     const [inputValue,setInputValue]=useState('');
     const [inputCount,setInputCount]=useState(0);
 
-    function updateSubAffix(val,index){
-        //SubData.current.find((s,i)=>i===parseInt(index)).subaffix=val;
-        setSubData(prev => {
+    function updateSubAffix(val:string,index:number){
+        setSubData((prev:SubSimulateDataItem[])=> {
             const next = [...prev];
             next[index] = { ...next[index], subaffix: val };
             return next;
         });
     }
 
-    function updateSubData(index){
-        //SubData.current.find((s,i)=>i===parseInt(index)).data=Number(val);
-        setSubData(prev => {
+    function updateSubData(index:number){
+        setSubData((prev:SubSimulateDataItem[]) => {
             const next = [...prev];
             next[index] = { ...next[index], data: Number(inputValue) };
             return next;
         });
     }
 
-    function updateSubCount(index){
-        //SubData.current.find((s,i)=>i===parseInt(index)).count=Number(val);
-        setSubData(prev => {
+    function updateSubCount(index:number){
+        setSubData((prev:SubSimulateDataItem[]) => {
             const next = [...prev];
             next[index] = { ...next[index], count: Number(inputCount) };
             return next;
         });
     }
 
-    function updateSubSelect(index) {
+    function updateSubSelect(index:number) {
         let current = SubData[index].isSelect;
-        let count = SubData.filter((s) => s.isSelect).length;
+        let count = SubData.filter((s:SubSimulateDataItem) => s.isSelect).length;
 
         //如果是取消勾選 則直接動作
         //如果是新增勾選則需要符合限制2個的條件
 
         if (current || count < 2) {
             //current.isSelect = !isSelected;
-            setSubData(prev => {
+            setSubData((prev:SubSimulateDataItem[]) => {
                 const next = [...prev];
                 next[index] = { ...next[index], isSelect:!current};
                 return next;
@@ -143,7 +145,7 @@ const SubAffixSelect=({index})=>{
     }
 
     if(MainSelectOptions!==undefined&&MainSelectOptions!=='undefined'&&partsIndex!==undefined){
-        let range=AffixList.find((s)=>s.id===parseInt(partsIndex)).sub;
+        let range:string[]=AffixList.find((s)=>s.id===parseInt(partsIndex))!.sub;
         let options=[<option value={'undefined'} key={`SubaffixUndefined`}>請選擇</option>];
 
         range.forEach((s,i)=>{
@@ -165,7 +167,7 @@ const SubAffixSelect=({index})=>{
                         className='ml-2 max-w-[50px] bgInput text-center' 
                         disabled={!isChangeAble} title='詞條數值'/>
                 <input type='text' defaultValue={SubData[index].count}
-                        onChange={(event)=>setInputCount(event.target.value)}
+                        onChange={(event)=>setInputCount(parseInt(event.target.value))}
                         onBlur={(event)=>updateSubCount(index)}
                         className='ml-2 max-w-[30px] text-center bgInput' disabled={!isChangeAble}
                         title='強化次數'/>
@@ -174,7 +176,7 @@ const SubAffixSelect=({index})=>{
                         onChange={() => updateSubSelect(index)}
                         disabled={
                             !SubData[index].isSelect &&
-                            SubData.filter((s) => s.isSelect).length >= 2
+                            SubData.filter((s:SubSimulateDataItem) => s.isSelect).length >= 2
                         }/>
             </div>
         )
@@ -184,73 +186,94 @@ const SubAffixSelect=({index})=>{
 };
 
 //腳色選擇器
-const CharSelect=React.memo(()=>{
-    const {charID,setCharID,setIsSaveAble,isChangeAble}=useContext(SiteContext);
-    let options=[];
+interface optionsItem {
+  value: string;
+  label: string;
+  engLabel: string;
+  icon: string;
+}
 
-    const customStyles={
-        control: (provided) => ({
-            ...provided,
-            backgroundColor: 'inherit', // 繼承背景顏色
-            outline:'none',
-        }),
-        input: (provided) => ({
-            ...provided,
-            color: 'white', // 這裡設定 input 文字的顏色為白色
-            backgroundColor:'inherit'
-        }),
-        option: (provided, state) => ({
-            ...provided,
-            backgroundColor: state.isSelected
-              ? 'darkgray'
-              : state.isFocused
-              ? 'gray'
-              : 'rgb(36, 36, 36)',
-            color: state.isSelected ? 'white' : 'black'
-        }),
-        menu: (provided) => ({
-            ...provided,
-            backgroundColor: 'rgb(36, 36, 36)',
-        })
-    }
-    
-    characters.forEach((c)=>{
-        options.push({
-            value: c.charId, 
-            label: c.cn_name,
-            engLabel:c.name,
-            icon: `https://enka.network/ui/UI_AvatarIcon_${c.name}.png`
-        })
-    })
+const CharSelect = React.memo(() => {
+    const { charID, setCharID, setIsSaveAble, isChangeAble } = useContext(SiteContext);
 
-    //自訂義篩選
-    const customFilterOption = (option, inputValue) => {
-        const lowerInput = inputValue.toLowerCase();
-        return option.data.label.toLowerCase().includes(lowerInput) || option.data.engLabel.toLowerCase().includes(lowerInput);
+    const options: optionsItem[] = characters.map((c) => ({
+        value: c.charId,
+        label: c.cn_name,
+        engLabel: c.name,
+        icon: `https://enka.network/ui/UI_AvatarIcon_${c.name}.png`
+    }));
+
+    const customStyles = {
+        control: (provided: any) => ({
+        ...provided,
+        backgroundColor: 'inherit',
+        outline: 'none',
+        }),
+        input: (provided: any) => ({
+        ...provided,
+        color: 'white',
+        backgroundColor: 'inherit'
+        }),
+        option: (provided: any, state: any) => ({
+        ...provided,
+        backgroundColor: state.isSelected
+            ? 'darkgray'
+            : state.isFocused
+            ? 'gray'
+            : 'rgb(36, 36, 36)',
+        color: state.isSelected ? 'white' : 'black'
+        }),
+        menu: (provided: any) => ({
+        ...provided,
+        backgroundColor: 'rgb(36, 36, 36)',
+        })
     };
 
-    const selectedOption = options.find((option) => option.value === charID);
+    // 自訂義篩選
+    const customFilterOption = (option: { data: optionsItem }, inputValue: string) => {
+        const lowerInput = inputValue.toLowerCase();
+        return (
+        option.data.label.toLowerCase().includes(lowerInput) ||
+        option.data.engLabel.toLowerCase().includes(lowerInput)
+        );
+    };
+
     const LoadImgLink = `${process.env.NEXT_PUBLIC_BASE_PATH || ''}/image/unknown.png`;
-    
-    return(<Select options={options} 
-                className='w-[200px]' 
-                onChange={(option)=>{setCharID(option.value);setIsSaveAble(false);}}
-                value={selectedOption} 
-                isDisabled={!isChangeAble}
-                styles={customStyles}
-                getOptionLabel={(e) => (
-                    <div style={{ display: "flex", alignItems: "center"  }}>
-                        <LazyImage 
+    const selectedOption = options.find((option) => option.value === charID) ?? null;
+
+    const handleChange = (
+        option: SingleValue<optionsItem>,
+        _actionMeta: ActionMeta<optionsItem>
+    ) => {
+        if (option) {
+            setCharID(option.value);
+            setIsSaveAble(false);
+        }
+    };
+
+    return (
+        <Select<optionsItem>
+            options={options}
+            className='w-[200px]'
+            onChange={handleChange}
+            value={selectedOption}
+            isDisabled={!isChangeAble}
+            styles={customStyles}
+            formatOptionLabel={(e: optionsItem) => (
+                <div style={{ display: "flex", alignItems: "center" }}>
+                    <LazyImage 
                             BaseLink={e.icon}
                             LoadImg={LoadImgLink}
                             width={30}
                             height={30}
                             style={'mr-2 rounded-[25px]'} />
-                        <span className='text-white'>{e.label}</span>
-                    </div>
-                )}
-                filterOption={customFilterOption}/>)
+                    <span className='text-white'>{e.label}</span>
+                </div>
+            )}
+            filterOption={customFilterOption}/>
+    );
 });
+
 
 
 //標準選擇
@@ -258,11 +281,11 @@ const StandardSelect=React.memo(()=>{
     const {partsIndex,selfStand,setSelfStand,isChangeAble}=useContext(SiteContext);
     const [expand,setExpand]=useState(false);
 
-    const selectContainer = useRef(null);
+    const selectContainer = useRef<any>(null);
 
     //偵測點擊位置 如果點擊非本元件 則直接展開設為false
     useEffect(()=>{
-        function handleClickOutside(event) {
+        function handleClickOutside(event:any) {
             // 如果 containerRef 有值，且點擊目標不在 container 裡面
             if (selectContainer.current && !selectContainer.current.contains(event.target)) {
                 setExpand(false);
@@ -282,9 +305,9 @@ const StandardSelect=React.memo(()=>{
     },[expand])
 
     //添加標準 目前設定先不超過六個有效 且不重複
-    function addAffix(selectAffix){
+    function addAffix(selectAffix:string){
         //如果該詞條沒有出現在arr裡則加入 反之則移除
-        if(!selfStand.some((s) => s.name === selectAffix)){
+        if(!selfStand.some((s:selfStandItem) => s.name === selectAffix)){
             //如果為預設選項則不予選擇
             if(selectAffix===undefined)
                 return;
@@ -292,24 +315,24 @@ const StandardSelect=React.memo(()=>{
                 name:selectAffix,
                 value:1
             }
-            if(selfStand.length<6&&!(selfStand.findIndex((item)=>item.name===selectAffix)>=0))
-                setSelfStand((old)=>[...old,newItem]);
+            if(selfStand.length<6&&!(selfStand.findIndex((item:selfStandItem)=>item.name===selectAffix)>=0))
+                setSelfStand((old:selfStand)=>[...old,newItem]);
         }else{
-            setSelfStand((arr)=>arr.filter((s)=>s.name!==selectAffix));
+            setSelfStand((arr:selfStand)=>arr.filter((s)=>s.name!==selectAffix));
         }
     }
 
 
     if(partsIndex!==undefined){
         //依據所選部位 給出不同的選澤
-        let target=AffixList.find((a)=>a.id===parseInt(partsIndex));
+        let target:AffixListItem=AffixList.find((a)=>a.id===parseInt(partsIndex))!;
         //合併所有選項 並且移除重複值
-        let mergedArray = [...new Set([...target.main, ...target.sub])];
+        let mergedArray:string[] = [...new Set([...target.main, ...target.sub])];
         mergedArray=mergedArray.filter((item)=>item!=='生命值'&&item!=='攻擊力'&&item!=='防禦力')
 
         //模仿原生select標籤 渲染每個option之div
         let optionsList=mergedArray.map((m, i) => {
-            const exists = selfStand.some(s => s.name === m);
+            const exists = selfStand.some((s:selfStandItem) => s.name === m);
             
             return(
                 <div className='my-0.5 mx-1 hover:bg-stone-500 hover:text-white cursor-pointer flex flex-row items-center'
@@ -318,7 +341,7 @@ const StandardSelect=React.memo(()=>{
                         <div className='mr-1 flex items-center'>
                             <input  type='checkbox' checked={exists} 
                                     className='border-[0px] w-4 h-4 accent-[dimgrey]' 
-                                    onChange={(event)=>console.log(event.target.vaue)}
+                                    onChange={(event)=>console.log(event.target.value)}
                                     disabled={!exists&&selfStand.length===6}/>
                         </div>
                     <div>
@@ -378,7 +401,7 @@ const RelicSelect=React.memo(()=>{
     const {RelicDataArr,relicIndex,setRelicIndex,AffixCount}=useContext(SiteContext);
     const unknowRelicImg = `${process.env.NEXT_PUBLIC_BASE_PATH || ''}/image/unknownRelic.png`;
     if(RelicDataArr.length !==0){
-        let list = RelicDataArr.map((r,i)=>{
+        let list = RelicDataArr.map((r:any,i:number)=>{
             const reliclink =  `https://enka.network/ui/${r[AffixCount].relic.flat.icon}.png`;
     
             return(

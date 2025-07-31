@@ -340,7 +340,7 @@ function Main(){
         PieNums:PieNums,
         limit:limit,
         
-        //RelicData 
+        //RelicData 那邊認的模式
         mode:"Simulator",
         button:false,
 
@@ -429,7 +429,7 @@ function Main(){
                                     <span className='text-white'>Params 參數:</span>
                                 </div>
                                 <div className='flex flex-row'>
-                                    <ShowStand />
+                                    <ShowStand lock={false} />
                                     <div className='hintIcon ml-2 overflow-visible'
                                         data-tooltip-id="ParamsHint"> 
                                         <span className='text-white'>?</span>

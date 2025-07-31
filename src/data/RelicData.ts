@@ -101,7 +101,8 @@ export interface hisoryData{
 export interface selfStandItem{
     name:string,
     value:number,
-    SelectPriority?:number
+    SelectPriority?:number,
+    __index:number
 }
 
 export type selfStand = selfStandItem[] | [];
@@ -115,7 +116,8 @@ export interface SubDataItem{
 }
 
 export interface SubSimulateDataItem{
-    index:number 
+    index:number
+    name?:string, 
     subaffix:string,
     data:number,//詞條數值,
     count:number,
@@ -134,6 +136,13 @@ export interface AffixItem {
     range?: number[];    
     isMain?: boolean;   
 }
+
+export interface AffixListItem {
+    id:number,
+    main: string[];
+    sub: string[];
+}
+
 
 export interface characters {
     charId:string,
