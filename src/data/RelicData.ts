@@ -38,6 +38,12 @@ export interface RelicDataItem{
     standDetails:standDetails
 }
 
+export interface SimulateRelic{
+    main_affix:any,
+    subaffix:SubData,
+    type:number|undefined
+}
+
 export interface RelicDataMap {
   [key: number]: RelicDataItem[];
 }
@@ -108,7 +114,16 @@ export interface SubDataItem{
     isSelect?:boolean    
 }
 
-export type SubData = SubDataItem[];
+export interface SubSimulateDataItem{
+    index:number 
+    subaffix:string,
+    data:number,//詞條數值,
+    count:number,
+    display?:string,
+    isSelect:boolean    
+}
+
+export type SubData = SubDataItem[]|SubSimulateDataItem[];
 
 export interface AffixItem {
     fieldName: string;

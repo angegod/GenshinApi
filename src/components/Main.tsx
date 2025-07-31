@@ -1,5 +1,5 @@
 "use client"
-import React, { Component, use } from 'react';
+import React, { Component, use, useContext } from 'react';
 import { useState,useEffect,useRef } from 'react';
 import { CharSelect, MainAffixSelect,PartSelect,StandardSelect,SubAffixSelect } from './Select';
 import { ShowStand } from './StandDetails';
@@ -10,7 +10,7 @@ import { PastPreviewList_simulator } from './PastPreviewList';
 import Result from './Result';
 import { findCombinations } from '@/data/combination';
 import '@/css/main.css';
-import SiteContext from '@/context/SiteContext';
+import SiteContext from '../context/SiteContext';
 import HistoryStore from '@/model/historyStore';
 import characters from '@/data/characters';
 import { Tooltip } from 'react-tooltip';
@@ -18,6 +18,7 @@ import { Tooltip } from 'react-tooltip';
 import SubAffixHint from './Hint/SubAffixHint';
 import HintSimulator from './Hint/HintSimulator';
 import HintParams from './Hint/HintParams';
+import {selfStand, selfStandItem, SimulateRelic, SubData, SubDataItem, SubSimulateDataItem} from '../data/RelicData';
 
 function Main(){
     //紀錄版本號
@@ -28,17 +29,17 @@ function Main(){
 
     //資料儲存位置
     const dataStorageLocation = 'GenshinSimulatorData';
-
+    
     //腳色
     const [charID,setCharID]=useState(null);
 
     //聖遺物主詞條 部位選擇 跟主詞條選擇
-    const [partsIndex,setPartsIndex]=useState(undefined);
+    const [partsIndex,setPartsIndex]=useState<number|undefined>(undefined);
     const [MainSelectOptions,setMainSelectOptions]=useState();
 
     //聖遺物副詞條 因為subdata還要監控元件狀態 所以要用state管理
     //const SubData=useRef([]);
-    const [SubData,setSubData]=useState([]);
+    const [SubData,setSubData]=useState<SubSimulateDataItem[]>([]);
     const partArr = ['生之花','死之羽','時之沙','空之杯','理之冠'];
 
     //是否可以儲存(防呆用)、是否可以立馬變更
@@ -50,17 +51,17 @@ function Main(){
     const [Rrank,setRank]=useState({color:undefined,rank:undefined});
     const [statusMsg,setStatusMsg]=useState(undefined);
     const [processBtn,setProcessBtn]=useState(true);
-    const standDetails=useRef([]);
+    const standDetails=useRef<selfStand>([]);
     const [PieNums,setPieNums]=useState(undefined);
 
     //共用statusMsg
     const {showStatus,updateStatus,hideStatus}=useStatusToast();
 
     //自訂義標準
-    const [selfStand,setSelfStand]=useState([]);
+    const [selfStand,setSelfStand]=useState<selfStand>([]);
 
     //找到的遺器
-    const [relic,setRelic]=useState();
+    const [relic,setRelic]=useState<SimulateRelic>();
 
     //保底次數 最低為2
     const [limit,setLimit]=useState(2);
@@ -79,9 +80,9 @@ function Main(){
     //初始化
     function init(){
         showStatus('正在載入過往紀錄中......','process');
-        let initSubData =SubData;
+        let initSubData:SubSimulateDataItem[] = SubData;
         for(var i=0;i<=3;i++){
-            let data={
+            let data:SubSimulateDataItem={
                 index:i, //索引
                 subaffix:"",//詞條種類
                 data:0, //詞條數值
@@ -94,10 +95,9 @@ function Main(){
         setSubData(initSubData);
 
         //先填入過往歷史紀錄
-        let oldHistory = JSON.parse(localStorage.getItem(dataStorageLocation));
+        let oldHistory = JSON.parse(localStorage.getItem(dataStorageLocation)!);
         console.log(oldHistory);
         setHistory((!oldHistory)?[]:oldHistory);
-
 
         if(!oldHistory)
             updateStatus('尚未有任何操作紀錄!!','default');
@@ -118,21 +118,22 @@ function Main(){
 
     //整合並儲存遺器資訊
     function saveRelic(){
-        let data={
+        let data:SimulateRelic={
             main_affix:MainSelectOptions,
-            subaffix:[]
+            subaffix:[],
+            type:undefined
         }
 
-        let SubDataArr = SubData;
+        let SubDataArr:SubSimulateDataItem[] = SubData;
 
-        SubDataArr.forEach((s,i)=>{
+        SubDataArr.forEach((s:SubSimulateDataItem)=>{
             if(!['生命值','攻擊力','防禦力','元素精通'].includes(s.subaffix))
                 s.display=s.data+'%';
             else
-                s.display=s.data;
-        })
-        data.subaffix=SubDataArr;
-        data.type = parseInt(partsIndex);
+                s.display=s.data.toString();
+        });
+        data.subaffix!=SubDataArr;
+        data.type = partsIndex;
         setSubData(SubDataArr);
         setRelic(data);
     }
@@ -140,7 +141,7 @@ function Main(){
     //儲存紀錄
     function saveRecord(){
         let historyData = getHistory();
-        let partName=partArr[partsIndex-1];
+        let partName=partArr[partsIndex!-1];
         let selectChar=characters.find((c)=>c.charId===charID);
 
         //如果目前則沒有紀錄 則初始化
@@ -183,7 +184,7 @@ function Main(){
     }
 
     //檢視過往紀錄
-    function checkDetails(index){
+    function checkDetails(index:number){
         let data=getHistory(index);
         setRank(data.rank);
         setExpRate(data.expRate);
@@ -205,7 +206,7 @@ function Main(){
     }
 
     //刪除紀錄
-    function deleteHistoryData(index){
+    function deleteHistoryData(index:number){
         deleteHistory(index);
 
         //取得更動後的資料
@@ -222,8 +223,7 @@ function Main(){
         //選定副詞條是否是兩個
         let errors=false;
         let enchanceCount = 0;
-        console.log(SubData);
-        SubData.some((s,i)=>{
+        SubData.some((s:SubSimulateDataItem,i:number)=>{
             if(s.subaffix===MainSelectOptions){
                 updateStatus(`第${i+1}個詞條:副詞條不可選擇與主詞條相同的詞條\n請再重新選擇!!`,'error');
                 errors=true;
@@ -263,8 +263,8 @@ function Main(){
         }
 
         //檢查標準是否合法
-        selfStand.forEach((s)=>{
-            if(s.value===''){
+        selfStand.forEach((s:selfStandItem)=>{
+            if(!Number(s.value)){
                 errors=true;
                 alert('加權指數不可為空或其他非法型式');
             }
@@ -278,7 +278,7 @@ function Main(){
         let postData={
             MainData:MainSelectOptions,
             SubData:SubData,
-            partsIndex:parseInt(partsIndex),
+            partsIndex:partsIndex,
             standard:selfStand,
             limit:limit,
             enchanceCount:enchanceCount
@@ -311,10 +311,10 @@ function Main(){
     const SubAffixList = ()=>{
         return(
             <div className='flex flex-col'>
-                <SubAffixSelect index={0}/>
-                <SubAffixSelect index={1}/>
-                <SubAffixSelect index={2}/>
-                <SubAffixSelect index={3}/>
+                <SubAffixSelect index={0} />
+                <SubAffixSelect index={1} />
+                <SubAffixSelect index={2} />
+                <SubAffixSelect index={3} />
             </div>
         )
     };
@@ -331,9 +331,6 @@ function Main(){
         selfStand:selfStand,
         charID:charID,
         isLoad:isLoad,
-
-        //父物件是誰
-        mode:"Simulator",
 
         //聖遺物資料
         Rrank:Rrank,
@@ -358,8 +355,9 @@ function Main(){
         setIsSaveAble:setIsSaveAble,
         setSelfStand:setSelfStand,
         setSubData:setSubData
-    }
+    };
 
+    
     return(
         <SiteContext.Provider value={MainStatus}>
             <div className='w-4/5 mx-auto mt-3 max-[600px]:w-[90%]'>
@@ -401,7 +399,7 @@ function Main(){
                                     <span className='text-white'>Sub 副詞條:</span>
                                 </div>
                                 <div className='flex flex-row max-[600px]:mx-auto'>
-                                    <SubAffixList lock={false}/>
+                                    <SubAffixList />
                                     <div className='hintIcon ml-2 overflow-visible'
                                         data-tooltip-id="SubAffixHint">
                                         <span className='text-white'>?</span>
@@ -431,7 +429,7 @@ function Main(){
                                     <span className='text-white'>Params 參數:</span>
                                 </div>
                                 <div className='flex flex-row'>
-                                    <ShowStand lock={false}/>
+                                    <ShowStand />
                                     <div className='hintIcon ml-2 overflow-visible'
                                         data-tooltip-id="ParamsHint"> 
                                         <span className='text-white'>?</span>
@@ -439,7 +437,7 @@ function Main(){
                                 </div>
 
                             </div>
-                            <div className={`${(Number.isInteger(parseInt(partsIndex)))?'':'hidden'} mt-2 mb-2 max-w-[400px] flex flex-row [&>*]:mr-2 justify-end max-[400px]:justify-start`}>
+                            <div className={`${(partsIndex===undefined)?'hidden':''} mt-2 mb-2 max-w-[400px] flex flex-row [&>*]:mr-2 justify-end max-[400px]:justify-start`}>
                                 <div className='flex flex-row mt-1'>
                                     <button className='processBtn mr-2 whitespace-nowrap' 
                                         onClick={()=>calScore()} 
@@ -507,7 +505,7 @@ function Main(){
                             <HintParams />
                         }/>
                 <Tooltip id="HistoryHint"  
-                    place="top-center"
+                    place="top-start"
                     render={()=>
                         <div className='flex flex-col max-w-[250px] p-1'>
                             <div>
