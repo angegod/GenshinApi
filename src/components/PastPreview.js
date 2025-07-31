@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import '../css/main.css';
 import SiteContext from '../context/SiteContext';
 import HistoryStore from '@/model/historyStore';
-
+import LazyImage from './LazyImage';
 
 //簡易瀏覽
 const PastPreview=React.memo(({index,data})=>{
@@ -10,12 +10,17 @@ const PastPreview=React.memo(({index,data})=>{
     const hue = data.expRate * 120;
     //const textColor =`hsl(${hue}, 100%, 50%)`;
     let BaseLink=`https://enka.network/ui/UI_AvatarIcon_${data.char.name}.png`;
-    
+    const LoadImgLink = `${process.env.NEXT_PUBLIC_BASE_PATH || ''}/image/unknown.png`;
     return(
         <div className={`PastPreview clip-both-corners`}>
             <div className='flex flex-col'>
                 <div>
-                    <img src={BaseLink} alt='iconChar' className='w-[70px] rounded-[50px] max-[400px]:min-w-[50px] max-[400px]:w-[50px]'/>
+                    <LazyImage 
+                        BaseLink={BaseLink} 
+                        LoadImg={LoadImgLink}
+                        width={70}
+                        height={70}
+                        style={`w-[70px] rounded-[50px] max-[400px]:min-w-[50px] max-[400px]:w-[50px]`}/>
                 </div>
                 <div className='text-center'>
                     <span style={{color:data.avgRank?.color}} className='font-bold text-xl max-[400px]:text-lg'>{data.avgScore}</span>
@@ -50,12 +55,17 @@ const PastPreview_simulator=React.memo(({data,index})=>{
     const hue = data.expRate * 120;
     const textColor =`hsl(${hue}, 100%, 50%)`;  
     let BaseLink=`https://enka.network/ui/UI_AvatarIcon_${data.char.name}.png`;
-
+    const LoadImgLink = `${process.env.NEXT_PUBLIC_BASE_PATH || ''}/image/unknown.png`;
     return(<>
         <div className='PastPreview clip-both-corners'>
             <div className='flex flex-col mr-1'>
                 <div>
-                    <img src={BaseLink} alt='iconChar' className='w-[70px] rounded-[50px] max-[400px]:min-w-[50px] max-[400px]:w-[50px]'/>
+                    <LazyImage 
+                        BaseLink={BaseLink} 
+                        LoadImg={LoadImgLink}
+                        width={70}
+                        height={70}
+                        style={`w-[70px] rounded-[50px] max-[400px]:min-w-[50px] max-[400px]:w-[50px]`}/>
                 </div>
                 <div className='text-center'>
                     <span style={{color:data.rank.color}} className='font-bold text-xl'>{data.score}</span>

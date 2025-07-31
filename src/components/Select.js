@@ -5,6 +5,7 @@ import characters from '@/data/characters';
 import SiteContext from '../context/SiteContext';
 import { Tooltip } from 'react-tooltip';
 import dynamic from "next/dynamic";
+import LazyImage from './LazyImage';
 const Select = dynamic(() => import("react-select"), { ssr: false });
 
 //部位選擇器
@@ -228,7 +229,7 @@ const CharSelect=React.memo(()=>{
     };
 
     const selectedOption = options.find((option) => option.value === charID);
-    
+    const LoadImgLink = `${process.env.NEXT_PUBLIC_BASE_PATH || ''}/image/unknown.png`;
     
     return(<Select options={options} 
                 className='w-[200px]' 
@@ -238,7 +239,12 @@ const CharSelect=React.memo(()=>{
                 styles={customStyles}
                 getOptionLabel={(e) => (
                     <div style={{ display: "flex", alignItems: "center"  }}>
-                        <img src={e.icon} alt={e.label} style={{ width: 30, height: 30, marginRight: 8 ,borderRadius:"25px" }} />
+                        <LazyImage 
+                            BaseLink={e.icon}
+                            LoadImg={LoadImgLink}
+                            width={30}
+                            height={30}
+                            style={'mr-2 rounded-[25px]'} />
                         <span className='text-white'>{e.label}</span>
                     </div>
                 )}
@@ -369,6 +375,7 @@ const StandardSelect=React.memo(()=>{
 //遺器選擇
 const RelicSelect=React.memo(()=>{
     const {RelicDataArr,relicIndex,setRelicIndex,AffixCount}=useContext(SiteContext);
+    const unknowRelicImg = `${process.env.NEXT_PUBLIC_BASE_PATH || ''}/image/unknownRelic.png`;
     if(RelicDataArr.length !==0){
         let list = RelicDataArr.map((r,i)=>{
             const reliclink =  `https://enka.network/ui/${r[AffixCount].relic.flat.icon}.png`;
@@ -377,7 +384,12 @@ const RelicSelect=React.memo(()=>{
                 <div className={`rounded-[50px] mx-2 mb-2 cursor-pointer p-2 border-[3px] max-[500px]:mx-1 max-[500px]:p-1 max-[500px]:border-[2px] ${(relicIndex === i)?"border-yellow-600":"border-gray-300"}`} 
                     key={'RelicSelect'+i}
                     onClick={()=>setRelicIndex(i)}>
-                    <img src={reliclink} alt='relic' className='w-[50px] max-[500px]:w-[40px] '/>
+                    <LazyImage 
+                        BaseLink={reliclink}
+                        LoadImg={unknowRelicImg}
+                        width={50}
+                        height={50}
+                        style={'max-[500px]:w-[40px]'} />
                 </div>
             )
         })
