@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import '../css/main.css';
 import SiteContext from '../context/SiteContext';
-import HistoryStore from '@/model/historyStore';
 import LazyImage from './LazyImage';
 
 //簡易瀏覽
