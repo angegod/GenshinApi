@@ -3,6 +3,7 @@ import {PastPreview, PastPreview_simulator} from './PastPreview';
 import SiteContext from '../context/SiteContext';
 import HistoryStore from '@/model/historyStore';
 import Link from 'next/link';
+import { hisoryData, hisoryDataSimulate } from '@/data/RelicData';
 
 
 const PastPreviewList=React.memo(()=>{
@@ -15,7 +16,7 @@ const PastPreviewList=React.memo(()=>{
     
     
     if(historyData&&historyData.length>0&&isLoad){
-        const renderList=historyData.map((item,i)=>{
+        const renderList=historyData.map((item:hisoryData,i:number)=>{
             return(
                 <PastPreview    index={i}
                                 data={item}
@@ -47,11 +48,10 @@ const PastPreviewList_simulator=React.memo(()=>{
 
     if(historyData&&historyData.length>0&&isLoad){
         return(
-            historyData.map((item,i)=>
+            historyData.map((item:hisoryDataSimulate,i:number)=>
                 <PastPreview_simulator 
                             index={i} 
                             data={item}    
-                            context={SiteContext}
                             key={'historyData'+i}/>
             )
         )
@@ -64,15 +64,6 @@ const PastPreviewList_simulator=React.memo(()=>{
         )
     }
 });
-
-/*
-<div className='justify-start py-1'>
-    <Link href={introPath} className='text-center'>
-            <button className='linedHref'>&rarr;點我了解</button>
-    </Link>
-</div>
-
-*/
 
 
 export {PastPreviewList,PastPreviewList_simulator};

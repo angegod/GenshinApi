@@ -1,13 +1,25 @@
 import React, { useContext } from 'react';
 import '../css/main.css';
 import SiteContext from '../context/SiteContext';
-import LazyImage from './LazyImage';
+import dynamic from "next/dynamic";
+import { hisoryData, hisoryDataSimulate } from '@/data/RelicData';
+const LazyImage = dynamic(() => import("./LazyImage"), { ssr: false });
+
+//簡易瀏覽props
+interface PastPreviewProps {
+    index:number,
+    data:hisoryData
+}
+
+interface PastPrevieSimulatewProps {
+    index:number,
+    data:hisoryDataSimulate
+}
 
 //簡易瀏覽
-const PastPreview=React.memo(({index,data})=>{
+const PastPreview=React.memo(({index,data}:PastPreviewProps)=>{
     const {checkDetails,deleteHistoryData,updateDetails,isChangeAble} = useContext(SiteContext);
-    const hue = data.expRate * 120;
-    //const textColor =`hsl(${hue}, 100%, 50%)`;
+    
     let BaseLink=`https://enka.network/ui/UI_AvatarIcon_${data.char.name}.png`;
     const LoadImgLink = `${process.env.NEXT_PUBLIC_BASE_PATH || ''}/image/unknown.png`;
     return(
@@ -49,13 +61,13 @@ const PastPreview=React.memo(({index,data})=>{
 });
 
 //簡易瀏覽_模擬器版本
-const PastPreview_simulator=React.memo(({data,index})=>{
+const PastPreview_simulator=React.memo(({index,data}:PastPrevieSimulatewProps)=>{
     const {checkDetails,deleteHistoryData,isChangeAble} = useContext(SiteContext);
     const hue = data.expRate * 120;
     const textColor =`hsl(${hue}, 100%, 50%)`;  
     let BaseLink=`https://enka.network/ui/UI_AvatarIcon_${data.char.name}.png`;
     const LoadImgLink = `${process.env.NEXT_PUBLIC_BASE_PATH || ''}/image/unknown.png`;
-    return(<>
+    return(
         <div className='PastPreview clip-both-corners'>
             <div className='flex flex-col mr-1'>
                 <div>
@@ -90,7 +102,7 @@ const PastPreview_simulator=React.memo(({data,index})=>{
             </div>
         </div>
     
-    </>)
+    )
 })
 
 export {PastPreview,PastPreview_simulator};

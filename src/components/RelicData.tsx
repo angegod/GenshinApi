@@ -1,16 +1,17 @@
 'use client';
 import React, { useContext } from 'react';
-import AffixName from '../data/AffixName';
+import AffixName, { AffixItem } from '../data/AffixName';
 import EquipType from '@/data/EquipType';
 import { Tooltip } from 'react-tooltip';
 import { useRouter } from 'next/navigation';
 import EnchantDataStore from '@/model/enchantDataSlice';
 import SiteContext from '../context/SiteContext';
 import RelicDataHint from './Hint/RelicDataHint';
+import { standDetailItem, SubData, SubDataItem, SubSimulateDataItem } from '@/data/RelicData';
 
 
 //顯示儀器分數區間
-const RelicData=React.memo(()=>{
+const RelicData=()=>{
     const {relic,Rrank,Rscore,standDetails,isChangeAble,partArr,limit,mode,button} = useContext(SiteContext);
     const router = useRouter();
 
@@ -33,14 +34,14 @@ const RelicData=React.memo(()=>{
     }
 
     if(relic!==undefined){
-        const MainAffixName = AffixName.find((a)=>a.fieldName===relic.flat.reliquaryMainstat.mainPropId).name;
+        const MainAffixName:string = AffixName.find((a)=>a.fieldName===relic.flat.reliquaryMainstat.mainPropId)!.name;
         //主詞條是否要顯示百分比?
-        const isMainPercent = AffixName.find((a)=>a.fieldName === relic.flat.reliquaryMainstat.mainPropId).percent;
-        const list=[];
-        relic.flat.reliquarySubstats.forEach((s)=>{
-            let targetAffix = AffixName.find((a)=>a.fieldName===s.appendPropId);
-            let showAffix = targetAffix.name;
-            let isBold=(standDetails.find((st)=>st.name===showAffix)!==undefined)?true:false;
+        const isMainPercent:boolean = AffixName.find((a)=>a.fieldName === relic.flat.reliquaryMainstat.mainPropId)!.percent;
+        const list:any=[];
+        relic.flat.reliquarySubstats.forEach((s:any)=>{
+            let targetAffix:AffixItem|undefined = AffixName.find((a)=>a.fieldName===s.appendPropId);
+            let showAffix = targetAffix!.name;
+            let isBold=(standDetails.find((st:standDetailItem)=>st.name===showAffix)!==undefined)?true:false;
 
             list.push(
                 <div className='flex flex-row' key={'Subaffix_'+s.appendPropId}>
@@ -49,7 +50,7 @@ const RelicData=React.memo(()=>{
                     </div>
                     <div className='flex w-[70px]'>
                         <span className='mr-1'>:</span>
-                        <span className='text-right text-white '>{s.statValue}{(targetAffix.percent)?'%':''}</span>
+                        <span className='text-right text-white '>{s.statValue}{(targetAffix!.percent)?'%':''}</span>
                     </div>
                 </div>
             )
@@ -67,7 +68,11 @@ const RelicData=React.memo(()=>{
                 <div className='mt-1 flex flex-col'>
                     <span className='text-stone-400'>部位</span>
                     <div className='flex flex-row'>
-                        <span className='text-white'>{partArr[EquipType[relic.flat?.equipType]-1]}</span>   
+                        <span className='text-white'>
+                            {typeof EquipType[relic.flat?.equipType as keyof typeof EquipType] === 'number'
+                                ? partArr[EquipType[relic.flat?.equipType as keyof typeof EquipType]! - 1]
+                                : '未知部位'}
+                        </span>   
                     </div>
                 </div>
                 <div className='mt-1'>
@@ -116,12 +121,12 @@ const RelicData=React.memo(()=>{
             </div>
         )
     }else{
-        return(<></>)
+        return null
     }
-});
+};
 
-const RelicData_simulate=React.memo(({mode,button})=>{
-    const {relic,Rrank,Rscore,standDetails,isChangeAble,partArr,limit} = useContext(SiteContext);
+const RelicData_simulate=()=>{
+    const {relic,Rrank,Rscore,standDetails,isChangeAble,partArr,limit,mode,button} = useContext(SiteContext);
     const router = useRouter();
 
     //獲取enchant資料
@@ -141,13 +146,11 @@ const RelicData_simulate=React.memo(({mode,button})=>{
         
         router.push('./enchant');
     }
-
+    
     if(relic!==undefined){
-        const list=[];
-
-        relic.subaffix.forEach((s)=>{
-            let isBold=(standDetails.find((st)=>st.name===s.subaffix)!==undefined)?true:false;
-            
+        const list:any=[];
+        relic.subaffix.forEach((s:SubSimulateDataItem)=>{
+            let isBold=(standDetails.find((st:standDetailItem)=>st.name===s.subaffix)!==undefined)?true:false;
             let markcolor="";
 
             switch(s.count){
@@ -232,6 +235,6 @@ const RelicData_simulate=React.memo(({mode,button})=>{
     }else{
         return(<></>)
     }
-})
+}
 
 export  {RelicData,RelicData_simulate};

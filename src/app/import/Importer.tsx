@@ -23,7 +23,7 @@ import HintHistory from '@/components/Hint/HintHistory';
 import HintImporter from '@/components/Hint/HintImporter';
 import HintStandDetails from '@/components/Hint/HintStandDetails';
 import HintParams from '@/components/Hint/HintParams';
-import { AffixItem, hisoryData, PieNums, Rank, RelicDataArr, RelicDataItem, Stand, selfStand, selfStandItem, sendData, SubData } from '@/data/RelicData';
+import { AffixItem, hisoryData, PieNums, Rank, RelicDataArr, RelicDataItem, Stand, selfStand, selfStandItem, sendData, SubData, SubDataItem } from '@/data/RelicData';
 
 
 function Importer(){
@@ -426,7 +426,7 @@ function Importer(){
             //將運行結果丟到背景執行
             let worker=new Worker(new URL('../../worker/worker.ts', import.meta.url));
             let MainAffix:AffixItem=AffixName.find((a)=>a.fieldName===relic.flat.reliquaryMainstat.mainPropId)!;//必不為undefined
-            let SubData:SubData=[];
+            let SubData:SubDataItem[]=[];
 
             relic.flat.reliquarySubstats.forEach((s:any,i:number)=>{
                 let typeName:AffixItem=AffixName.find((a)=>a.fieldName===s.appendPropId)!;
@@ -580,7 +580,7 @@ function Importer(){
         isLoad:isLoad,
         limit:limit,
         mode:"Importer",
-        button:false,
+        button:true,
 
         //RelicData
         relic:relic,
@@ -651,7 +651,7 @@ function Importer(){
                                     <span className='text-white'>Params 參數:</span>
                                 </div>
                                 <div className='flex flex-row items-baseline'>
-                                    <ShowStand />
+                                    <ShowStand lock={true}/>
                                     <div className='hintIcon ml-2 overflow-visible'
                                         data-tooltip-id="ParamsHint">
                                         <span className='text-white'>?</span>

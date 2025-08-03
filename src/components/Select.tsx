@@ -4,13 +4,13 @@ import AffixList from '../data/AffixList';
 import characters from '@/data/characters';
 import SiteContext from '../context/SiteContext';
 import { Tooltip } from 'react-tooltip';
-import LazyImage from './LazyImage';
 import { AffixListItem, RelicDataItem, selfStand, selfStandItem, SubSimulateDataItem } from '@/data/RelicData';
 import Select, { SingleValue, ActionMeta } from 'react-select';
+import dynamic from "next/dynamic";
+const LazyImage = dynamic(() => import("./LazyImage"), { ssr: false });
 
 //部位選擇器
 const PartSelect=React.memo(()=>{
-
     const {partArr,partsIndex,setPartsIndex,setIsSaveAble,isChangeAble}=useContext(SiteContext);
     
     let options=[<option value={'undefined'} key={'PartsUndefined'}>請選擇</option>];
@@ -20,7 +20,6 @@ const PartSelect=React.memo(()=>{
             <option value={i+1} key={`PartSelect${i}`} >{a}</option>       
         )
     });
-
 
     return(
         <select value={partsIndex} 
@@ -58,7 +57,7 @@ const MainAffixSelect = React.memo(() => {
         }
     }, [range]);
 
-    if (!range) return <></>;
+    if (!range) return null;
 
     if (range.length === 1) {
         return (
@@ -90,18 +89,15 @@ const MainAffixSelect = React.memo(() => {
 });
 
 type SubAffixSelectProps = {
-  index: number;
+    index: number;
 };
-
 
 //副詞條選擇
 const SubAffixSelect=({index}:SubAffixSelectProps)=>{
     const {SubData,MainSelectOptions,partsIndex,isChangeAble,setSubData}=useContext(SiteContext);
-    const [SubAffixData,setSubAffixData]=useState(0);//副詞條數值 顯示用
-    const [SubCount,setSubCount]=useState(0);//副詞條強化次數 顯示用
 
-    const [inputValue,setInputValue]=useState('');
-    const [inputCount,setInputCount]=useState(0);
+    const [inputValue,setInputValue]=useState<string>('');
+    const [inputCount,setInputCount]=useState<number>(0);
 
     function updateSubAffix(val:string,index:number){
         setSubData((prev:SubSimulateDataItem[])=> {
@@ -128,14 +124,13 @@ const SubAffixSelect=({index}:SubAffixSelectProps)=>{
     }
 
     function updateSubSelect(index:number) {
-        let current = SubData[index].isSelect;
-        let count = SubData.filter((s:SubSimulateDataItem) => s.isSelect).length;
+        let current:boolean = SubData[index].isSelect;
+        let count:number = SubData.filter((s:SubSimulateDataItem) => s.isSelect).length;
 
         //如果是取消勾選 則直接動作
         //如果是新增勾選則需要符合限制2個的條件
 
         if (current || count < 2) {
-            //current.isSelect = !isSelected;
             setSubData((prev:SubSimulateDataItem[]) => {
                 const next = [...prev];
                 next[index] = { ...next[index], isSelect:!current};
@@ -151,7 +146,6 @@ const SubAffixSelect=({index}:SubAffixSelectProps)=>{
         range.forEach((s,i)=>{
             options.push(<option value={s} key={`Subaffix${i}`}>{s}</option>)
         });
-        
         
         return(
             <div className='my-1 flex flex-row items-center' key={'SubAffixSelect'+index}>
@@ -181,16 +175,16 @@ const SubAffixSelect=({index}:SubAffixSelectProps)=>{
             </div>
         )
     }else{
-        return(<></>)
+        return null
     }   
 };
 
 //腳色選擇器
 interface optionsItem {
-  value: string;
-  label: string;
-  engLabel: string;
-  icon: string;
+    value: string;
+    label: string;
+    engLabel: string;
+    icon: string;
 }
 
 const CharSelect = React.memo(() => {
@@ -205,27 +199,27 @@ const CharSelect = React.memo(() => {
 
     const customStyles = {
         control: (provided: any) => ({
-        ...provided,
-        backgroundColor: 'inherit',
-        outline: 'none',
+            ...provided,
+            backgroundColor: 'inherit',
+            outline: 'none',
         }),
         input: (provided: any) => ({
-        ...provided,
-        color: 'white',
-        backgroundColor: 'inherit'
+            ...provided,
+            color: 'white',
+            backgroundColor: 'inherit'
         }),
         option: (provided: any, state: any) => ({
-        ...provided,
-        backgroundColor: state.isSelected
-            ? 'darkgray'
-            : state.isFocused
-            ? 'gray'
-            : 'rgb(36, 36, 36)',
-        color: state.isSelected ? 'white' : 'black'
+            ...provided,
+            backgroundColor: state.isSelected
+                ? 'darkgray'
+                : state.isFocused
+                ? 'gray'
+                : 'rgb(36, 36, 36)',
+            color: state.isSelected ? 'white' : 'black'
         }),
         menu: (provided: any) => ({
-        ...provided,
-        backgroundColor: 'rgb(36, 36, 36)',
+            ...provided,
+            backgroundColor: 'rgb(36, 36, 36)',
         })
     };
 
@@ -233,8 +227,8 @@ const CharSelect = React.memo(() => {
     const customFilterOption = (option: { data: optionsItem }, inputValue: string) => {
         const lowerInput = inputValue.toLowerCase();
         return (
-        option.data.label.toLowerCase().includes(lowerInput) ||
-        option.data.engLabel.toLowerCase().includes(lowerInput)
+            option.data.label.toLowerCase().includes(lowerInput) ||
+            option.data.engLabel.toLowerCase().includes(lowerInput)
         );
     };
 
@@ -259,6 +253,7 @@ const CharSelect = React.memo(() => {
             value={selectedOption}
             isDisabled={!isChangeAble}
             styles={customStyles}
+            instanceId="char-select"
             formatOptionLabel={(e: optionsItem) => (
                 <div style={{ display: "flex", alignItems: "center" }}>
                     <LazyImage 

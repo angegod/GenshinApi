@@ -97,6 +97,19 @@ export interface hisoryData{
     limit:number
 }
 
+export interface hisoryDataSimulate{
+    version:number,
+    char:characters,
+    part:string,
+    mainaffix:string,
+    expRate:number,
+    score:string,
+    rank:Rank,
+    pieData:PieNums,
+    stand:Stand,
+    relic:any
+}
+
 //selfstand
 export interface selfStandItem{
     name:string,

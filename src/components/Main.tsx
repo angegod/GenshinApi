@@ -18,11 +18,11 @@ import { Tooltip } from 'react-tooltip';
 import SubAffixHint from './Hint/SubAffixHint';
 import HintSimulator from './Hint/HintSimulator';
 import HintParams from './Hint/HintParams';
-import {selfStand, selfStandItem, SimulateRelic, SubData, SubDataItem, SubSimulateDataItem} from '../data/RelicData';
+import {hisoryDataSimulate, selfStand, selfStandItem, SimulateRelic, SubData, SubDataItem, SubSimulateDataItem} from '../data/RelicData';
 
 function Main(){
     //紀錄版本號
-    const version = 1.1;
+    const version = 1.2;
 
     //過往歷史紀錄最大筆數
     const maxHistoryLength = 6;
@@ -38,7 +38,6 @@ function Main(){
     const [MainSelectOptions,setMainSelectOptions]=useState();
 
     //聖遺物副詞條 因為subdata還要監控元件狀態 所以要用state管理
-    //const SubData=useRef([]);
     const [SubData,setSubData]=useState<SubSimulateDataItem[]>([]);
     const partArr = ['生之花','死之羽','時之沙','空之杯','理之冠'];
 
@@ -49,7 +48,6 @@ function Main(){
     const [ExpRate,setExpRate]=useState(undefined);
     const [Rscore,setRscore]=useState(undefined);
     const [Rrank,setRank]=useState({color:undefined,rank:undefined});
-    const [statusMsg,setStatusMsg]=useState(undefined);
     const [processBtn,setProcessBtn]=useState(true);
     const standDetails=useRef<selfStand>([]);
     const [PieNums,setPieNums]=useState(undefined);
@@ -65,6 +63,7 @@ function Main(){
 
     //保底次數 最低為2
     const [limit,setLimit]=useState(2);
+    const limitRef = useRef(2);
 
     //獲取操作歷史紀錄的function
     const {setHistory,getHistory,addHistory,deleteHistory} = HistoryStore();
@@ -95,14 +94,19 @@ function Main(){
         setSubData(initSubData);
 
         //先填入過往歷史紀錄
-        let oldHistory = JSON.parse(localStorage.getItem(dataStorageLocation)!);
-        console.log(oldHistory);
-        setHistory((!oldHistory)?[]:oldHistory);
+        let history = JSON.parse(localStorage.getItem(dataStorageLocation)!);
+        console.log(history);
+        setHistory((!history)?[]:history);
 
-        if(!oldHistory)
-            updateStatus('尚未有任何操作紀錄!!','default');
-        else
+        if(history!=null&&history.length>0){
+            history=history.filter((h:hisoryDataSimulate)=>h.version===version);
+            localStorage.setItem('HistoryData',JSON.stringify(history));
+            setHistory(history);
+
             updateStatus('先前紀錄已匯入!!','success');
+        }else{
+            updateStatus('尚未有任何操作紀錄!!','default');
+        }
 
         setIsLoad(true);
     }
@@ -117,26 +121,27 @@ function Main(){
     }
 
     //整合並儲存遺器資訊
-    function saveRelic(){
-        let data:SimulateRelic={
-            main_affix:MainSelectOptions,
-            subaffix:[],
-            type:undefined
-        }
+    function saveRelic() {
+        const data = {
+            main_affix: MainSelectOptions,
+            subaffix: [] as SubSimulateDataItem[],
+            type: partsIndex!
+        };
 
-        let SubDataArr:SubSimulateDataItem[] = SubData;
-
-        SubDataArr.forEach((s:SubSimulateDataItem)=>{
-            if(!['生命值','攻擊力','防禦力','元素精通'].includes(s.subaffix))
-                s.display=s.data+'%';
+        const newSubData = SubData.map((s) => {
+            const updated = { ...s }; // 複製一份
+            if (!['生命值', '攻擊力', '防禦力', '元素精通'].includes(updated.subaffix))
+                updated.display = updated.data + '%';
             else
-                s.display=s.data.toString();
+                updated.display = updated.data.toString();
+            return updated;
         });
-        data.subaffix!=SubDataArr;
-        data.type = partsIndex;
-        setSubData(SubDataArr);
+
+        data.subaffix = newSubData;
+        setSubData(newSubData);
         setRelic(data);
     }
+
 
     //儲存紀錄
     function saveRecord(){
@@ -173,9 +178,9 @@ function Main(){
             rank:Rrank,
             pieData:PieNums,
             stand:standDetails.current,
-            relic:relic
+            relic:relic,
+            limit:limitRef.current
         };
-        console.log(data);
         let newHistory = [...historyData,data];
         localStorage.setItem(dataStorageLocation,JSON.stringify(newHistory));
         addHistory(data);
@@ -191,11 +196,9 @@ function Main(){
         setRscore(data.score);
         updateStatus('資料替換完畢!!','success');
         setPieNums(data.pieData);
-        standDetails.current=data.stand;
+        standDetails.current = data.stand;
+        limitRef.current = data.limit;
         setRelic(data.relic);
-
-        //清空模擬強化紀錄
-        //setSimulatorData({});
 
         requestAnimationFrame(()=>{
             window.scrollTo({
@@ -267,9 +270,8 @@ function Main(){
             if(!Number(s.value)){
                 errors=true;
                 alert('加權指數不可為空或其他非法型式');
-            }
-                
-        })
+            }     
+        });
 
         if(errors) return;
         
@@ -298,8 +300,8 @@ function Main(){
             setPieNums(event.data.returnData);
             setRank(event.data.relicrank);
             saveRelic();
-            standDetails.current=selfStand;
-            
+            standDetails.current = selfStand;
+            limitRef.current = limit;
             //恢復點擊
             updateStatus('計算完畢!!','success');
             setProcessBtn(true);
@@ -338,11 +340,11 @@ function Main(){
         relic:relic,
         ExpRate:ExpRate,
         PieNums:PieNums,
-        limit:limit,
+        limit:limitRef.current,
         
         //RelicData 那邊認的模式
         mode:"Simulator",
-        button:false,
+        button:true,
 
         checkDetails:checkDetails,
         deleteHistoryData:deleteHistoryData,
@@ -418,7 +420,11 @@ function Main(){
                                 </div>
                                 <div className='pl-1 flex flex-row items-center'>
                                     <input type='text-white' className='bgInput w-[40px] text-center' 
-                                            onChange={(event)=>setLimit(parseInt(event.target.value))} defaultValue={2} max={4}/>
+                                            onChange={(event)=>{
+                                                if(isNaN(parseInt(event.target.value)))
+                                                    setLimit(parseInt(event.target.value))
+                                            }} 
+                                            defaultValue={2} max={4}/>
                                     <div className='hintIcon ml-1 overflow-visible'data-tooltip-id="LimitHint">
                                         <span className='text-white'>?</span>
                                     </div>

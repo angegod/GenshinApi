@@ -18,10 +18,11 @@ const list=[{
     description:"展示櫃角色身上的聖遺物",
 }];
 
-/**/
+interface MenuProps {
+  children?: React.ReactNode;
+}
 
-
-function Menu({children}) {
+function Menu({children}:MenuProps) {
     return (
         <div className='sticky top-0 w-[100%] z-[100] py-3 '>
             <div className='flex flex-row w-4/5 mx-auto max-[400px]:w-[90%]'>
