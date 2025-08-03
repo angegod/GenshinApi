@@ -310,6 +310,9 @@ const Enchant=React.memo(()=>{
                 if(simulatorData.oldData!==null){
                     if(parseInt(event.data.relicscore) > simulatorData.oldData.relicscore)
                         setSuccessCount((c)=>c+=1);
+                }else{ //第一次模擬
+                    if(parseInt(event.data.relicscore) > Rscore)
+                        setSuccessCount((c)=>c+=1);
                 }
             };
         }

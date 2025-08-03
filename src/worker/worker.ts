@@ -228,7 +228,7 @@ function relicScore(partsIndex:number,charStandard:any,SubData:SubData,MainData:
 
 //計算裝備權重
 function calPartWeights(charstandard: Record<string, number>, partIndex: number): number {
-    let partWeight = 5; // 起始分數
+    let partWeight = 5; // 四詞條有最高5次強化機會 所以才寫5
     let mainKey = '';
 
     // 將標準依照數值倒序排序
