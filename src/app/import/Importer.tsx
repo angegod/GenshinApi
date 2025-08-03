@@ -143,12 +143,17 @@ function Importer(){
         setIsLoad(true);
     }
     
+    type GetRecordParams = {
+        sendData?: sendData;
+        standard?: selfStand;
+        sendlimit?: number;
+    };
 
     //獲得遺器資料
-    async function getRecord(sendData:sendData|undefined = undefined ,standard:selfStand|undefined = undefined){
+    async function getRecord({ sendData, standard, sendlimit }: GetRecordParams){
         
         let apiLink=(window.location.origin==='http://localhost:3000')?`http://localhost:5000/artifact/get`:`https://expressapi-o9du.onrender.com/artifact/get`;
-
+        let Limit = 0;
         //如果是非更新紀錄
         if(!sendData){
             //如果UID本身就不合理 則直接返回錯誤訊息
@@ -188,6 +193,8 @@ function Importer(){
         if(!standard)
             standard = [...(selfStand ?? [])];
 
+        Limit = (!sendlimit)?limit:sendlimit;
+        console.log(Limit,sendlimit);
         //送出之前先清空一次資料
         setIsSaveAble(false);
         showStatus('正在尋找匹配資料......','process');
@@ -230,12 +237,11 @@ function Importer(){
                     setIsChangeAble(true);
                     break;
                 default:
-                    await process(response.data,standard);
+                    await process(response.data,standard,Limit);
                     break;
             }
 
         }).catch((error)=>{
-            console.log(error);
             if(error.response){
                 if(error.response.status===429){
                     updateStatus('請求次數過於頻繁\n請稍後再試!!','error');
@@ -251,7 +257,7 @@ function Importer(){
         })
     }
 
-    async function process(relicArr:any,standard:selfStand){
+    async function process(relicArr:any,standard:selfStand,limit:number){
         let temparr = [];
         
         //檢查加權標準
@@ -269,7 +275,7 @@ function Importer(){
 
             for(var i=3;i<=4;i++){
                 
-                const ExpData = await calscore(r,standard,i+1);  
+                const ExpData = await calscore(r,standard,i+1,limit);  
             
                 calData[i]= ExpData;
             }
@@ -346,8 +352,8 @@ function Importer(){
             : [];
 
         setLimit(data.limit);
-
-        await getRecord(sendData,cloneDetails)
+        console.log(data.limit);
+        await getRecord({sendData:sendData, standard:cloneDetails, sendlimit:data.limit})
         .then(()=>{
             console.log(RelicDataArrRef.current);
             //計算平均分數與平均機率
@@ -418,7 +424,7 @@ function Importer(){
         }, 0);
     },[getHistory()]);
 
-    function calscore(relic:any,standard:selfStand,enchanceCount:number){
+    function calscore(relic:any,standard:selfStand,enchanceCount:number,limit:number){
         return new Promise((resolve)=>{
             let isCheck=true;
             //將獲得到遺器先儲存起來
@@ -460,6 +466,7 @@ function Importer(){
                 limit:limit,
                 enchanceCount:enchanceCount
             };
+            console.log(postData);
             
             if(isCheck){
                 showStatus('數據計算處理中......','process');
@@ -684,7 +691,7 @@ function Importer(){
                                 </div>
                             </div>
                             <div className='my-3 flex flex-row [&>*]:mr-2 justify-end max-w-[400px] max-[900px]:justify-center'>
-                                <button className='processBtn' onClick={()=>getRecord()}  disabled={!isChangeAble}>開始匹配</button>
+                                <button className='processBtn' onClick={()=>getRecord({})}  disabled={!isChangeAble}>開始匹配</button>
                                 <button className='processBtn' onClick={()=>saveRecord()} disabled={!isSaveAble}>儲存紀錄</button>
                             </div>
                             
