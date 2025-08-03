@@ -49,7 +49,7 @@ function Importer(){
     const [Rscore,setRscore]=useState<number | undefined>(undefined);
     const [Rrank,setRank]=useState<Rank>({label:undefined,tag:undefined,color:undefined,value:undefined});
     const [PieNums,setPieNums]=useState<PieNums>(undefined);
-    const [AffixCount,setAffixCount]=useState(3);
+    const [AffixCount,setAffixCount]=useState<3|4>(3);
 
     // 找到所有遺器後計算的所有數據，包含期望值、分數等
     const [RelicDataArr,setRelicDataArr]=useState<RelicDataArr>([]);
@@ -64,18 +64,18 @@ function Importer(){
 
     //獲取操作歷史紀錄的function
     const {setHistory,getHistory,addHistory,deleteHistory,resetHistory,limitHistory} = HistoryStore();
-    const [isLoad,setIsLoad] = useState(false);
+    const [isLoad,setIsLoad] = useState<boolean>(false);
 
     //自訂義標準
     const [selfStand,setSelfStand]=useState<selfStand>([]);
-    const standDetails=useRef([]);
+    const standDetails=useRef<selfStand>([]);
 
     //router相關
     const pathname = usePathname();
 
     //元件狀態
-    const [isChangeAble,setIsChangeAble]=useState(true);
-    const [isSaveAble,setIsSaveAble]=useState(false);
+    const [isChangeAble,setIsChangeAble]=useState<boolean>(true);
+    const [isSaveAble,setIsSaveAble]=useState<boolean>(false);
     
     const partArr = ['生之花','死之羽','時之沙','空之杯','理之冠'];
 

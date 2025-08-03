@@ -95,7 +95,6 @@ function Main(){
 
         //先填入過往歷史紀錄
         let history = JSON.parse(localStorage.getItem(dataStorageLocation)!);
-        console.log(history);
         setHistory((!history)?[]:history);
 
         if(history!=null&&history.length>0){
@@ -421,7 +420,7 @@ function Main(){
                                 <div className='pl-1 flex flex-row items-center'>
                                     <input type='text-white' className='bgInput w-[40px] text-center' 
                                             onChange={(event)=>{
-                                                if(isNaN(parseInt(event.target.value)))
+                                                if(!isNaN(parseInt(event.target.value)))
                                                     setLimit(parseInt(event.target.value))
                                             }} 
                                             defaultValue={2} max={4}/>

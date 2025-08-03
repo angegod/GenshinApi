@@ -13,38 +13,41 @@ import EnchantDataStore from '@/model/enchantDataSlice';
 import { useRouter } from 'next/navigation';
 import { Tooltip } from 'react-tooltip';
 import HintEnchant from '@/components/Hint/HintEnchant';
+import { EnchantData, MinMaxScore, RelicBackup, SimulatorData, Statics } from '@/data/interface/Enchant';
+import { PieNums, Rank, RelicScoreStand, standDetailItem, SubDataItem, SubSimulateDataItem } from '@/data/RelicData';
+import { JSX } from 'react/jsx-runtime';
 
 //此物件為單次模擬隨機強化後的結果
 const Enchant=React.memo(()=>{
 
     //從enchantstore取得
-    const [data,setData] = useState();
-    const {relic,standDetails,Rscore,Rrank,mode}=data || {};
+    const [data,setData] = useState<EnchantData>();
+    const {relic,standDetails,Rscore,Rrank,mode}:any=data || {};
     const {getEnchantData} = EnchantDataStore();
     
-    const relicBackUp =useRef(null);
-    const [isChangeAble,setIsChangeAble]=useState(true);
+    const relicBackUp =useRef<RelicBackup|null>(null);
+    const [isChangeAble,setIsChangeAble]=useState<boolean>(true);
 
     //是否啟用還原狀態
-    const [isRecoverable,setRecoverable]=useState(false);
+    const [isRecoverable,setRecoverable]=useState<boolean>(false);
 
     //模擬強化相關數據
-    const [simulatorData,setSimulatorData]=useState({oldData:null,newData:null});
-    const [statics,setStatics]=useState(undefined);
+    const [simulatorData,setSimulatorData]=useState<SimulatorData>({oldData:null,newData:null});
+    const [statics,setStatics]=useState<Statics[]|undefined>(undefined);
 
     //限制及強化次數
-    const [limit,setLimit] = useState(2);
-    const [Affix,setAffixCount]=useState(3);
-    const [AffixBtn,setAffixBtn] = useState(false);
+    const [limit,setLimit] = useState<number>(2);
+    const [Affix,setAffixCount]=useState<number>(3);
+    const [AffixBtn,setAffixBtn] = useState<boolean>(false);
         
     //強化次數
-    const [count,setCount]=useState(0);
+    const [count,setCount]=useState<number>(0);
 
     //成功翻盤次數
-    const [successCount,setSuccessCount]=useState(0);
+    const [successCount,setSuccessCount]=useState<number>(0);
 
     //分數及標準
-    const scoreStand=[
+    const scoreStand:RelicScoreStand[]=[
         {rank:'S+',stand:85,color:'rgb(239, 68, 68)',tag:'S+'},
         {rank:'S',stand:70,color:'rgb(239, 68, 68)',tag:'S'},
         {rank:'A',stand:50,color:'rgb(234, 179, 8)',tag:'A'},
@@ -57,7 +60,7 @@ const Enchant=React.memo(()=>{
     const router = useRouter();
 
     //最高與最低分
-    const [MinMaxScore,setMinMaxScore] = useState({min:undefined,max:undefined});
+    const [MinMaxScore,setMinMaxScore] = useState<MinMaxScore>({min:undefined,max:undefined});
 
 
     //初始化
@@ -104,7 +107,6 @@ const Enchant=React.memo(()=>{
         if(relicBackUp.current === null){
             relicBackUp.current=simulatorData.oldData;
         }
-
         //更新最高最低分數
         changeMinMaxScore();
     },[simulatorData])
@@ -112,7 +114,7 @@ const Enchant=React.memo(()=>{
 
     //初始化統計數據
     function initStatics(){
-        let arr = [];
+        let arr:Statics[] = [];
         scoreStand.forEach((s)=>{
             arr.push({
                 label:s.rank,
@@ -126,45 +128,43 @@ const Enchant=React.memo(()=>{
     }
 
     //增加統計數據
-    function addStatics(){
-        if(simulatorData.newData!==null){
-            //如果數據統計尚未初始化
-            if(statics === undefined){
-                let arr=[];
-                let data={
-                    label:simulatorData.newData.relicrank.rank,
-                    value:1,
-                    color:scoreStand.find((s)=>s.tag === simulatorData.newData.relicrank.rank).color,
-                    tag:simulatorData.newData.relicrank.rank
-                }
-                arr.push(data);
-                setStatics(arr);
+    function addStatics() {
+        const newData = simulatorData.newData;
+        if (newData !== null) {
+            const rank = newData.relicrank.rank;
+            const match = scoreStand.find((s) => s.tag === rank);
+            if (!match) return;
+
+            if (statics === undefined) {
+                const data: Statics = {
+                    label: rank,
+                    value: 1,
+                    color: match.color,
+                    tag: rank
+                };
+                setStatics([data]);
                 return;
             }
 
-            //讀取既有統計
-            let oldStatics = statics;
-            let targetStatics = oldStatics.find((s)=>s.label === simulatorData.newData.relicrank.rank);
-            
-            if (targetStatics === null || targetStatics === undefined) {
-                let data = {
-                    label: simulatorData.newData.relicrank.rank,
+            const target = statics.find((s) => s.label === rank);
+            if (!target) {
+                const data: Statics = {
+                    label: rank,
                     value: 1,
-                    color: scoreStand.find((s) => s.tag === simulatorData.newData.relicrank.rank).color,
-                    tag: simulatorData.newData.relicrank.rank
+                    color: match.color,
+                    tag: rank
                 };
-                setStatics((old) => [...old, data]); // 新陣列，觸發 re-render
+                setStatics((old:Statics[]|undefined) => [...old!, data]);
             } else {
-                setStatics((old) =>
-                    old.map((item) =>
-                        item.tag === simulatorData.newData.relicrank.rank
-                            ? { ...item, value: item.value + 1 }
-                            : item
+                setStatics((old:Statics[]|undefined) =>
+                    old!.map((item) =>
+                        item.tag === rank ? { ...item, value: item.value + 1 } : item
                     )
                 );
             }
         }
     }
+
 
     //模擬強化--Importer
     function simulate(){
@@ -172,12 +172,12 @@ const Enchant=React.memo(()=>{
 
         //將運行結果丟到背景執行 跟模擬所有組合的worker分開
         let worker=new Worker(new URL('../../worker/worker2.js', import.meta.url));
-        let MainAffix=AffixName.find((a)=>a.fieldName===relic.flat.reliquaryMainstat.mainPropId);
-        let SubData=[];
+        let MainAffix=AffixName.find((a)=>a.fieldName===relic.flat.reliquaryMainstat.mainPropId)!;
+        let SubData:SubDataItem[]=[];
           
         if(simulatorData.oldData===null){
-            relic.flat.reliquarySubstats.forEach((s,i)=>{
-                let typeName=AffixName.find((a)=>a.fieldName===s.appendPropId);
+            relic.flat.reliquarySubstats.forEach((s:any,i:number)=>{
+                let typeName=AffixName.find((a)=>a.fieldName===s.appendPropId)!;
 
                 let val= s.statValue;
                 
@@ -195,11 +195,11 @@ const Enchant=React.memo(()=>{
         
 
         //檢查標準是否合法
-        standDetails.forEach((s)=>{
+        /*standDetails.forEach((s)=>{
             if(s.value===''){
                 isCheck=false;
             }
-        });
+        });*/
         
         //制定送出資料格式
         let postData={
@@ -217,7 +217,7 @@ const Enchant=React.memo(()=>{
             worker.onmessage = function (event) {
                 setSimulatorData({
                     oldData:{
-                        relicscore:(simulatorData.oldData===null)?parseInt(Rscore):parseInt(simulatorData.oldData.relicscore),
+                        relicscore:(simulatorData.oldData===null)?parseInt(Rscore):simulatorData.oldData.relicscore,
                         relicrank:(simulatorData.oldData===null)?Rrank:simulatorData.oldData.relicrank,
                         returnData:SubData
                     },
@@ -227,8 +227,11 @@ const Enchant=React.memo(()=>{
                 setCount((c)=>c+=1);
 
                 //如果該次強化超過原有分數 則成功次數+1
-                if(simulatorData.oldData!==null){
-                    if(parseInt(event.data.relicscore) > parseInt(simulatorData.oldData.relicscore))
+                if(simulatorData.oldData!==null){ //第二次強化以後
+                    if(parseInt(event.data.relicscore) > simulatorData.oldData.relicscore)
+                        setSuccessCount((c)=>c+=1);
+                }else{ //第一次模擬
+                    if(parseInt(event.data.relicscore) > Rscore)
                         setSuccessCount((c)=>c+=1);
                 }
             };
@@ -244,18 +247,20 @@ const Enchant=React.memo(()=>{
         let worker=new Worker(new URL('../../worker/worker2.js', import.meta.url));
         let MainAffix=AffixName.find((a)=>a.name===relic.main_affix);
 
-        let SubData=[];
+        let SubData:any=[];
 
 
         if(simulatorData.oldData===null){
-            relic.subaffix.forEach((s,i)=>{
+            console.log(relic);
+            relic.subaffix.forEach((s:SubSimulateDataItem,i:number)=>{
                 let typeName=AffixName.find((a)=>a.name===s.subaffix);
                
                 let data={
                     index:i, 
-                    subaffix:typeName.name,
+                    subaffix:typeName!.name,
                     data:s.data, //詞條數值    
-                    count:s.count//強化次數
+                    count:s.count,//強化次數
+                    isSelect:s.isSelect
                 }
     
                 SubData.push(data);
@@ -267,16 +272,16 @@ const Enchant=React.memo(()=>{
         
 
         //檢查標準是否合法
-        standDetails.forEach((s)=>{
+        /*standDetails.forEach((s)=>{
             if(s.value===''){
                 isCheck=false;
             }
-        });
+        });*/
         
 
         //制定送出資料格式
         let postData={
-            MainData:MainAffix.name,
+            MainData:MainAffix!.name,
             SubData:SubData,
             partsIndex:relic.type,
             standard:standDetails,
@@ -303,7 +308,7 @@ const Enchant=React.memo(()=>{
 
                 //如果該次強化超過原有分數 則成功次數+1
                 if(simulatorData.oldData!==null){
-                    if(parseInt(event.data.relicscore) > parseInt(simulatorData.oldData.relicscore))
+                    if(parseInt(event.data.relicscore) > simulatorData.oldData.relicscore)
                         setSuccessCount((c)=>c+=1);
                 }
             };
@@ -312,7 +317,6 @@ const Enchant=React.memo(()=>{
 
     //判斷是否為最小或最大分數
     function changeMinMaxScore(){
-        console.log(simulatorData.oldData!==null&&simulatorData.newData!==null);
         if(simulatorData.oldData!==null&&simulatorData.newData!==null){
             //如果是初次計算 直接加入到min跟max
             if(count === 1){
@@ -321,7 +325,6 @@ const Enchant=React.memo(()=>{
                 setMinMaxScore({min:minScore,max:maxScore});
             }else if(count > 1){
                 let score = simulatorData.newData.relicscore;
-                console.log(score);
                 let stand = JSON.parse(JSON.stringify(MinMaxScore));
 
                 if(score > stand.max )
@@ -412,7 +415,6 @@ const Enchant=React.memo(()=>{
         Rscore:Rscore,
         standDetails:standDetails,
         isChangeAble:isChangeAble,
-        standDetails:standDetails,
         partArr:partArr,
         PieNums:statics,
         successCount:successCount,
@@ -478,9 +480,15 @@ const Enchant=React.memo(()=>{
      
 });
 
+interface DataListInterface{
+    standDetails:standDetailItem[],
+    data:RelicBackup|null,
+    title:string
+}
+
 //強化前後的數據顯示
-const DataList=React.memo(({standDetails,data,title})=>{
-    let list=[];
+const DataList=React.memo(({standDetails,data,title}:DataListInterface)=>{
+    let list:JSX.Element[]=[];
     if(data!==null){
         data.returnData.map((d,i)=>{
             let markcolor="";
@@ -488,7 +496,7 @@ const DataList=React.memo(({standDetails,data,title})=>{
             let isBold=(standDetails.find((st)=>st.name===d.subaffix)!==undefined)?true:false;
             let showData = undefined;
             //檢查是否要顯示%數
-            if(targetAffix.percent&&!d.data.toString().includes('%'))
+            if(targetAffix!.percent&&!d.data.toString().includes('%'))
                 showData=d.data+'%';
             else
                 showData=d.data;
@@ -562,23 +570,23 @@ const Pie=React.memo(()=>{
         const pieParams = {
             height: (count === 0)?0:200,
             margin:{ top: 10, right: 0, bottom: 0, left: 0 },
-            slotProps: { legend: { hidden: true } },
+            egend: { hidden: true }
         };
 
         return(
            <div className='w-full flex flex-row flex-wrap justify-evenly max-[500px]:flex-col-reverse'>
                 <div className='w-[200px]'>
                     <PieChart  
-                    series={[
-                        {
-                            innerRadius: 20,
-                            arcLabelMinAngle: 35,
-                            arcLabel: (item) => `${item.value}次`,
-                            data: PieNums,
-                        }
-                    ]}  {...pieParams} />
+                        series={[
+                            {
+                                innerRadius: 20,
+                                arcLabelMinAngle: 35,
+                                arcLabel: (item) => `${item.value}次`,
+                                data: PieNums,
+                            }
+                        ]}  {...pieParams} />
                 </div>
-                <div className={`flex-col w-2/5 max-[500px]:w-full mt-2 ${(PieNums.find((p)=>p.value!==0)===undefined)?'hidden':''}`}>
+                <div className={`flex-col w-2/5 max-[500px]:w-full mt-2 ${(PieNums.find((p:Rank)=>p.value!==0)===undefined)?'hidden':''}`}>
                     <div className='flex flex-row items-center max-[600px]:w-3/5 max-[600px]:mx-auto'>
                         <div className='flex justify-start'>
                             <span className='text-stone-400'>翻盤次數</span>

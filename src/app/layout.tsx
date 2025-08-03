@@ -10,9 +10,11 @@ export const metadata = {
         keywords: '聖遺物重洗, 聖遺物重洗模擬, artifact enchant, artifact simulator, artifact ranker, 聖遺物重擲, 聖遺物重擲模擬器',
     },
 };
+interface layoutProps {
+  children?: React.ReactNode;
+}
 
-
-export default function RootLayout({ children }) {
+export default function RootLayout({ children }:layoutProps) {
     return (
         <html lang="zh-Hant">
             <head>

@@ -125,3 +125,7 @@ body{
     @apply max-[500px]:w-[330px] max-[500px]:flex max-[500px]:flex-col max-[500px]:justify-center; 
     @apply max-[400px]:w-[95%] max-[800px]:min-w-0 max-[800px]:w-[100vw];
 }
+
+.MuiChartsLegend-root {
+  display: none !important;
+}  

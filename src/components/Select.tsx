@@ -110,18 +110,21 @@ const SubAffixSelect=({index}:SubAffixSelectProps)=>{
     function updateSubData(index:number){
         setSubData((prev:SubSimulateDataItem[]) => {
             const next = [...prev];
-            next[index] = { ...next[index], data: Number(inputValue) };
+            const count = isNaN(Number(inputValue)) ? 0 : Number(inputValue);
+            next[index] = { ...next[index], data: count };
             return next;
         });
     }
 
-    function updateSubCount(index:number){
-        setSubData((prev:SubSimulateDataItem[]) => {
+    function updateSubCount(index: number) {
+        setSubData((prev: SubSimulateDataItem[]) => {
             const next = [...prev];
-            next[index] = { ...next[index], count: Number(inputCount) };
+            const count = isNaN(Number(inputCount)) ? 0 : Number(inputCount);
+            next[index] = { ...next[index], count };
             return next;
         });
     }
+
 
     function updateSubSelect(index:number) {
         let current:boolean = SubData[index].isSelect;

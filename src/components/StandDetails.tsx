@@ -172,8 +172,7 @@ const ShowStand = React.memo(({ lock }:showStandProps) => {
                     className="ml-2 text-center max-h-[30px] min-w-[30px] bgInput"
                     defaultValue={s.value}
                     title="最小值為 0，最大為 1"
-                    onChange={(e) => changeVal(i, parseInt(e.target.value), e)}
-                />
+                    onBlur={(e) => changeVal(i, Number(e.target.value), e)}/>
             </div>
             <div className="flex items-center">
                 {lock !== false ? (

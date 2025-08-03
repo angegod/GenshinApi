@@ -2,7 +2,12 @@
 import { usePathname } from 'next/navigation';
 import { Menu, MainMenu } from '@/components/Menu';
 
-export default function LayoutClient({ children }) {
+
+interface layoutProps {
+  children?: React.ReactNode;
+}
+
+export default function LayoutClient({ children }:layoutProps) {
     const pathname = usePathname();
 
     const isHome = pathname === '/' || pathname === '/StarRailApi/';

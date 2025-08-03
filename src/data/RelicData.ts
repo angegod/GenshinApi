@@ -125,7 +125,8 @@ export interface SubDataItem{
     index:number 
     subaffix:string,
     data:number //詞條數值,
-    isSelect?:boolean    
+    isSelect?:boolean,
+    count?:number    
 }
 
 export interface SubSimulateDataItem{
