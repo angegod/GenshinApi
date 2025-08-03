@@ -16,7 +16,7 @@ function HintHistory(){
                     <span className='text-white font-bold'>更新</span>
                 </div>
                 <div>
-                    <span className='text-stone-400'>點選後會根據該紀錄原本的參數再查詢一次，並且將新結果更新至掉該筆紀錄中。</span>
+                    <span className='text-stone-400'>點選後會根據該紀錄原本的參數再查詢一次，並且將新結果更新至該筆紀錄中。</span>
                 </div>
             </div>
             <div className='mt-2 flex flex-col'>
