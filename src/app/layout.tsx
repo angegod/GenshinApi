@@ -15,13 +15,15 @@ interface layoutProps {
 }
 
 export default function RootLayout({ children }:layoutProps) {
+    let faviconHref = (process.env.NODE_ENV === 'production')?process.env.NEXT_PUBLIC_BASE_PATH:"";
+
     return (
         <html lang="zh-Hant">
             <head>
                 <title>{metadata.title}</title>
                 <meta name="description" content={metadata.description} />
                 <meta name="keywords" content={metadata.other.keywords} />
-                <link rel="icon" href="/favicon.ico" />
+                <link rel="icon" href={`${faviconHref}/favicon.ico`} />
             </head>
             <body>
                 <StatusToastProvider>
