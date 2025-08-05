@@ -85,7 +85,7 @@ export interface ImporterContextType {
 }
 
 //歷史資料
-export interface hisoryData{
+export interface historyData{
     version:string,
     calDate:string,
     userID:string,

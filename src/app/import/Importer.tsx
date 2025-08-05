@@ -23,7 +23,7 @@ import HintHistory from '@/components/Hint/HintHistory';
 import HintImporter from '@/components/Hint/HintImporter';
 import HintStandDetails from '@/components/Hint/HintStandDetails';
 import HintParams from '@/components/Hint/HintParams';
-import { AffixItem, hisoryData, PieNums, Rank, RelicDataArr, RelicDataItem, Stand, selfStand, selfStandItem, sendData, SubData, SubDataItem } from '@/data/RelicData';
+import { AffixItem, PieNums, Rank, RelicDataArr, RelicDataItem, Stand, selfStand, selfStandItem, sendData, SubData, SubDataItem, historyData } from '@/data/RelicData';
 
 
 function Importer(){
@@ -120,7 +120,8 @@ function Importer(){
         //清空儲存的歷史紀錄
         resetHistory();
         const historyraw = localStorage.getItem(dataStorageLocation);
-        let history:hisoryData[]=(historyraw)?JSON.parse(historyraw):null;
+        let history:historyData[]=(historyraw)?JSON.parse(historyraw):null;
+        console.log(history);
         if(history===null){
             setHistory([]);
             setIsLoad(true);
@@ -194,7 +195,6 @@ function Importer(){
             standard = [...(selfStand ?? [])];
 
         Limit = (!sendlimit)?limit:sendlimit;
-        console.log(Limit,sendlimit);
         //送出之前先清空一次資料
         setIsSaveAble(false);
         showStatus('正在尋找匹配資料......','process');
@@ -318,99 +318,114 @@ function Importer(){
     //檢視過往紀錄
     const checkDetails=useCallback((index:number)=>{
         
-        let data= getHistory(index);
+        const result  = getHistory(index);
+        let data: historyData | null = null;
+        if (result && !Array.isArray(result) && 'userID' in result) {
+            data = result;
+        }
         
-        setRelicDataArr([...data.dataArr]);
-        setRelicIndex(0);
-        setLimit(data.limit);
-        setAffixCount(3);
-        setIsSaveAble(false);
-        updateStatus('資料顯示完畢',"success"); 
+        if(data){
+            setRelicDataArr([...data.dataArr]);
+            setRelicIndex(0);
+            setLimit(data.limit);
+            setAffixCount(3);
+            setIsSaveAble(false);
+            updateStatus('資料顯示完畢',"success"); 
 
-        //避免第一次顯示區塊 而導致滾動失常
-        requestAnimationFrame(()=>{
-            window.scrollTo({
-                top: document.body.scrollHeight,
-                behavior: 'smooth'
+            //避免第一次顯示區塊 而導致滾動失常
+            requestAnimationFrame(()=>{
+                window.scrollTo({
+                    top: document.body.scrollHeight,
+                    behavior: 'smooth'
+                });
             });
-        });
+        }
     },[getHistory()]);
 
     //更新紀錄
     const updateDetails=useCallback(async (index:number)=>{
         showStatus('正在更新資料中');
-        let data = getHistory(index);
+        const result = getHistory(index);
 
-        let sendData={
-            uid:data.userID,
-            charID:data.char.charId,            
-            partsIndex:6
-        };
+        let data: historyData | null = null;
+        if (result && !Array.isArray(result) && 'userID' in result) {
+            data = result;
+        }
+        if(data){
+            let sendData={
+                uid:data.userID,
+                charID:data.char.charId,            
+                partsIndex:6
+            };
 
-        let cloneDetails: selfStand = data.dataArr[0][3]?.standDetails
-            ? data.dataArr[0][3].standDetails.map((item: any) => ({ ...item }))
-            : [];
+            let cloneDetails: selfStand = data.dataArr[0][3]?.standDetails
+                ? data.dataArr[0][3].standDetails.map((item: any) => ({ ...item }))
+                : [];
 
-        setLimit(data.limit);
-        console.log(data.limit);
-        await getRecord({sendData:sendData, standard:cloneDetails, sendlimit:data.limit})
-        .then(()=>{
-            console.log(RelicDataArrRef.current);
-            //計算平均分數與平均機率
+            setLimit(data.limit);
+            await getRecord({sendData:sendData, standard:cloneDetails, sendlimit:data.limit})
+            .then(()=>{
+                console.log(RelicDataArrRef.current);
+                //計算平均分數與平均機率
 
-            if(RelicDataArrRef.current){
-                let sum = 0;
-                let sum2 = 0;
+                if(RelicDataArrRef.current){
+                    let sum = 0;
+                    let sum2 = 0;
 
-                RelicDataArrRef.current.forEach((r)=>{
-                    for(var i = 3;i<=4;i++){
-                        sum +=Number(r[i].Rscore);
-                        sum2 += r[i].ExpRate!;
-                    }
-                });
-                let avgScore = Math.round((sum / (RelicDataArrRef.current.length * 2)) * 10) / 10;
-                let calDate=new Date();
-                let avgRank:Stand|undefined = undefined;
-                let avgRate = Number((sum2*100/(RelicDataArrRef.current.length*2)).toFixed(1));
-                
-                scoreStand.forEach((stand)=>{
-                    //接著去找尋這個分數所屬的區間
-                    if(stand.stand<=avgScore&&avgRank===undefined)
-                        avgRank=stand;
-                });
+                    RelicDataArrRef.current.forEach((r)=>{
+                        for(var i = 3;i<=4;i++){
+                            sum +=Number(r[i].Rscore);
+                            sum2 += r[i].ExpRate!;
+                        }
+                    });
+                    let avgScore = Math.round((sum / (RelicDataArrRef.current.length * 2)) * 10) / 10;
+                    let calDate=new Date();
+                    let avgRank:Stand|undefined = undefined;
+                    let avgRate = Number((sum2*100/(RelicDataArrRef.current.length*2)).toFixed(1));
+                    
+                    scoreStand.forEach((stand)=>{
+                        //接著去找尋這個分數所屬的區間
+                        if(stand.stand<=avgScore&&avgRank===undefined)
+                            avgRank=stand;
+                    });
 
-                //儲存紀錄
-                let newHistorydata={
-                    version:version,
-                    calDate:calDate.toISOString().split('T')[0],
-                    userID:data.userID,
-                    char:data.char,
-                    dataArr:RelicDataArrRef.current,
-                    avgScore:avgScore,
-                    avgRank:avgRank,
-                    avgRate:avgRate
-                };
- 
-                let oldHistory=JSON.parse(JSON.stringify(getHistory()));
-                oldHistory[index]=newHistorydata;
-                localStorage.setItem(dataStorageLocation,JSON.stringify(oldHistory));
-                setHistory(oldHistory)
+                    //儲存紀錄
+                    let newHistorydata={
+                        version:version,
+                        calDate:calDate.toISOString().split('T')[0],
+                        userID:data!.userID,
+                        char:data!.char,
+                        dataArr:RelicDataArrRef.current,
+                        avgScore:avgScore,
+                        avgRank:avgRank,
+                        avgRate:avgRate
+                    };
+    
+                    let oldHistory=JSON.parse(JSON.stringify(getHistory()));
+                    oldHistory[index]=newHistorydata;
+                    localStorage.setItem(dataStorageLocation,JSON.stringify(oldHistory));
+                    setHistory(oldHistory)
 
-                updateStatus('已更新','success');
-                setIsSaveAble(false);
-            }   
-        }).catch((error)=>{
-            console.error("錯誤發生：", error);             // 原始錯誤物件
-            console.error("錯誤訊息：", error.message);     // 錯誤文字
-            console.error("堆疊追蹤：", error.stack);       // 🔥 鎖定發生行數
-        });
+                    updateStatus('已更新','success');
+                    setIsSaveAble(false);
+                }   
+            }).catch((error)=>{
+                console.error("錯誤發生：", error);             // 原始錯誤物件
+                console.error("錯誤訊息：", error.message);     // 錯誤文字
+                console.error("堆疊追蹤：", error.stack);       // 🔥 鎖定發生行數
+            });
+        }
+        
             
     },[getHistory()]);
 
     //刪除過往紀錄 
     const deleteHistoryData=useCallback((index:number)=>{
         //如果刪除紀錄是目前顯示的 則會清空目前畫面上的
-        let oldHistory:hisoryData[]=getHistory();
+        const result = getHistory();
+        let oldHistory: historyData[] = Array.isArray(result)
+            ? result.filter((item): item is historyData => 'userID' in item)
+            : [];
 
         //呼叫store刪除該歷史紀錄
         deleteHistory(index);
@@ -493,10 +508,16 @@ function Importer(){
     //儲存紀錄
     function saveRecord(){
         let selectChar:characters=characters.find((c)=>c.charId===charID)!;
+        const result = getHistory();
 
-        //如果原本紀錄超過6個 要先刪除原有紀錄
-        if(getHistory().length>=maxHistoryLength)
-            limitHistory();
+        let historyGet: historyData[] = [];
+
+        if (Array.isArray(result)) {
+            // 篩選只取 historyData 型別的資料（可依實際定義調整）
+            historyGet = result.filter(
+                (item): item is historyData => 'userID' in item
+            );
+        }
 
         //如果當前沒有任何資料則不予匯入
         if(RelicDataArr.length === 0){
@@ -547,7 +568,7 @@ function Importer(){
 
 
         //儲存紀錄
-        let data:hisoryData={
+        let data:historyData={
             version:version,
             calDate:calDate.toISOString().split('T')[0],
             userID:userID.current,
