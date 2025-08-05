@@ -171,7 +171,7 @@ const Enchant=React.memo(()=>{
         let isCheck=true;
 
         //將運行結果丟到背景執行 跟模擬所有組合的worker分開
-        let worker=new Worker(new URL('../../worker/worker2.js', import.meta.url));
+        let worker=new Worker(new URL('../../worker/worker2.ts', import.meta.url));
         let MainAffix=AffixName.find((a)=>a.fieldName===relic.flat.reliquaryMainstat.mainPropId)!;
         let SubData:SubDataItem[]=[];
           
@@ -244,7 +244,7 @@ const Enchant=React.memo(()=>{
     function simulate2(){
         let isCheck=true;
         //將運行結果丟到背景執行 跟模擬所有組合的worker分開
-        let worker=new Worker(new URL('../../worker/worker2.js', import.meta.url));
+        let worker=new Worker(new URL('../../worker/worker2.ts', import.meta.url));
         let MainAffix=AffixName.find((a)=>a.name===relic.main_affix);
 
         let SubData:any=[];
