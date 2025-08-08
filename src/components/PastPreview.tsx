@@ -2,13 +2,13 @@ import React, { useContext } from 'react';
 import '../css/main.css';
 import SiteContext from '../context/SiteContext';
 import dynamic from "next/dynamic";
-import { hisoryData, hisoryDataSimulate } from '@/data/RelicData';
+import { historyData, hisoryDataSimulate } from '@/data/RelicData';
 const LazyImage = dynamic(() => import("./LazyImage"), { ssr: false });
 
 //簡易瀏覽props
 interface PastPreviewProps {
     index:number,
-    data:hisoryData
+    data:historyData
 }
 
 interface PastPrevieSimulatewProps {
