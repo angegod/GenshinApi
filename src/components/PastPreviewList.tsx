@@ -1,25 +1,25 @@
 import React, { Component,useCallback,useContext,useMemo } from 'react';
 import {PastPreview, PastPreview_simulator} from './PastPreview';
 import SiteContext from '../context/SiteContext';
-import HistoryStore from '@/model/historyStore';
+import HistoryStore, { HistoryItem } from '@/model/historyStore';
 import Link from 'next/link';
-import { hisoryData, hisoryDataSimulate } from '@/data/RelicData';
+import { historyData, hisoryDataSimulate } from '@/data/RelicData';
 
 
 const PastPreviewList=React.memo(()=>{
     const {isLoad} = useContext(SiteContext);//是否處理完reset?
     const {getHistory} = HistoryStore();
 
-    let historyData = getHistory();
+    let historyDataArr = getHistory()  as HistoryItem[];;
     let introPath = ( process.env.NODE_ENV ==='production')?`..${process.env.NEXT_PUBLIC_BASE_PATH}/`:'../'
     introPath = introPath +'/intro';
     
     
-    if(historyData&&historyData.length>0&&isLoad){
-        const renderList=historyData.map((item:hisoryData,i:number)=>{
+    if(historyDataArr&&historyDataArr.length>0&&isLoad){
+        const renderList=historyDataArr.map((item,i:number)=>{
             return(
                 <PastPreview    index={i}
-                                data={item}
+                                data={item as historyData}
                                 key={'history' + i} />
             )
         })
@@ -41,17 +41,17 @@ const PastPreviewList_simulator=React.memo(()=>{
     const {isLoad} = useContext(SiteContext);//是否處理完reset?
     const {getHistory} = HistoryStore();
 
-    let historyData = getHistory();
+    let historyData = getHistory() as HistoryItem[];
     let introPath = ( process.env.NODE_ENV ==='production')?`..${process.env.NEXT_PUBLIC_BASE_PATH}/`:'../'
     introPath = introPath +'/intro';
 
 
     if(historyData&&historyData.length>0&&isLoad){
         return(
-            historyData.map((item:hisoryDataSimulate,i:number)=>
+            historyData.map((item,i:number)=>
                 <PastPreview_simulator 
                             index={i} 
-                            data={item}    
+                            data={item as hisoryDataSimulate}    
                             key={'historyData'+i}/>
             )
         )

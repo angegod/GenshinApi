@@ -2,7 +2,7 @@ import { historyData, hisoryDataSimulate } from '@/data/RelicData';
 import { create } from 'zustand';
 
 // 定義歷史資料的統一型別
-type HistoryItem = historyData | hisoryDataSimulate;
+export type HistoryItem = historyData | hisoryDataSimulate;
 
 // 定義 Store 的狀態與方法型別
 interface HistoryStoreState {
