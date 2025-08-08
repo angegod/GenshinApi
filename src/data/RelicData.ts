@@ -106,8 +106,9 @@ export interface hisoryDataSimulate{
     score:string,
     rank:Rank,
     pieData:PieNums,
-    stand:Stand,
-    relic:any
+    stand:selfStand,
+    relic:any,
+    limit:number
 }
 
 //selfstand

@@ -35,7 +35,7 @@ function HintStandDetails(){
                         <div>
                             <span className='font-bold'>注意事項</span>
                         </div>
-                        <div>
+                        <div className='flex flex-col'>
                             <span className='text-red-500 font-bold'>如果該詞條只會出現在主詞條上，則該詞條不可被指定</span>
                             <span className='text-red-500 font-bold'>如果該聖遺物無法經過你指定的詞條種類標記兩個指定詞條，則系統自動給予其中一個非指定詞條為指定詞條。</span>
                         </div>

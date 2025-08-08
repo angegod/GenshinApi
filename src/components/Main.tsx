@@ -18,7 +18,7 @@ import { Tooltip } from 'react-tooltip';
 import SubAffixHint from './Hint/SubAffixHint';
 import HintSimulator from './Hint/HintSimulator';
 import HintParams from './Hint/HintParams';
-import {hisoryDataSimulate, selfStand, selfStandItem, SimulateRelic, SubData, SubDataItem, SubSimulateDataItem} from '../data/RelicData';
+import {hisoryDataSimulate, historyData, PieNums, Rank, selfStand, selfStandItem, SimulateRelic, SubData, SubDataItem, SubSimulateDataItem} from '../data/RelicData';
 
 function Main(){
     //紀錄版本號
@@ -45,12 +45,12 @@ function Main(){
     const [isSaveAble,setIsSaveAble]=useState(false);
     const [isChangeAble,setIsChangeAble]=useState(true);
 
-    const [ExpRate,setExpRate]=useState(undefined);
-    const [Rscore,setRscore]=useState(undefined);
-    const [Rrank,setRank]=useState({color:undefined,rank:undefined});
-    const [processBtn,setProcessBtn]=useState(true);
+    const [ExpRate,setExpRate]=useState<number|undefined>(undefined);
+    const [Rscore,setRscore]=useState<string|undefined>(undefined);
+    const [Rrank,setRank]=useState<Rank>({label:undefined,tag:undefined,color:undefined,value:undefined});
+    const [processBtn,setProcessBtn]=useState<boolean>(true);
     const standDetails=useRef<selfStand>([]);
-    const [PieNums,setPieNums]=useState(undefined);
+    const [PieNums,setPieNums]=useState<PieNums>(undefined);
 
     //共用statusMsg
     const {showStatus,updateStatus,hideStatus}=useStatusToast();
@@ -66,7 +66,7 @@ function Main(){
     const limitRef = useRef(2);
 
     //獲取操作歷史紀錄的function
-    const {setHistory,getHistory,addHistory,deleteHistory} = HistoryStore();
+    const {setHistory,getHistory,addHistory,deleteHistory,limitHistory} = HistoryStore();
 
     //是否記錄初始化完畢
     const [isLoad,setIsLoad] = useState(false);
@@ -113,7 +113,7 @@ function Main(){
     //清除相關資料
     function clearData(){
         setExpRate(undefined);
-        setRank({color:undefined,rank:undefined});
+        setRank({label:undefined,tag:undefined,color:undefined,value:undefined});
         setPieNums(undefined);
         setRscore(undefined);
         setRelic(undefined);
@@ -144,15 +144,16 @@ function Main(){
 
     //儲存紀錄
     function saveRecord(){
-        let historyData = getHistory();
+        const historyraw = localStorage.getItem(dataStorageLocation);
+        let historyData:hisoryDataSimulate[]=(historyraw)?JSON.parse(historyraw):null;
         let partName=partArr[partsIndex!-1];
-        let selectChar=characters.find((c)=>c.charId===charID);
+        let selectChar:characters=characters.find((c)=>c.charId===charID)!;
 
         //如果目前則沒有紀錄 則初始化
         if(!historyData)
             setHistory([]);
-        else if(historyData.length>=maxHistoryLength)//如果原本紀錄超過6個 要先刪除原有紀錄
-            console.log('limit');
+        
+        limitHistory();
         
         //如果當前沒有任何資料則不予匯入
         if(!PieNums||ExpRate===undefined||!Rrank||Rscore===undefined){
@@ -167,11 +168,11 @@ function Main(){
 
 
         //儲存紀錄
-        let data={
+        let data:hisoryDataSimulate={
             version:version,
             char:selectChar,
             part:partName,
-            mainaffix:MainSelectOptions,
+            mainaffix:MainSelectOptions!,
             expRate:ExpRate,
             score:Rscore,
             rank:Rrank,
@@ -189,22 +190,31 @@ function Main(){
 
     //檢視過往紀錄
     function checkDetails(index:number){
-        let data=getHistory(index);
-        setRank(data.rank);
-        setExpRate(data.expRate);
-        setRscore(data.score);
-        updateStatus('資料替換完畢!!','success');
-        setPieNums(data.pieData);
-        standDetails.current = data.stand;
-        limitRef.current = data.limit;
-        setRelic(data.relic);
+        const result = getHistory(index);
 
-        requestAnimationFrame(()=>{
-            window.scrollTo({
-                top: document.body.scrollHeight,
-                behavior: 'smooth'
-            });
-        })
+        let data:hisoryDataSimulate|null = null;
+        if (result && !Array.isArray(result) && 'part' in result) {
+            data = result;
+        }
+        if(data){
+            setRank(data.rank);
+            setExpRate(data.expRate);
+            setRscore(data.score.toString());
+            updateStatus('資料替換完畢!!','success');
+            setPieNums(data.pieData);
+            standDetails.current = data.stand;
+            limitRef.current = data.limit;
+            setRelic(data.relic);
+
+            requestAnimationFrame(()=>{
+                window.scrollTo({
+                    top: document.body.scrollHeight,
+                    behavior: 'smooth'
+                });
+            })
+        }
+
+        
     }
 
     //刪除紀錄

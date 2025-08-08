@@ -40,9 +40,9 @@ function Importer(){
 
     //找到的聖遺器陣列以及目前檢視索引，預設為0
     const [relic,setRelic]=useState();
-    const [relicIndex,setRelicIndex] = useState(0);
+    const [relicIndex,setRelicIndex] = useState<number>(0);
     
-    const [limit,setLimit]=useState(2);
+    const [limit,setLimit]=useState<number>(2);
 
     //期望值、儀器分數、評級、圖表資料、以及 切換成3詞條或4詞條模擬模式
     const [ExpRate,setExpRate]=useState<number | undefined>(undefined);
@@ -125,6 +125,7 @@ function Importer(){
         if(history===null){
             setHistory([]);
             setIsLoad(true);
+            updateStatus("尚未有任何操作紀錄","default");
             return;
         }
 
@@ -134,7 +135,6 @@ function Importer(){
         //必須要核對重大版本代號 如果版本不一致也不予顯示並且刪除
         history=history.filter((h)=>h.version===version);
         localStorage.setItem(dataStorageLocation,JSON.stringify(history));
-
         if(history != null && history.length > 0){
             setHistory(history);
             updateStatus("先前紀錄已匯入!!","success");
@@ -508,9 +508,11 @@ function Importer(){
     //儲存紀錄
     function saveRecord(){
         let selectChar:characters=characters.find((c)=>c.charId===charID)!;
-        const result = getHistory();
+        
+        //獲得資料
+        const result = limitHistory();
 
-        let historyGet: historyData[] = [];
+        let historyGet: historyData[];
 
         if (Array.isArray(result)) {
             // 篩選只取 historyData 型別的資料（可依實際定義調整）

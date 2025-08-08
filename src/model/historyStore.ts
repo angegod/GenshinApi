@@ -7,6 +7,7 @@ type HistoryItem = historyData | hisoryDataSimulate;
 // 定義 Store 的狀態與方法型別
 interface HistoryStoreState {
     history: HistoryItem[];
+    maxHistoryLength:number,
 
     setHistory: (data: HistoryItem[]) => void;
     getHistory: (index?: number | null) => HistoryItem[] | HistoryItem | null;
@@ -18,6 +19,7 @@ interface HistoryStoreState {
 
 const useHistoryStore = create<HistoryStoreState>((set, get) => ({
     history: [],
+    maxHistoryLength:6,
 
     setHistory: (data) => set({ history: data }),
 
@@ -38,10 +40,13 @@ const useHistoryStore = create<HistoryStoreState>((set, get) => ({
         set({ history: newList });
     },
 
-    limitHistory: () =>
-        set((state) => ({
-        history: state.history.slice(1),
-        })),
+    limitHistory: () => {
+        const history = get().history;
+        if (history.length >= get().maxHistoryLength) {
+            history.shift(); // 直接移除第一筆，改變原本的 state 陣列
+        }
+    },
+
 
     resetHistory: () => set({ history: [] }),
 }));
