@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import '@/css/globals.css';
+import '@/css/main.scss';
+import '@/css/globals.scss';
 
 const list=[{
     link:'/simulator',

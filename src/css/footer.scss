@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+.footer{
+    @apply bg-[rgb(40,40,40)] min-h-[20vh] pt-1 text-left max-[600px]:flex-row [&>div]:w-4/5 max-[600px]:min-h-[30vh];
+    
+    .description{
+        @apply mx-auto flex flex-col [&>span]:text-left [&>span]:font-bold  [&>span]:mt-1 py-2 
+    }
+}
+
+.bottomborder {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}

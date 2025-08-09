@@ -23,10 +23,10 @@
 
 /* 顯示時的 class */
 .toast-enter {
-  animation: slideFadeIn 0.8s ease forwards;
+    animation: slideFadeIn 0.8s ease forwards;
 }
 
 /* 隱藏時的 class */
 .toast-exit {
-  animation: slideFadeOut 0.8s ease forwards;
+    animation: slideFadeOut 0.8s ease forwards;
 }

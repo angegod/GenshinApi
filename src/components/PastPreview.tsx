@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import '../css/main.css';
 import SiteContext from '../context/SiteContext';
 import dynamic from "next/dynamic";
 import { historyData, hisoryDataSimulate } from '@/data/RelicData';

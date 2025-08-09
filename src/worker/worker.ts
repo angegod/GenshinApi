@@ -32,10 +32,10 @@ onmessage = function (event) {
         }
     });
 
-        //進入simulator
+    //進入simulator
     if(selectAffix.length === 0){
-        SubData.filter((s) => s.isSelect).forEach((s,i)=>{
-            selectAffix.push(i);
+        SubData.filter((s) => s.isSelect).forEach((s)=>{
+            selectAffix.push(s.index);
         });
     }
 
@@ -43,13 +43,12 @@ onmessage = function (event) {
     if (selectAffix.length < 2) {
         for (let i = 0; i < SubData.length; i++) {
             if (!selectAffix.includes(i)) {
-                selectAffix.push(i);
+                selectAffix.push(SubData[i].index);
                 if (selectAffix.length === 2) break;
             }
         }
-        console.log(selectAffix);
+        
     }
-
 
     //計算可能的強化組合
     let combination=findCombinations(enchanceCount,SubData.length,selectAffix,limit);
@@ -70,7 +69,6 @@ onmessage = function (event) {
     let result:number[] = [];
     let origin=relicScore(partsIndex,charStandard,SubData,MainData);
     //先算原本的遺器的分數
-    //console.log(calPartWeights(charStandard,partsIndex))
 
     let p1=new Promise(async (resolve,reject)=>{
         combination.forEach((c,i)=>{

@@ -1,0 +1,47 @@
+@tailwind utilities;
+
+// 動畫通用參數
+$anim-delay: 0.1s;
+$anim-count: infinite;
+
+// 定義一個動畫混入
+@mixin anim($name, $duration) {
+  position: relative;
+  animation: $name $duration;
+  animation-delay: $anim-delay;
+  animation-iteration-count: $anim-count;
+}
+
+// 定義動畫 keyframes
+@keyframes move {
+  0%   { left: -5%; }
+  50%  { left: 5%; }
+  100% { left: -5%; }
+}
+
+@keyframes movedown {
+  0%   { top: -10%; }
+  50%  { top: 10%; }
+  100% { top: -10%; }
+}
+
+// 套用樣式
+.moveAnimate {
+  svg {
+    @include anim(move, 1s);
+  }
+}
+
+@media (max-width: 600px) {
+  .moveAnimate {
+    svg {
+      animation: none;
+    }
+  }
+
+  .moveAnimate2 {
+    svg {
+      @include anim(movedown, 1s);
+    }
+  }
+}

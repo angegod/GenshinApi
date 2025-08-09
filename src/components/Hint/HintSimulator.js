@@ -2,7 +2,7 @@ function HintSimulator(){
     return(
         <div className='w-[300px] flex flex-col max-[600px]:my-3'>
             <h2 className='text-red-600 font-bold text-lg'>使用說明</h2>
-            <ul className='[&>li]:text-white list-decimal [&>li]:ml-2 max-[400px]:[&>li]:text-sm'>
+            <ul className='[&>li]:text-stone-400 list-decimal [&>li]:ml-2 max-[400px]:[&>li]:text-sm'>
                 <li>此工具主要目的是給予一些想要重洗詞條的人參考</li>
                 <li>翻盤機率是指說該遺器透過重洗詞條道具後導致遺器分數變高的機率為何</li>
                 <li>目前該工具只支援計算五星強化至滿等聖遺物</li>

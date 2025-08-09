@@ -4,7 +4,7 @@ import characters from '../../data/characters';
 import AffixName from '../../data/AffixName';
 import EquipType from '@/data/EquipType';
 import { useState ,useRef,useCallback } from 'react';
-import '../../css/simulator.css';
+import '@/css/simulator.scss';
 import axios from 'axios';
 import { Tooltip } from 'react-tooltip'
 import { usePathname } from 'next/navigation';
@@ -648,7 +648,9 @@ function Importer(){
                         </div>
                         <div className='flex flex-col px-2 rounded-md'>
                             <div className='flex flex-row [&>*]:mr-2 my-3 items-baseline max-[400px]:!flex-col'>
-                                <div className='text-right w-[200px] max-[400px]:text-left max-[600px]:w-[120px]'><span className='text-white'>玩家UID :</span></div>
+                                <div className='ImporterFlex'>
+                                    <span className='text-white'>玩家UID :</span>
+                                </div>
                                 <input type='text' placeholder='HSR UID' 
                                         className='h-[40px] max-w-[170px] pl-2 
                                                 bg-inherit text-white outline-none border-b border-white' 
@@ -658,7 +660,7 @@ function Importer(){
                                         autoComplete="off"/>
                             </div>
                             <div className='flex flex-row items-center [&>*]:mr-2 my-3 max-[400px]:!flex-col'>
-                                <div className='text-right w-[200px]  max-[400px]:text-left max-[600px]:w-[120px]'>
+                                <div className='ImporterFlex'>
                                     <span className='text-white whitespace-nowrap'>Characters 腳色:</span>
                                 </div>                       
                                 <div className='flex flex-row items-center'>
@@ -669,7 +671,7 @@ function Importer(){
                                 </div>
                             </div>
                             <div className={`mt-4 [&>*]:mr-2 flex flex-row items-baseline max-[400px]:!flex-col` } >
-                                <div className='text-right w-[200px]  max-[400px]:text-left max-[600px]:w-[120px]'>
+                                <div className='ImporterFlex'>
                                     <span className='text-white whitespace-nowrap'>Affix 有效詞條:</span>
                                 </div>
                                 <div className='flex flex-row items-center'>
@@ -677,7 +679,7 @@ function Importer(){
                                 </div>
                             </div>
                             <div className={`mt-2 [&>*]:mr-2 flex flex-row max-[400px]:!flex-col ${(selfStand.length===0)?'hidden':''}`}>
-                                <div className='text-right w-[200px] max-[400px]:text-left max-[600px]:w-[120px]'>
+                                <div className='ImporterFlex'>
                                     <span className='text-white'>Params 參數:</span>
                                 </div>
                                 <div className='flex flex-row items-baseline'>
@@ -689,7 +691,7 @@ function Importer(){
                                 </div>
                             </div>
                             <div className={`flex flex-row my-3`}>
-                                <div className='w-[200px] text-right max-[400px]:text-left max-[600px]:w-[120px]'>
+                                <div className='ImporterFlex'>
                                     <span className='text-white'>Limit 保底次數:</span>
                                 </div>
                                 <div className='pl-1 flex flex-row items-center'>
@@ -795,8 +797,9 @@ function Importer(){
             <Tooltip id="LimitHint" 
                     place='right-start'
                     render={()=>
-                        <div>
-                            <span>指定詞條們的共享保底次數，最低為2，最高為4</span>
+                        <div className='flex flex-col'>
+                            <span>指定詞條強化保底次數，可以根據個人目前使用強化情況調整</span>
+                            <span>指定詞條們的共享保底次數，最低為2、最高為4</span>
                         </div>
                     }
                     clickable={true}/>

@@ -1,4 +1,29 @@
 @import "tailwindcss";
+
+body{
+    background-color: #4d4c4c;
+    color: #b0acac;
+}
+
+.arrow-down-box::after {
+    content: '';
+    position: absolute;
+    bottom: -10px; /* 箭頭高度的一半往下 */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 10px;
+    background-color: transparent;
+
+    /* 裁切出一個向下的箭頭形狀 */
+    clip-path: polygon(50% 100%, 0 0, 100% 0);
+    @apply bg-stone-600
+}
+
+.MuiChartsLegend-root {
+    display: none !important;
+}
+
 .processBtn {
   @apply text-white border-white border-2 rounded-md px-1;
 }
@@ -41,16 +66,17 @@ button:disabled {
 }
 
 select.graySelect {
-  background-color: inherit;
-  outline: none;
-  border-bottom: 1px solid white;
-  color: white;
+    background-color: inherit;
+    outline: none;
+    border-bottom: 1px solid white;
+    color: white;
+    
+    option{
+          background-color: rgb(36, 36, 36);
+          color: white;
+    }
 }
 
-select.graySelect option {
-  background-color: rgb(36, 36, 36);
-  color: white;
-}
 
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
@@ -74,7 +100,7 @@ input[type="number"]::-webkit-outer-spin-button {
 .hintIcon {
   width: 20px;
   height: 20px;
-  background-color: rgb(36, 35, 35);
+  background-color: rgb(39, 39, 39);
   color: white;
   border-radius: 50px;
   display: flex;
@@ -83,13 +109,14 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 .hide-scrollbar {
-  -ms-overflow-style: none; /* IE 和 Edge（舊） */
-  scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; // IE 和舊 Edge
+    scrollbar-width: none;    // Firefox
+
+    &::-webkit-scrollbar {
+      display: none; // Chrome、Safari、新 Edge
+    }
 }
 
-.hide-scrollbar::-webkit-scrollbar {
-  display: none; /* Chrome、Safari、Edge（新） */
-}
 
 .shadowBox{
     box-shadow: 0 10px 30px #00000080;
@@ -103,4 +130,10 @@ input[type="number"]::-webkit-outer-spin-button {
     @apply max-[800px]:w-4/5 max-[400px]:w-[85%];
 
     @apply max-h-[120px] bg-slate-700 rounded-md p-2 m-2;
+}
+
+.Result{
+    @apply w-full min-w-[300px] mb-5 my-1; 
+    @apply max-[500px]:w-[330px] max-[500px]:flex max-[500px]:flex-col max-[500px]:justify-center; 
+    @apply max-[400px]:w-[95%] max-[800px]:min-w-0 max-[800px]:w-[100vw];
 }

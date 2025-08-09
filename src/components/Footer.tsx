@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import '@/css/footer.css';
+import '@/css/footer.scss';
 
 const Links=[{
     name:"Home",

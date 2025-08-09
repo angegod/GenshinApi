@@ -323,7 +323,7 @@ const StandardSelect=React.memo(()=>{
 
     if(partsIndex!==undefined){
         //依據所選部位 給出不同的選澤
-        let target:AffixListItem=AffixList.find((a)=>a.id===parseInt(partsIndex))!;
+        let target=AffixList.find((a)=>a.id===parseInt(partsIndex)) as AffixListItem;
         //合併所有選項 並且移除重複值
         let mergedArray:string[] = [...new Set([...target.main, ...target.sub])];
         mergedArray=mergedArray.filter((item)=>item!=='生命值'&&item!=='攻擊力'&&item!=='防禦力')
@@ -390,7 +390,7 @@ const StandardSelect=React.memo(()=>{
                 </div>
         )
     }else{
-        return(<></>)
+        return null
     }
 });
 
@@ -431,7 +431,7 @@ const RelicSelect=React.memo(()=>{
             </div>
         )
     }else{
-        return(<></>)
+        return null
     }
 });
 

@@ -8,17 +8,16 @@ import { RelicData_simulate as RelicData } from './RelicData';
 import { StandDetails } from './StandDetails';
 import { PastPreviewList_simulator } from './PastPreviewList';
 import Result from './Result';
-import { findCombinations } from '@/data/combination';
-import '@/css/main.css';
 import SiteContext from '../context/SiteContext';
 import HistoryStore from '@/model/historyStore';
 import characters from '@/data/characters';
 import { Tooltip } from 'react-tooltip';
-
+import '../css/simulator.scss';
 import SubAffixHint from './Hint/SubAffixHint';
 import HintSimulator from './Hint/HintSimulator';
 import HintParams from './Hint/HintParams';
-import {hisoryDataSimulate, historyData, PieNums, Rank, selfStand, selfStandItem, SimulateRelic, SubData, SubDataItem, SubSimulateDataItem} from '../data/RelicData';
+import {hisoryDataSimulate, PieNums, Rank, selfStand, selfStandItem, SimulateRelic, SubData, SubDataItem, SubSimulateDataItem} from '../data/RelicData';
+import HintHistory from './Hint/HintHistory';
 
 function Main(){
     //紀錄版本號
@@ -79,14 +78,15 @@ function Main(){
     //初始化
     function init(){
         showStatus('正在載入過往紀錄中......','process');
-        let initSubData:SubSimulateDataItem[] = SubData;
+        //這邊直接取空陣列 避免出bug
+        let initSubData:SubSimulateDataItem[] = [];
         for(var i=0;i<=3;i++){
             let data:SubSimulateDataItem={
-                index:i, //索引
-                subaffix:"",//詞條種類
-                data:0, //詞條數值
-                count:0, //強化次數
-                isSelect:false //是否指定為共享次數
+                index:i, 
+                subaffix:"",
+                data:0, 
+                count:0, 
+                isSelect:false
             }
 
             initSubData.push(data);
@@ -294,6 +294,7 @@ function Main(){
             limit:limit,
             enchanceCount:enchanceCount
         };
+        console.log(postData);
         //將按鈕disable
         setIsSaveAble(false);
         setProcessBtn(false);
@@ -374,12 +375,16 @@ function Main(){
             <div className='w-4/5 mx-auto mt-3 max-[600px]:w-[90%]'>
                 <div className='flex flex-row flex-wrap'>
                     <div className='w-2/5 bg-[rgba(0,0,0,0.5)] p-2 rounded-md max-[1200px]:w-full'>
-                        <div>
+                        <div className='flex flex-row items-center ml-2 mt-2'>
                             <span className='text-2xl text-red-500 font-bold'>聖遺物重洗模擬</span>
+                            <div className='hintIcon ml-2 overflow-visible' 
+                                data-tooltip-id="ImporterHint">
+                                <span className='text-white'>?</span>
+                            </div>
                         </div>
                         <div>
                             <div className='flex flex-row my-3 items-center'>
-                                <div className='w-[200px] text-right max-[400px]:text-left max-[600px]:w-[120px]'>
+                                <div className='SimulatorFlex'>
                                     <span className='text-white'>Char 腳色:</span>
                                 </div>
                                 <div className='ml-1 flex flex-row items-center'>
@@ -390,7 +395,7 @@ function Main(){
                                 </div>
                             </div>
                             <div className='flex flex-row my-3'>
-                                <div className='w-[200px] text-right max-[400px]:text-left max-[600px]:w-[120px]'>
+                                <div className='SimulatorFlex'>
                                     <span className='text-white'>Parts 部位:</span>
                                 </div>
                                 <div className='ml-1'>
@@ -398,7 +403,7 @@ function Main(){
                                 </div>
                             </div>
                             <div className={`flex flex-row my-3 ${(partsIndex===undefined)?'hidden':''}`}>
-                                <div className='w-[200px] text-right max-[400px]:text-left max-[600px]:w-[120px]'>
+                                <div className='SimulatorFlex'>
                                     <span className='text-white'>Main 主詞條:</span>
                                 </div>
                                 <div className='ml-1'>
@@ -406,7 +411,7 @@ function Main(){
                                 </div>
                             </div>
                             <div className={`flex flex-row my-3 max-[600px]:flex-wrap ${(!MainSelectOptions)?'hidden':''}`}>
-                                <div className='w-[200px] text-right max-[400px]:text-left max-[600px]:w-[120px]'>
+                                <div className='SimulatorFlex'>
                                     <span className='text-white'>Sub 副詞條:</span>
                                 </div>
                                 <div className='flex flex-row max-[600px]:mx-auto'>
@@ -418,13 +423,13 @@ function Main(){
                                 </div>
                             </div>
                             <div className={`flex flex-row my-3 items-center ${(!MainSelectOptions)?'hidden':''}`}>
-                                <div className='w-[200px] text-right max-[400px]:text-left max-[600px]:w-[120px]'>
+                                <div className='SimulatorFlex'>
                                     <span className='text-white'>Affix 有效詞條:</span>
                                 </div>
                                 <StandardSelect />
                             </div>
                             <div className={`flex flex-row my-3 ${(!MainSelectOptions)?'hidden':''}`}>
-                                <div className='w-[200px] text-right max-[400px]:text-left max-[600px]:w-[120px]'>
+                                <div className='SimulatorFlex'>
                                     <span className='text-white'>Limit 保底次數:</span>
                                 </div>
                                 <div className='pl-1 flex flex-row items-center'>
@@ -440,7 +445,7 @@ function Main(){
                                 </div>
                             </div>
                             <div className={`mt-2 [&>*]:mr-2 flex flex-row max-[400px]:!flex-col ${(selfStand.length===0)?'hidden':''}`} >
-                                <div className='text-right w-[200px] max-[600px]:max-w-[120px] max-[400px]:text-left'>
+                                <div className='SimulatorFlex'>
                                     <span className='text-white'>Params 參數:</span>
                                 </div>
                                 <div className='flex flex-row'>
@@ -521,34 +526,7 @@ function Main(){
                         }/>
                 <Tooltip id="HistoryHint"  
                     place="top-start"
-                    render={()=>
-                        <div className='flex flex-col max-w-[250px] p-1'>
-                            <div>
-                                <span className='text-white'>此區塊可以查看過往查詢紀錄，下面為個別功能相關簡述。</span>
-                            </div>
-                            <div className='mt-2 flex flex-col'>
-                                <span className='text-md font-bold text-white'>檢視</span>
-                                <span>可以查看曾經查詢出來的資訊、包括聖遺物、評分標準等</span>
-                            </div>
-                            <div className='mt-2 flex flex-col'>
-                                <div>
-                                    <span className='text-md font-bold text-white'>刪除</span>
-                                </div>
-                                <div>
-                                    <span>刪除該筆紀錄</span>
-                                </div>
-                            </div>
-                            <div className='mt-2 flex flex-col'>
-                                <div>
-                                    <span className='text-md font-bold text-white'>注意事項</span>
-                                </div>
-                                <div className='flex flex-col'>
-                                    <span className='!text-red-500'>"過往紀錄"最多只保留6筆</span>
-                                    <span className='!text-yellow-500'>如果在已有6筆資料的情況再新增，則會從最舊的紀錄開始覆蓋掉</span>
-                                </div>
-                            </div>
-                        </div>
-                    }/>
+                    render={()=><HintHistory/>}/>
                 <Tooltip id="SimulatorHint"
                         place='right-start'
                         render={()=><HintSimulator/>}
@@ -556,7 +534,7 @@ function Main(){
                 <Tooltip id="LimitHint"
                         place='right-start'
                         render={()=>
-                            <div>
+                            <div className='flex flex-col'>
                                 <span>指定詞條強化保底次數，可以根據個人目前使用強化情況調整</span>
                                 <span>指定詞條們的共享保底次數，最低為2、最高為4</span>
                             </div>

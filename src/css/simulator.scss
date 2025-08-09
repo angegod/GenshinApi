@@ -1,0 +1,19 @@
+@use 'variable' as *;
+@import "tailwindcss";
+
+
+.showLock,.showLock-release{
+    position: relative;              /* 讓內部文字能絕對定位或正常對齊 */
+    background-image: url('/image/lock.svg');
+    background-size: 20px 20px;
+    background-repeat: no-repeat;
+    background-position: center;     /* 讓鎖頭居中 */
+    opacity: 0.5;
+}
+
+//simuator布局 讓畫面元素有集中的效果
+.SimulatorFlex,.ImporterFlex{
+    @apply text-right w-[180px] ; 
+    @apply max-[400px]:text-left ;
+    @apply max-[600px]:w-[120px];
+}
