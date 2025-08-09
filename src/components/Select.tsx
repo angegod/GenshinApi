@@ -141,22 +141,33 @@ const SubAffixSelect=({index}:SubAffixSelectProps)=>{
             });
         }
     }
-
+    
     if(MainSelectOptions!==undefined&&MainSelectOptions!=='undefined'&&partsIndex!==undefined){
-        let range:string[]=AffixList.find((s)=>s.id===parseInt(partsIndex))!.sub;
+        let range:string[]=AffixList.find((s)=>s.id===parseInt(partsIndex))?.sub ?? [];
         let options=[<option value={'undefined'} key={`SubaffixUndefined`}>請選擇</option>];
+        //如果被已經被選定了 則也不會出現在選項
+        const filteredRange = range.filter((r) => {
+            if (r === '' || r === 'undefined') return true; // 保留「請選擇」或空值選項
+            if (r === MainSelectOptions) return false; //如果跟主詞條相同
+            const foundIndex = SubData.findIndex((s: SubSimulateDataItem) => s.subaffix === r);
+            if (foundIndex === -1) return true;
+            if (foundIndex === index) return true;
 
-        range.forEach((s,i)=>{
+            return false;
+        });
+
+        //將不必要的options過濾掉後 在顯示出來 會更符合UI設計
+        filteredRange.forEach((s,i)=>{
             options.push(<option value={s} key={`Subaffix${i}`}>{s}</option>)
         });
-        
+
         return(
             <div className='my-1 flex flex-row items-center' key={'SubAffixSelect'+index}>
                 <select defaultValue={SubData[index].subaffix} 
                         onChange={(event)=>updateSubAffix(event.target.value,index)} 
                         className='graySelect'
                         disabled={!isChangeAble}>
-                            {options}
+                        {options}
                 </select>
                 <input type='text' defaultValue={SubData[index].data}
                         onChange={(event)=>setInputValue(event.target.value)}

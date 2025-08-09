@@ -378,7 +378,7 @@ function Main(){
                         <div className='flex flex-row items-center ml-2 mt-2'>
                             <span className='text-2xl text-red-500 font-bold'>聖遺物重洗模擬</span>
                             <div className='hintIcon ml-2 overflow-visible' 
-                                data-tooltip-id="ImporterHint">
+                                data-tooltip-id="SimulatorHint">
                                 <span className='text-white'>?</span>
                             </div>
                         </div>
