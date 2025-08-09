@@ -1,8 +1,9 @@
+@use 'variable' as *;
 @import "tailwindcss";
 
 body{
     background-color: #4d4c4c;
-    color: #b0acac;
+    color: $defaultColor;
 }
 
 .arrow-down-box::after {
@@ -25,25 +26,25 @@ body{
 }
 
 .processBtn {
-  @apply text-white border-white border-2 rounded-md px-1;
-}
-
-.processBtn:hover {
-  color: #f59e0b;
-  border-color: #f59e0b;
+    @apply text-white border-white border-2 rounded-md px-1;
+    
+    &:hover{
+        color: $hoverColor;
+      border-color: $hoverColor;
+    }
 }
 
 .deleteBtn {
-  color: #dc2626;
-  border-color: #dc2626;
-  border-radius: 0.375rem;
-  border-width: 2px;
-}
+    color: $deleteColor;
+    border-color: $deleteColor;
+    border-radius: 0.375rem;
+    border-width: 2px;
 
-.deleteBtn:hover {
-  color: #ef4444;
-  border-color: #ef4444;
-  border-radius: 0.375rem;
+    &:hover{
+        color: $deleteHoverColor;
+        border-color: $deleteHoverColor;
+        border-radius: 0.375rem;
+    }
 }
 
 .hiddenScrollBar {
@@ -61,8 +62,8 @@ button:disabled {
 
 .linedHref{
   cursor: pointer;
-  color:orange;
-  border-bottom: 1px solid orange;
+  color:$hoverColor;
+  border-bottom: 1px solid $hoverColor;
 }
 
 select.graySelect {
