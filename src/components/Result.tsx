@@ -15,7 +15,7 @@ const Result = React.memo(() => {
                     <div className='flex flex-col w-fit max-[500px]:mx-auto'>
                         <div className={`${(ExpRate !== undefined) ? '' : 'hidden'} mt-2 flex flex-row items-center`}>     
                             <div className='text-white flex flex-row'>
-                                <span>遺器評級:</span>
+                                <span>聖遺物評級:</span>
                                 <span style={{ color: Rrank.color }} className='pl-2'>{Rrank.rank} &nbsp; {Rscore}/100 </span>
                             </div>
                             <div className='hintIcon ml-1 overflow-visible' data-tooltip-id="ScoreHint">
@@ -42,7 +42,7 @@ const Result = React.memo(() => {
                         render={()=>
                             <div className='flex flex-col max-w-[250px] p-1'>
                                 <span className='text-white'>此機率代表的是在所有組合中評分超過目前組合的機率</span>
-                                <span className='mt-1 text-yellow-500'>此數值可能存在些許誤差，尤其副詞條包含速度</span>
+                                <span className='mt-1 text-yellow-500'>此數值可能存在些許誤差，僅供參考。</span>
                             </div>
                         }/>
                     <Tooltip id="ScoreHint"  

@@ -14,7 +14,7 @@ import { useRouter } from 'next/navigation';
 import { Tooltip } from 'react-tooltip';
 import HintEnchant from '@/components/Hint/HintEnchant';
 import { EnchantData, MinMaxScore, RelicBackup, SimulatorData, Statics } from '@/data/interface/Enchant';
-import { PieNums, Rank, RelicScoreStand, standDetailItem, SubDataItem, SubSimulateDataItem } from '@/data/RelicData';
+import { PieNums, Rank, RelicScoreStand, standDetailItem, SubData, SubDataItem, SubSimulateDataItem } from '@/data/RelicData';
 import { JSX } from 'react/jsx-runtime';
 
 //此物件為單次模擬隨機強化後的結果
@@ -68,6 +68,13 @@ const Enchant=React.memo(()=>{
         let simulateData = getEnchantData();
         //偵測初始化數據是否帶有指定屬性
         if(simulateData.relic !== undefined){
+            if(mode!=="Importer"){
+                let AffixCount = 0;
+                let subArr = simulateData.relic.subaffix as SubSimulateDataItem[];
+                subArr.forEach((s)=>AffixCount+=s.count);
+                console.log(AffixCount);
+                (AffixCount===5)?setAffixCount(4):setAffixCount(3);
+            }
             setData(simulateData);
             setLimit(simulateData.limit);
 

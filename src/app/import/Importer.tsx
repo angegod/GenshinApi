@@ -42,7 +42,9 @@ function Importer(){
     const [relic,setRelic]=useState();
     const [relicIndex,setRelicIndex] = useState<number>(0);
     
+    //顯示資訊
     const [limit,setLimit]=useState<number>(2);
+    const showLimit = useRef(2);
 
     //期望值、儀器分數、評級、圖表資料、以及 切換成3詞條或4詞條模擬模式
     const [ExpRate,setExpRate]=useState<number | undefined>(undefined);
@@ -110,6 +112,11 @@ function Importer(){
             setIsChangeAble(true);
         }
     },[RelicDataArr,relicIndex,AffixCount]);
+
+    //防止使用者更改資料後想要再儲存 而儲存到錯誤資訊
+    useEffect(()=>{
+        setIsSaveAble(false);
+    },[charID,limit,userID])
 
     function init(){
         //標記歷史紀錄尚未處理完
@@ -260,14 +267,6 @@ function Importer(){
     async function process(relicArr:any,standard:selfStand,limit:number){
         let temparr = [];
         
-        //檢查加權標準
-        /*standard.forEach((s)=>{
-            if(s.value===''){
-                updateStatus('加權指數不可為空或其他非法型式','error');
-                return;
-            }
-        });*/
-
         //針對三詞條跟四詞條分別進行一次模擬
         //對應到強化次數4次跟5次
         for (const r of relicArr) {
@@ -282,7 +281,6 @@ function Importer(){
             
             temparr.push(calData);
         }
-        console.log(temparr);
         //如果是剛查詢完的 則改成可以儲存
         if(temparr.length === 0){
             updateStatus("該腳色身上的聖遺物不符合重洗條件!!","default");
@@ -292,9 +290,9 @@ function Importer(){
         }
         setRelicDataArr(temparr);
         RelicDataArrRef.current=temparr;
+        showLimit.current = limit;
         
         setIsSaveAble(true);
-       
     }
 
     //切換成3詞條或4詞條模擬模式
@@ -328,6 +326,7 @@ function Importer(){
             setRelicDataArr([...data.dataArr]);
             setRelicIndex(0);
             setLimit(data.limit);
+            showLimit.current=data.limit;
             setAffixCount(3);
             setIsSaveAble(false);
             updateStatus('資料顯示完畢',"success"); 
@@ -398,7 +397,8 @@ function Importer(){
                         dataArr:RelicDataArrRef.current,
                         avgScore:avgScore,
                         avgRank:avgRank,
-                        avgRate:avgRate
+                        avgRate:avgRate,
+                        limit:showLimit.current
                     };
     
                     let oldHistory=JSON.parse(JSON.stringify(getHistory()));
@@ -481,7 +481,6 @@ function Importer(){
                 limit:limit,
                 enchanceCount:enchanceCount
             };
-            console.log(postData);
             
             if(isCheck){
                 showStatus('數據計算處理中......','process');
@@ -537,6 +536,11 @@ function Importer(){
             return;
         }
 
+        if(limit>4||limit<2){
+            updateStatus("保底次數有誤!!","error");
+            return;
+        }
+
         //計算平均分數與平均機率
         let sum = 0;
         let sum2 = 0;
@@ -579,7 +583,7 @@ function Importer(){
             avgScore:avgScore,
             avgRank:avgRank,
             avgRate:avgRate,
-            limit:limit
+            limit:showLimit.current
         };
 
         //針對原紀錄做深拷貝
@@ -608,7 +612,7 @@ function Importer(){
         RelicDataArr:RelicDataArr,
         relicIndex:relicIndex,
         isLoad:isLoad,
-        limit:limit,
+        limit:showLimit.current,
         mode:"Importer",
         button:true,
 
@@ -651,7 +655,7 @@ function Importer(){
                                 <div className='ImporterFlex'>
                                     <span className='text-white'>玩家UID :</span>
                                 </div>
-                                <input type='text' placeholder='HSR UID' 
+                                <input type='text' placeholder='Genshin UID' 
                                         className='h-[40px] max-w-[170px] pl-2 
                                                 bg-inherit text-white outline-none border-b border-white' 
                                         id="userId"
