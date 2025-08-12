@@ -228,7 +228,7 @@ function Importer(){
                     setIsChangeAble(true);
                     break;
                 case 803:
-                    updateStatus('該聖遺物非五星遺器，請選擇部位為五星強化滿等之聖遺物','error');
+                    updateStatus('該聖遺物非五星聖遺物，請選擇部位為五星強化滿等之聖遺物','error');
                     setIsChangeAble(true);
                     break;
                 case 804:
@@ -782,11 +782,11 @@ function Importer(){
                     place="top-start"
                     render={()=>
                         <div className='flex flex-col [&>span]:text-white max-w-[250px] p-1'>
-                            <span>下方會顯示出該腳色符合條件的所有遺器</span>
-                            <span>點選遺器即可查看個別資訊</span>
+                            <span>下方會顯示出該腳色符合條件的所有聖遺物</span>
+                            <span>點選聖遺物即可查看個別資訊</span>
                             <div className='mt-2 flex flex-col'>
                                 <span className='text-white font-bold'>注意事項</span>
-                                <span className='!text-red-600 font-bold'>僅顯示符合條件的五星滿等遺器遺器</span>
+                                <span className='!text-red-600 font-bold'>僅顯示符合條件的五星滿等聖遺物</span>
                             </div>
                         </div>
                     }/>

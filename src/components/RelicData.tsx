@@ -194,7 +194,7 @@ const RelicData_simulate=()=>{
         return(
             <div className={`w-[100%] my-1 max-[500px]:min-w-[250px]`}>
                 <div className='flex flex-row items-center'>
-                    <span className='text-red-600 text-lg font-bold'>遺器資訊</span>
+                    <span className='text-red-600 text-lg font-bold'>聖遺物資訊</span>
                     <div className='hintIcon ml-2 overflow-visible'
                         data-tooltip-id="RelicDataHint">
                         <span className='text-white'>?</span>
