@@ -4,7 +4,7 @@ function HintImporter(){
             <h2 className='text-red-600 font-bold text-lg'>使用說明</h2>
             <ul className='[&>li]:text-stone-400 list-decimal [&>li]:ml-2 max-[400px]:[&>li]:text-sm'>
                 <li>此工具會根據玩家放在展示框的12個腳色身上的聖遺物做數據分析</li>
-                <li>翻盤機率是指該聖遺物透過啟示之塵後分數變高的機率為何</li>
+                <li>翻盤機率是指該聖遺物透過啟聖之塵後分數變高的機率為何</li>
                 <li>目前該工具只支援計算五星強化至滿等聖遺物</li>
                 <li>此工具相關數據或算法仍有更改的可能，敬請見諒!</li>
                 <li>如果發現服務頻繁發生錯誤，可以先暫時使用simulator。</li>

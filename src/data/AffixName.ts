@@ -14,7 +14,7 @@ let AffixName:AffixItem[]=[{
     type:'hp',
     name:'生命值',
     percent:false,
-    range:[209,239,269,299],
+    range:[209.13,239,269.88,298.75],
     isMain:false
 },{
     fieldName:'FIGHT_PROP_HP_PERCENT',
@@ -22,7 +22,7 @@ let AffixName:AffixItem[]=[{
     type:'hp',
     name:'生命值%數',
     percent:true,
-    range:[4.1,4.7,5.3,5.8],
+    range:[4.08,4.66,5.25,5.83],
     isMain:false
 },{
     fieldName:'FIGHT_PROP_DEFENSE',
@@ -30,7 +30,7 @@ let AffixName:AffixItem[]=[{
     type:'def',
     name:'防禦力',
     percent:false,
-    range:[16,19,21,23],
+    range:[16.2,18.52,20.83,23.15],
     isMain:false
 },{
     fieldName:'FIGHT_PROP_DEFENSE_PERCENT',
@@ -46,7 +46,7 @@ let AffixName:AffixItem[]=[{
     type:'atk',
     name:'攻擊力',
     percent:false,
-    range:[16,19,21,23],
+    range:[13.62,15.56,17.51,19.45],
     isMain:false
 },{
     fieldName:'FIGHT_PROP_ATTACK_PERCENT',
@@ -54,7 +54,7 @@ let AffixName:AffixItem[]=[{
     type:'atk',
     name:'攻擊力%數',
     percent:true,
-    range:[4.1,4.7,5.3,5.8],
+    range:[4.08,4.66,5.25,5.83],
     isMain:false
 },{
     fieldName:'FIGHT_PROP_ELEMENT_MASTERY',
@@ -62,14 +62,14 @@ let AffixName:AffixItem[]=[{
     type:'elem',
     name:'元素精通',
     percent:false,
-    range:[16,19,21,23]
+    range:[16.32,18.65,20.98,23.31]
 },{
     fieldName:'FIGHT_PROP_CHARGE_EFFICIENCY',
     icon:'IconChargeEfficiency',
     type:'charge',
     name:'元素充能效率',
     percent:true,
-    range:[4.5,5.2,5.8,6.5],
+    range:[4.53,5.18,5.83,6.48],
     isMain:false
 },{
     fieldName:'FIGHT_PROP_CRITICAL',
@@ -77,7 +77,7 @@ let AffixName:AffixItem[]=[{
     type:'crit_rate',
     name:'暴擊率',
     percent:true,
-    range:[2.7,3.1,3.5,3.9],
+    range:[2.72,3.11,3.50,3.89],
     isMain:false
 },{
     fieldName:'FIGHT_PROP_CRITICAL_HURT',
@@ -85,7 +85,7 @@ let AffixName:AffixItem[]=[{
     type:'crit_dmg',
     name:'暴擊傷害',
     percent:true,
-    range:[5.4,6.2,7.0,7.8],
+    range:[5.44,6.22,6.99,7.77],
     isMain:false
 },{
     fieldName:'FIGHT_PROP_FIRE_ADD_HURT',

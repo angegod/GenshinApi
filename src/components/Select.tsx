@@ -7,6 +7,7 @@ import { Tooltip } from 'react-tooltip';
 import { AffixListItem, RelicDataItem, selfStand, selfStandItem, SubSimulateDataItem } from '@/data/RelicData';
 import Select, { SingleValue, ActionMeta } from 'react-select';
 import dynamic from "next/dynamic";
+import zIndex from '@mui/material/styles/zIndex';
 const LazyImage = dynamic(() => import("./LazyImage"), { ssr: false });
 
 //部位選擇器
@@ -158,7 +159,7 @@ const SubAffixSelect=({index}:SubAffixSelectProps)=>{
 
         //將不必要的options過濾掉後 在顯示出來 會更符合UI設計
         filteredRange.forEach((s,i)=>{
-            options.push(<option value={s} key={`Subaffix${i}`}>{s}</option>)
+            options.push(<option value={s} key={`Subaffix${s}`}>{s}</option>)
         });
 
         return(
@@ -234,6 +235,7 @@ const CharSelect = React.memo(() => {
         menu: (provided: any) => ({
             ...provided,
             backgroundColor: 'rgb(36, 36, 36)',
+            zIndex:20
         })
     };
 
