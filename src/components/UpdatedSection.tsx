@@ -8,13 +8,13 @@ export const UpdatedSection = () => {
     const data = updateDetails;
 
     useEffect(() => {
-        /*const storedValue = localStorage.getItem(data.updateType);
+        const storedValue = localStorage.getItem(data.updateType);
 
         // 如果沒存過 或 存的 updateKey 不同 → 顯示公告
         if (!storedValue || storedValue !== data.updateKey) {
             setShow(true);
-        }*/
-       setShow(true);
+        }
+       //setShow(true);
     }, [data]);
 
     const handleClose = () => {

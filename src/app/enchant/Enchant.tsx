@@ -65,8 +65,7 @@ const Enchant=React.memo(()=>{
     //初始化
     useEffect(()=>{
         let simulateData = getEnchantData();
-
-        if(!simulateData){
+        if(!simulateData ||Object.keys(simulateData).length === 0){
             alert('沒有任何模擬數據，即將導回至主頁');
             router.push('./');
         }else{
@@ -79,7 +78,7 @@ const Enchant=React.memo(()=>{
     useEffect(()=>{
         //偵測初始化數據是否帶有指定屬性
         if(data !== undefined){
-            if(mode!=="Importer"){
+            if(mode==="Simulator"){
                 let AffixCount = 0;
                 let subArr = data.relic.subaffix as SubSimulateDataItem[];
                 subArr.forEach((s)=>AffixCount+=s.count);
