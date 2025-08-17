@@ -24,6 +24,7 @@ import HintImporter from '@/components/Hint/HintImporter';
 import HintStandDetails from '@/components/Hint/HintStandDetails';
 import HintParams from '@/components/Hint/HintParams';
 import { AffixItem, PieNums, Rank, RelicDataArr, RelicDataItem, Stand, selfStand, selfStandItem, sendData, SubData, SubDataItem, historyData } from '@/data/RelicData';
+import { UpdatedSection } from '@/components/UpdatedSection';
 
 
 function Importer(){

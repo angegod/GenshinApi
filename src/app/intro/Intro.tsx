@@ -6,7 +6,7 @@ function Intro(){
     //之後intro頁面可能會改成json控管
     return(
         <div className='w-4/5 mx-auto'>
-            <div className='intro p-[1rem] mb-3 rounded-md [&>div]:my-1 w-1/2 flex flex-col justify-around max-[1000px]:!w-[95%] max-[800px]:h-fit'>
+            <div className='intro p-[1rem] mb-3 rounded-md [&>div]:my-2 w-1/2 flex flex-col justify-around max-[1000px]:!w-[95%] max-[800px]:h-fit'>
                 <div className='flex flex-col'>
                     <span className='text-2xl text-red-500 font-bold'>常見Q&A</span>
                     <span className='text-white'>這裡列出比較常見的幾個問題，如果有其他問題也歡迎利用巴哈私訊我</span>
@@ -33,8 +33,8 @@ function Intro(){
                                 className='inline'/>
                     </div>
                     <div>
-                        <span className='text-white'>A:原神雖然自定義聖遺物道具，但成本昂貴且素材不能隨時取得，更何況使用後也不能保證獲得高品質的聖遺物。</span>
-                        <span className='text-white flex flex-row items-center'>這個道具使用得當，可以有效降低培養成本。</span>
+                        <span className='text-white'>A:原神雖然有自定義聖遺物道具，但成本昂貴且素材不能隨時取得，更何況使用後也不能保證獲得高品質的聖遺物。</span>
+                        <span className='text-white flex flex-row items-center'>啟聖之塵使用得當，可以有效降低培養成本。</span>
                     </div>
                 </div>
                 <div className="flex flex-col [&>div]:my-1 ">
@@ -58,10 +58,10 @@ function Intro(){
                                     alt="Good.png" width={25} height={25}/>
                     </div>
                     <div className='flex flex-col'>
-                        <p className='text-white'>A:啟聖之塵的獲得方式仍相當稀少，目前僅有以下幾種管道：</p>
+                        <p className='text-white'>A:啟聖之塵的獲得方式相當稀少，目前僅有以下幾種管道：</p>
                         <ol className='[&>li]:text-stone-400'>
-                            <li><strong className='text-amber-600'>幽境危戰：</strong>最主要的獲得來源，打過難度五且累積1200樹酯消耗可以獲得3根羽毛</li>
-                            <li><strong className='text-amber-600'>大月卡購買：</strong>珍珠紀行跟珍珠之歌兩者購買可以均獲得一根</li>
+                            <li><strong className='text-amber-600'>幽境危戰：</strong>最主要的獲得來源，打過指定難度或累積1200樹酯消耗可以獲得最多3根羽毛</li>
+                            <li><strong className='text-amber-600'>大月卡購買：</strong>珍珠紀行跟珍珠之歌兩者購買可以均獲得1根</li>
                         </ol>                   
                     </div>
                 </div>
