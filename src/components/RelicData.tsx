@@ -29,6 +29,7 @@ const RelicData=()=>{
             mode:mode
         }
         setEnchantData(sendData);
+        console.log(sendData);
         
         router.push('./enchant');
     }

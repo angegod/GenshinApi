@@ -383,7 +383,7 @@ function Main(){
                             </div>
                         </div>
                         <div>
-                            <div className='flex flex-row my-3 items-center'>
+                            <div className='flex flex-row my-3 items-center max-[400px]:!flex-col max-[600px]:items-baseline'>
                                 <div className='SimulatorFlex'>
                                     <span className='text-white'>Char 腳色:</span>
                                 </div>
@@ -394,7 +394,7 @@ function Main(){
                                     </div>
                                 </div>
                             </div>
-                            <div className='flex flex-row my-3'>
+                            <div className='flex flex-row my-3 max-[400px]:!flex-col'>
                                 <div className='SimulatorFlex'>
                                     <span className='text-white'>Parts 部位:</span>
                                 </div>
@@ -402,7 +402,7 @@ function Main(){
                                     <PartSelect />
                                 </div>
                             </div>
-                            <div className={`flex flex-row my-3 ${(partsIndex===undefined)?'hidden':''}`}>
+                            <div className={`flex flex-row my-3 ${(partsIndex===undefined)?'hidden':''} max-[400px]:!flex-col`}>
                                 <div className='SimulatorFlex'>
                                     <span className='text-white'>Main 主詞條:</span>
                                 </div>
@@ -410,7 +410,7 @@ function Main(){
                                     <MainAffixSelect />
                                 </div>
                             </div>
-                            <div className={`flex flex-row my-3 max-[600px]:flex-wrap ${(!MainSelectOptions)?'hidden':''}`}>
+                            <div className={`flex flex-row my-3 max-[600px]:flex-wrap ${(!MainSelectOptions)?'hidden':''} max-[400px]:!flex-col`}>
                                 <div className='SimulatorFlex'>
                                     <span className='text-white'>Sub 副詞條:</span>
                                 </div>
@@ -422,13 +422,13 @@ function Main(){
                                     </div>
                                 </div>
                             </div>
-                            <div className={`flex flex-row my-3 items-center ${(!MainSelectOptions)?'hidden':''}`}>
+                            <div className={`flex flex-row my-3 items-center ${(!MainSelectOptions)?'hidden':''} max-[400px]:!flex-col max-[600px]:items-baseline`}>
                                 <div className='SimulatorFlex'>
                                     <span className='text-white'>Affix 有效詞條:</span>
                                 </div>
                                 <StandardSelect />
                             </div>
-                            <div className={`flex flex-row my-3 ${(!MainSelectOptions)?'hidden':''}`}>
+                            <div className={`flex flex-row my-3 ${(!MainSelectOptions)?'hidden':''} max-[400px]:!flex-col`}>
                                 <div className='SimulatorFlex'>
                                     <span className='text-white'>Limit 保底次數:</span>
                                 </div>
@@ -444,7 +444,7 @@ function Main(){
                                     </div>
                                 </div>
                             </div>
-                            <div className={`mt-2 [&>*]:mr-2 flex flex-row max-[400px]:!flex-col ${(selfStand.length===0)?'hidden':''}`} >
+                            <div className={`mt-2 [&>*]:mr-2 flex flex-row max-[400px]:!flex-col ${(selfStand.length===0)?'hidden':''} max-[400px]:!flex-col`} >
                                 <div className='SimulatorFlex'>
                                     <span className='text-white'>Params 參數:</span>
                                 </div>

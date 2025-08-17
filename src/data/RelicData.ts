@@ -86,29 +86,29 @@ export interface ImporterContextType {
 
 //歷史資料
 export interface historyData{
-    version:string,
-    calDate:string,
-    userID:string,
-    char:characters,
-    dataArr:RelicDataArr,
-    avgScore:number,
-    avgRank:Rank|undefined,
-    avgRate:number,
-    limit:number
+    version:string,       //歷史紀錄版本
+    calDate:string,       //紀錄創建日期
+    userID:string,        //查詢對象玩家UID
+    char:characters,      //腳色
+    dataArr:RelicDataArr, //遺器資料陣列
+    avgScore:number,      //平均分數
+    avgRank:Rank|undefined, //平均分數評級
+    avgRate:number,         //平均機率
+    limit:number            //強化保底次數
 }
 
 export interface hisoryDataSimulate{
-    version:number,
-    char:characters,
-    part:string,
-    mainaffix:string,
-    expRate:number,
-    score:string,
-    rank:Rank,
-    pieData:PieNums,
-    stand:selfStand,
-    relic:any,
-    limit:number
+    version:number,   //歷史紀錄版本
+    char:characters,  //對應的腳色
+    part:string,      //部位
+    mainaffix:string, //主詞條名稱
+    expRate:number,   //期望機率
+    score:string,     //聖遺物分數
+    rank:Rank,        //評分   
+    pieData:PieNums,  //圓餅圖相關資料
+    stand:selfStand,  //標準加權配置
+    relic:any,        //遺器資料
+    limit:number      //強化保底次數
 }
 
 //selfstand
@@ -131,25 +131,25 @@ export interface SubDataItem{
 }
 
 export interface SubSimulateDataItem{
-    index:number
-    name?:string, 
-    subaffix:string,
-    data:number,//詞條數值,
-    count:number,
-    display?:string,
-    isSelect:boolean    
+    index:number     //詞條索引值 代表是第幾個副詞條
+    name?:string,    //
+    subaffix:string, //副詞條名稱
+    data:number,     //詞條數值,
+    count:number,    //強化次數
+    display?:string, //對應數值
+    isSelect:boolean //是否被指定為保底詞條   
 }
 
 export type SubData = SubDataItem[]|SubSimulateDataItem[];
 
 export interface AffixItem {
-    fieldName: string;
-    icon: string;
-    type: string;
-    name: string;
-    percent: boolean;
-    range?: number[];    
-    isMain?: boolean;   
+    fieldName: string;  //專屬名稱
+    icon: string;       //圖片logo位置 暫時不會用到這個
+    type: string;       //詞條種類
+    name: string;       //詞條名稱
+    percent: boolean;   //是否需要帶%數
+    range?: number[];   //副詞條可能數值範圍 
+    isMain?: boolean;   //是否只出現在主詞條中
 }
 
 export interface AffixListItem {
@@ -175,8 +175,8 @@ export interface sendData{
 
 //計算總共有幾個詞條
 export interface caltype{
-    type:string,
-    affixmutl:number
+    type:string,       //詞條種類名稱
+    affixmutl:number   //對應有效詞條名稱
 }
 
 

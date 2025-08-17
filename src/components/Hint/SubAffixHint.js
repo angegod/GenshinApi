@@ -5,7 +5,7 @@ function SubAffixHint(){
                 </div>
                 <div className='[&>span]:text-stone-400 flex flex-col'>
                     <span>根據聖遺物現有狀況</span>
-                    <span>依序輸入詞條種類、詞條數值、強化次數</span>
+                    <span>依序輸入詞條種類、詞條數值、強化次數以及是否指定</span>
                     <span className='!text-yellow-500'>詞條數值不用輸入%</span>
                     <span className='!text-yellow-500'>如果該詞條沒有被強化過，則強化次數打上0即可</span>
                 </div>

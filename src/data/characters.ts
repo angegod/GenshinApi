@@ -720,6 +720,13 @@ let characters:characters[]= [
         "cn_name": "塔利雅",
         "element": "Water",
         "rarity": 4
+    },
+    {
+        "charId": "10000116",
+        "name": "Ineffa",
+        "cn_name": "伊涅芙",
+        "element": "Electric",
+        "rarity": 5
     }
 ];
 

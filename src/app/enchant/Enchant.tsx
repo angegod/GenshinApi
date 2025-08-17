@@ -62,28 +62,32 @@ const Enchant=React.memo(()=>{
     //最高與最低分
     const [MinMaxScore,setMinMaxScore] = useState<MinMaxScore>({min:undefined,max:undefined});
 
-
     //初始化
     useEffect(()=>{
         let simulateData = getEnchantData();
-        //偵測初始化數據是否帶有指定屬性
-        if(simulateData.relic !== undefined){
-            if(mode!=="Importer"){
-                let AffixCount = 0;
-                let subArr = simulateData.relic.subaffix as SubSimulateDataItem[];
-                subArr.forEach((s)=>AffixCount+=s.count);
-                console.log(AffixCount);
-                (AffixCount===5)?setAffixCount(4):setAffixCount(3);
-            }
-            setData(simulateData);
-            setLimit(simulateData.limit);
 
-        }
-        else{
+        if(!simulateData){
             alert('沒有任何模擬數據，即將導回至主頁');
             router.push('./');
-        }
+        }else{
+            setData(simulateData);
+            setLimit(simulateData.limit);
+        }  
     },[])
+
+
+    useEffect(()=>{
+        //偵測初始化數據是否帶有指定屬性
+        if(data !== undefined){
+            if(mode!=="Importer"){
+                let AffixCount = 0;
+                let subArr = data.relic.subaffix as SubSimulateDataItem[];
+                subArr.forEach((s)=>AffixCount+=s.count);
+                (AffixCount===5)?setAffixCount(4):setAffixCount(3);
+            }
+        }
+       
+    },[data])
 
 
     //必須有data 才能計算
