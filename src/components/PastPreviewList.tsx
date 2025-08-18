@@ -30,6 +30,11 @@ const PastPreviewList=React.memo(()=>{
             <div className='flex flex-col'>
                 <span className='text-stone-300'>這裡沒有任何操作過的紀錄!!</span>
                 <span className='text-stone-300'>如果是初次使用的話不妨看看下面簡單的Q&A，能夠更加了解系統</span>
+                <div className='justify-start py-1'>
+                    <Link href={introPath} className='text-center'>
+                            <button className='linedHref'>&rarr;點我了解</button>
+                    </Link>
+                </div>
             </div>
         )
     }
@@ -60,6 +65,11 @@ const PastPreviewList_simulator=React.memo(()=>{
                 <div className='flex flex-col'>
                     <span className='text-stone-300'>這裡沒有任何操作過的紀錄!!</span>
                     <span className='text-stone-300'>如果是初次使用的話不妨看看下面簡單的Q&A，能夠更加了解系統</span>
+                    <div className='justify-start py-1'>
+                        <Link href={introPath} className='text-center'>
+                             <button className='linedHref'>&rarr;點我了解</button>
+                        </Link>
+                    </div>
                 </div> 
         )
     }

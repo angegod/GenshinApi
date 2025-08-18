@@ -33,9 +33,7 @@ export const UpdatedSection = () => {
                 </div>
                 <ul className="list-decimal ml-6 space-y-1">
                     {data.updateContent.map((d, i) => (
-                        <li key={i} className="text-white">
-                        {d}
-                        </li>
+                        <li key={i} className="text-white">{d}</li>
                     ))}
                 </ul>
 

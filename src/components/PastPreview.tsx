@@ -89,11 +89,11 @@ const PastPreview_simulator=React.memo(({index,data}:PastPrevieSimulatewProps)=>
             <div className='flex flex-col min-w-[200px] max-[900px]:min-w-[150px]'>
                 <div className='PastPreviewSection'>
                     <span className='PastPreviewTitle'>部位:</span>
-                    <span>{data.part}</span>
+                    <span className='text-white'>{data.part}</span>
                 </div>
                 <div className='PastPreviewSection'>
                     <span className='PastPreviewTitle'>主詞條:</span>
-                    <span>{data.mainaffix}</span>
+                    <span className='text-white'>{data.mainaffix}</span>
                 </div>
                 <div className='PastPreviewSection'>
                     <span className='PastPreviewTitle'>期望機率:</span>
@@ -131,6 +131,6 @@ function formatRelativeDate(dateString:string):string {
         String(date.getMonth() + 1).padStart(2, "0")
     }/${String(date.getDate()).padStart(2, "0")}`;
 
-    return `${relative}`;
+    return `${formattedDate}`;
 }
 export {PastPreview,PastPreview_simulator};
