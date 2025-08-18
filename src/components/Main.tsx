@@ -18,6 +18,7 @@ import HintSimulator from './Hint/HintSimulator';
 import HintParams from './Hint/HintParams';
 import {hisoryDataSimulate, PieNums, Rank, selfStand, selfStandItem, SimulateRelic, SubData, SubDataItem, SubSimulateDataItem} from '../data/RelicData';
 import HintHistory from './Hint/HintHistory';
+import updateDetailsWindow from '@/model/updateDetailsStatus';
 
 function Main(){
     //紀錄版本號
@@ -66,6 +67,9 @@ function Main(){
 
     //獲取操作歷史紀錄的function
     const {setHistory,getHistory,addHistory,deleteHistory,limitHistory} = HistoryStore();
+
+    //獲取更新紀錄狀態function
+    const openWindow = updateDetailsWindow((state) => state.openWindow);
 
     //是否記錄初始化完畢
     const [isLoad,setIsLoad] = useState(false);
@@ -377,6 +381,9 @@ function Main(){
                     <div className='w-2/5 bg-[rgba(0,0,0,0.5)] p-2 rounded-md max-[1200px]:w-full'>
                         <div className='flex flex-row items-center ml-2 mt-2'>
                             <span className='text-2xl text-red-500 font-bold'>聖遺物重洗模擬</span>
+                            <div className='pl-2' onClick={()=>openWindow()}>
+                                <span className='text-white underline cursor-pointer'>最新更新</span>
+                            </div>
                             <div className='hintIcon ml-2 overflow-visible' 
                                 data-tooltip-id="SimulatorHint">
                                 <span className='text-white'>?</span>

@@ -25,6 +25,7 @@ import HintStandDetails from '@/components/Hint/HintStandDetails';
 import HintParams from '@/components/Hint/HintParams';
 import { AffixItem, PieNums, Rank, RelicDataArr, RelicDataItem, Stand, selfStand, selfStandItem, sendData, SubData, SubDataItem, historyData } from '@/data/RelicData';
 import { UpdatedSection } from '@/components/UpdatedSection';
+import updateDetailsWindow from '@/model/updateDetailsStatus';
 
 
 function Importer(){
@@ -68,6 +69,9 @@ function Importer(){
     //獲取操作歷史紀錄的function
     const {setHistory,getHistory,addHistory,deleteHistory,resetHistory,limitHistory} = HistoryStore();
     const [isLoad,setIsLoad] = useState<boolean>(false);
+
+    //獲取更新紀錄狀態function
+    const openWindow = updateDetailsWindow((state) => state.openWindow);
 
     //自訂義標準
     const [selfStand,setSelfStand]=useState<selfStand>([]);
@@ -646,6 +650,9 @@ function Importer(){
                     <div className='flex flex-col w-2/5 bg-[rgba(0,0,0,0.5)] rounded-md max-[1250px]:w-[100%] test'>
                         <div className='flex flex-row items-center ml-2 mt-2'>
                             <h1 className='text-red-600 font-bold text-2xl'>聖遺物重洗匯入</h1>
+                            <div className='pl-2' onClick={()=>openWindow()}>
+                                <span className='text-white underline cursor-pointer'>最新更新</span>
+                            </div>
                             <div className='hintIcon ml-2 overflow-visible' 
                                 data-tooltip-id="ImporterHint">
                                 <span className='text-white'>?</span>

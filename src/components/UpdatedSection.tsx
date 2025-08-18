@@ -2,27 +2,30 @@
 
 import { useEffect, useState } from "react";
 import updateDetails from "@/data/updateDetail";
+import updateDetailsWindow from "@/model/updateDetailsStatus";
 
 export const UpdatedSection = () => {
-    const [show, setShow] = useState<boolean>(false);
+    const status = updateDetailsWindow((state) => state.status); // 監聽狀態
+    const openWindow = updateDetailsWindow((state) => state.openWindow);
+    const closeWindow = updateDetailsWindow((state) => state.closeWindow);
+
     const data = updateDetails;
 
     useEffect(() => {
         const storedValue = localStorage.getItem(data.updateType);
 
-        // 如果沒存過 或 存的 updateKey 不同 → 顯示公告
+        // 如果沒存過 或 updateKey 不同 → 顯示公告
         if (!storedValue || storedValue !== data.updateKey) {
-            setShow(true);
+            openWindow();
         }
-       //setShow(true);
-    }, [data]);
+    }, [data, openWindow]);
 
     const handleClose = () => {
-        setShow(false);
+        closeWindow();
         localStorage.setItem(data.updateType, data.updateKey);
     };
 
-    if (!show) return null;
+    if (!status) return null;
 
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
