@@ -376,17 +376,17 @@ function Main(){
     
     return(
         <SiteContext.Provider value={MainStatus}>
-            <div className='w-4/5 mx-auto mt-3 max-[600px]:w-[90%]'>
+            <div className='w-4/5 mx-auto max-[600px]:w-[90%]'>
                 <div className='flex flex-row flex-wrap'>
-                    <div className='w-2/5 bg-[rgba(0,0,0,0.5)] p-2 rounded-md max-[1200px]:w-full'>
+                    <div className='w-2/5 bg-[rgba(0,0,0,0.5)] rounded-md max-[1200px]:w-full'>
                         <div className='flex flex-row items-center ml-2 mt-2'>
                             <span className='text-2xl text-red-500 font-bold'>聖遺物重洗模擬</span>
-                            <div className='pl-2' onClick={()=>openWindow()}>
-                                <span className='text-white underline cursor-pointer'>最新更新</span>
-                            </div>
                             <div className='hintIcon ml-2 overflow-visible' 
                                 data-tooltip-id="SimulatorHint">
                                 <span className='text-white'>?</span>
+                            </div>
+                            <div className='relative ml-auto mr-3' onClick={()=>openWindow()}>
+                                <span className='text-white underline cursor-pointer'>最新更新</span>
                             </div>
                         </div>
                         <div>

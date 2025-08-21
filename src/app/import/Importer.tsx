@@ -647,15 +647,15 @@ function Importer(){
         <div className='flex flex-col w-4/5 mx-auto max-[600px]:w-[95%] rounded-md '>
             <div className='rounded-md'>
                 <div className='flex flex-row flex-wrap max-[600px]:w-[95%] '>
-                    <div className='flex flex-col w-2/5 bg-[rgba(0,0,0,0.5)] rounded-md max-[1250px]:w-[100%] test'>
+                    <div className='flex flex-col w-2/5 bg-[rgba(0,0,0,0.5)] rounded-md max-[1250px]:w-[100%]'>
                         <div className='flex flex-row items-center ml-2 mt-2'>
                             <h1 className='text-red-600 font-bold text-2xl'>聖遺物重洗匯入</h1>
-                            <div className='pl-2' onClick={()=>openWindow()}>
-                                <span className='text-white underline cursor-pointer'>最新更新</span>
-                            </div>
                             <div className='hintIcon ml-2 overflow-visible' 
                                 data-tooltip-id="ImporterHint">
                                 <span className='text-white'>?</span>
+                            </div>
+                            <div className='relative ml-auto mr-3' onClick={()=>openWindow()}>
+                                <span className='text-white underline cursor-pointer'>最新更新</span>
                             </div>
                         </div>
                         <div className='flex flex-col px-2 rounded-md'>
