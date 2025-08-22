@@ -29,10 +29,10 @@ export const UpdatedSection = () => {
 
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
-            <div className="bg-gray-900 w-11/12 max-w-lg p-6 rounded-xl shadow-lg">
+            <div className="bg-gray-900 w-11/12 max-w-lg p-4 rounded-xl shadow-lg">
                 <div className="flex justify-between items-center mb-4">
                     <span className="text-xl text-red-500 font-bold">{data.updateDate.toISOString().split('T')[0]} 更新公告</span>
-                    <button onClick={handleClose} className="text-white text-xl font-bold hover:text-red-400">✕</button>
+                    <button onClick={()=>handleClose()} className="text-white text-xl font-bold hover:text-red-400">✕</button>
                 </div>
                 <ul className="list-decimal ml-6 space-y-1">
                     {data.updateContent.map((d, i) => (
@@ -41,7 +41,7 @@ export const UpdatedSection = () => {
                 </ul>
 
                 <div className="mt-6 text-right">
-                    <button onClick={handleClose} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
+                    <button onClick={()=>handleClose()} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
                         我知道了
                     </button>
                 </div>
