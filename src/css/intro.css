@@ -8,3 +8,7 @@
     background-color: rgba(0,0,0,0.5);
     box-shadow: 0 20px 30px #00000080;
 }
+
+.introSub{
+    @apply flex flex-col [&>div]:my-1 h-fit my-2 w-[45%] max-[750px]:w-full;
+}

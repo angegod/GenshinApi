@@ -6,15 +6,15 @@ function Intro(){
     //之後intro頁面可能會改成json控管
     return(
         <div className='w-4/5 mx-auto'>
-            <div className='intro p-[1rem] mb-3 rounded-md [&>div]:my-2 w-1/2 flex flex-col justify-around max-[1000px]:!w-[95%] max-[800px]:h-fit'>
+            <div className='intro p-[1rem] mb-3 rounded-md w-fit flex flex-col flex-wrap h-[85vh] max-[800px]:!w-[95%] max-[800px]:h-fit'>
                 <div className='flex flex-col'>
                     <span className='text-2xl text-red-500 font-bold'>常見Q&A</span>
                     <span className='text-white'>這裡列出比較常見的幾個問題，如果有其他問題也歡迎利用巴哈私訊我</span>
                 </div>
-                <div className='flex flex-col over [&>div]:my-1'>
+                <div className='introSub'>
                     <div className='flex flex-row items-center'>
                         <span className='question'>Q:甚麼是重洗?</span>
-                        <img src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/image/good.png`}
+                        <img src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/image/nahida.png`}
                             alt="icon"
                             className="inline align-middle h-[25px] w-auto ml-1"/>
                     </div>
@@ -25,10 +25,10 @@ function Intro(){
                         </span>
                     </div>
                 </div>
-                <div className='flex flex-col [&>div]:my-1'>
+                <div className='introSub'>
                     <div className='flex flex-row items-center'>
                         <span className='question'>Q:為啥需要重洗?</span>
-                        <img    src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/image/yulin.png`}
+                        <img    src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/image/yafa.png`}
                                 alt="Good.png" width={25} height={25}
                                 className='inline'/>
                     </div>
@@ -37,10 +37,10 @@ function Intro(){
                         <span className='text-white flex flex-row items-center'>啟聖之塵使用得當，可以有效降低培養成本。</span>
                     </div>
                 </div>
-                <div className="flex flex-col [&>div]:my-1 ">
+                <div className="introSub ">
                     <div className='flex flex-row items-center'>
                         <span className='question'>Q:這件適合重洗嗎?</span>
-                        <img src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/image/feixiao.png`}
+                        <img src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/image/mika.png`}
                                     alt="Good.png" width={25} height={25}/>
                     </div>
                     <div className='flex flex-col'>
@@ -51,10 +51,10 @@ function Intro(){
                         <span className='text-white'></span>              
                     </div>
                 </div>
-                <div className="flex flex-col [&>div]:my-1 ">
+                <div className="introSub">
                     <div className='flex flex-row items-center'>
                         <span className='question'>Q:目前啟聖之塵取得的管道?</span>
-                        <img src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/image/feixiao.png`}
+                        <img src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/image/furina.png`}
                                     alt="Good.png" width={25} height={25}/>
                     </div>
                     <div className='flex flex-col'>
@@ -63,6 +63,17 @@ function Intro(){
                             <li><strong className='text-amber-600'>幽境危戰：</strong>最主要的獲得來源，打過指定難度或累積1200樹酯消耗可以獲得最多3根羽毛</li>
                             <li><strong className='text-amber-600'>大月卡購買：</strong>珍珠紀行跟珍珠之歌兩者購買可以均獲得1根</li>
                         </ol>                   
+                    </div>
+                </div>
+                <div className="introSub">
+                    <div className='flex flex-row items-center'>
+                        <span className='question'>Q:為啥我的遺器配置還不錯，但分數有點低?</span>
+                        <img src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/image/kokomi.png`}
+                                    alt="Good.png" width={25} height={25}/>
+                    </div>
+                    <div className='flex flex-col'>
+                        <span className='text-white'>A:評分的計算會牽扯到最大有效詞條數，只要你的標準帶越多，那麼你的評分會越嚴格。</span>
+                        <span className='text-white'>花跟羽毛雖然說不算主詞條為有效詞條數，但這也導致同樣都是缺一個詞條的情況下，花跟羽毛評分降的會比其他三個部位還來的多。</span>                  
                     </div>
                 </div>
             </div>
