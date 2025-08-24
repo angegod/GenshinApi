@@ -28,7 +28,7 @@ function HintStandDetails(){
                         </div>
                         <div className='flex flex-col'>
                             <span className='text-stone-400'>系統看到該種類的副屬性詞條，被選定為強化保底詞條的優先級</span>
-                            <span className='text-yellow-400 font-bold'>數字越大則優先級越高</span>
+                            <span className='text-yellow-400 font-bold'>數字越小則優先級越高</span>
                         </div>
                     </div>
                     <div className='mt-2 flex flex-col'>

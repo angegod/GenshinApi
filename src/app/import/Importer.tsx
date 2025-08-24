@@ -646,7 +646,7 @@ function Importer(){
     <SiteContext.Provider value={ImporterStatus}>
         <div className='flex flex-col w-4/5 mx-auto max-[600px]:w-[95%] rounded-md '>
             <div className='rounded-md'>
-                <div className='flex flex-row flex-wrap max-[600px]:w-[95%] '>
+                <div className='flex flex-row flex-wrap max-[600px]:w-[95%]'>
                     <div className='flex flex-col w-2/5 bg-black/50 rounded-md max-[1250px]:w-[100%]'>
                         <div className='flex flex-row items-center ml-2 mt-2'>
                             <h1 className='text-red-600 font-bold text-2xl'>聖遺物重洗匯入</h1>
