@@ -378,7 +378,7 @@ function Main(){
         <SiteContext.Provider value={MainStatus}>
             <div className='w-4/5 mx-auto max-[600px]:w-[90%]'>
                 <div className='flex flex-row flex-wrap'>
-                    <div className='w-2/5 bg-[rgba(0,0,0,0.5)] rounded-md max-[1200px]:w-full'>
+                    <div className='w-2/5 bg-black/50 rounded-md max-[1200px]:w-full'>
                         <div className='flex flex-row items-center ml-2 mt-2'>
                             <span className='text-2xl text-red-500 font-bold'>聖遺物重洗模擬</span>
                             <div className='hintIcon ml-2 overflow-visible' 
@@ -476,7 +476,7 @@ function Main(){
                             </div>
                         </div>  
                     </div>
-                    <div className='w-[55%] ml-2 bg-[rgba(0,0,0,0.5)] rounded-md p-2 h-fit max-[1200px]:w-[100%] max-[1200px]:ml-0 max-[1200px]:mt-2'>
+                    <div className='w-[55%] ml-2 bg-black/50 rounded-md p-2 h-fit max-[1200px]:w-[100%] max-[1200px]:ml-0 max-[1200px]:mt-2'>
                         <div className='flex flex-row items-baseline px-2 max-[600px]:justify-center'>
                             <span className='text-red-600 text-lg font-bold'>過往紀錄</span>
                             <div className='hintIcon ml-2 overflow-visible'
@@ -489,19 +489,22 @@ function Main(){
                         </div>
                     </div>
                 </div>
-                <div className='w-full my-2'>
-                    <div className={`w-full flex flex-row bg-[rgba(0,0,0,0.5)] p-2 rounded-md flex-wrap ${(PieNums===undefined)?'hidden':''}`}>
-                        <div className={`flex flex-row flex-wrap w-[18vw] max-[700px]:w-[50%] ${(PieNums===undefined)?'hidden':''} max-[500px]:w-4/5 max-[500px]:mx-auto`} >
-                            <RelicData  />
+                {
+                    (PieNums)?
+                    <div className='w-full my-2'>
+                        <div className={`w-full flex flex-row bg-black/50 p-2 rounded-md flex-wrap`}>
+                            <div className={`flex flex-row flex-wrap w-[18vw] max-[700px]:w-[50%] max-[500px]:w-4/5 max-[500px]:mx-auto`} >
+                                <RelicData  />
+                            </div>
+                            <div className={`w-1/4 max-[800px]:w-[50%] max-[500px]:w-4/5 max-[500px]:mx-auto`} >
+                                <StandDetails />
+                            </div>
+                            <div className='flex flex-row flex-wrap w-1/2 max-[800px]:w-[100%] max-[500px]:w-4/5 max-[500px]:mx-auto' id="resultDetails">
+                                <Result />
+                            </div>
                         </div>
-                        <div className={`w-1/4 max-[800px]:w-[50%] ${(PieNums===undefined)?'hidden':''} max-[500px]:w-4/5 max-[500px]:mx-auto`} >
-                            <StandDetails />
-                        </div>
-                        <div className='flex flex-row flex-wrap w-1/2 max-[800px]:w-[100%] max-[500px]:w-4/5 max-[500px]:mx-auto ' id="resultDetails">
-                            <Result />
-                        </div>
-                    </div>
-                </div>
+                    </div>:null
+                }
             </div>
             <div>
                 <Tooltip id="CharHint"  
