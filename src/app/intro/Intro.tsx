@@ -1,6 +1,6 @@
 "use client"
 import React, { Component } from 'react';
-import "@/css/intro.css";
+import "@/css/intro.scss";
 //闡述為啥要使用這個工具 
 function Intro(){
     //之後intro頁面可能會改成json控管

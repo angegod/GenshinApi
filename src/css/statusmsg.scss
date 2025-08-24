@@ -1,0 +1,32 @@
+// 建立共用的淡入淡出動畫
+@mixin slide-fade($name, $from-transform, $to-transform, $from-opacity, $to-opacity) {
+  @keyframes #{$name} {
+    0% {
+      transform: $from-transform;
+      opacity: $from-opacity;
+    }
+
+    100% {
+      transform: $to-transform;
+      opacity: $to-opacity;
+    }
+  }
+}
+
+// 使用 mixin 產生兩個動畫
+@include slide-fade(slideFadeIn, translateY(-100%), translateY(0), 0, 1);
+@include slide-fade(slideFadeOut, translateY(0), translateY(-100%), 1, 0);
+
+// 共用 class 樣式
+@mixin toast-animation($animation-name) {
+  animation: $animation-name 0.8s ease forwards;
+}
+
+// 使用
+.toast-enter {
+  @include toast-animation(slideFadeIn);
+}
+
+.toast-exit {
+  @include toast-animation(slideFadeOut);
+}

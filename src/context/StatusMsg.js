@@ -1,7 +1,7 @@
 "use client"
 import { createContext, useContext, useState, useRef } from "react";
 import Image from "next/image";
-import '../css/statusmsg.css';
+import '../css/statusmsg.scss';
 
 const StatusToastContext = createContext();
 
