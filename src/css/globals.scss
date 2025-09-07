@@ -6,6 +6,10 @@ body{
     color: $defaultColor;
 }
 
+.SectionBg{
+    background-color: $SectionBgColor;
+}
+
 .arrow-down-box::after {
     content: '';
     position: absolute;
@@ -29,7 +33,7 @@ body{
     @apply text-white border-white border-2 rounded-md px-1;
     
     &:hover{
-        color: $hoverColor;
+      color: $hoverColor;
       border-color: $hoverColor;
     }
 }
@@ -87,27 +91,27 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 .bgInput {
-  background-color: inherit;
-  color: white;
-  border-bottom-color: white;
-  border-bottom-width: 1px;
-  outline: none;
+    background-color: inherit;
+    color: white;
+    border-bottom-color: white;
+    border-bottom-width: 1px;
+    outline: none;
 }
 
 .css-rbklcn-MuiResponsiveChart-container svg {
-  width: 200px;
-  height: 200px;
+    width: 200px;
+    height: 200px;
 }
 
 .hintIcon {
-  width: 20px;
-  height: 20px;
-  background-color: rgb(39, 39, 39);
-  color: white;
-  border-radius: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    width: 20px;
+    height: 20px;
+    background-color: rgb(39, 39, 39);
+    color: white;
+    border-radius: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .hide-scrollbar {
@@ -122,6 +126,11 @@ input[type="number"]::-webkit-outer-spin-button {
 
 .shadowBox{
     box-shadow: 0 10px 30px #00000080;
+}
+
+//區塊標題
+.SubTitle{
+    @apply text-stone-400;
 }
 
 /*過往紀錄UI*/

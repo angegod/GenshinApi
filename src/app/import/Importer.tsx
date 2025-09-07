@@ -249,7 +249,7 @@ function Importer(){
                     setIsChangeAble(true);
                     break;
                 default:
-                    await process(response.data,standard,Limit);
+                    await processData(response.data,standard,Limit);
                     break;
             }
 
@@ -269,7 +269,7 @@ function Importer(){
         })
     }
 
-    async function process(relicArr:any,standard:selfStand,limit:number){
+    async function processData(relicArr:any,standard:selfStand,limit:number){
         let temparr = [];
         
         //針對三詞條跟四詞條分別進行一次模擬
@@ -647,21 +647,22 @@ function Importer(){
         <div className='flex flex-col w-4/5 mx-auto max-[600px]:w-[95%] rounded-md '>
             <div className='rounded-md'>
                 <div className='flex flex-row flex-wrap max-[600px]:w-[95%]'>
-                    <div className='flex flex-col w-2/5 bg-black/50 rounded-md max-[1250px]:w-[100%]'>
+                    <div className='flex flex-col w-2/5 SectionBg rounded-md max-[1250px]:w-[100%]'>
                         <div className='flex flex-row items-center ml-2 mt-2'>
-                            <h1 className='text-red-600 font-bold text-2xl'>聖遺物重洗匯入</h1>
+                            <h1 className='text-red-600 font-bold text-2xl'>自動匯入</h1>
                             <div className='hintIcon ml-2 overflow-visible' 
                                 data-tooltip-id="ImporterHint">
                                 <span className='text-white'>?</span>
                             </div>
-                            <div className='relative ml-auto mr-3' onClick={()=>openWindow()}>
+                            <div className='relative flex flex-row ml-auto mr-3' onClick={()=>openWindow()}>
+                                <img src={`${ process.env.NEXT_PUBLIC_BASE_PATH || ''}/image/breakingNews.svg`} alt="icon"/>
                                 <span className='text-white underline cursor-pointer'>最新更新</span>
                             </div>
                         </div>
                         <div className='flex flex-col px-2 rounded-md'>
                             <div className='flex flex-row [&>*]:mr-2 my-3 items-baseline max-[400px]:!flex-col'>
                                 <div className='ImporterFlex'>
-                                    <span className='text-white'>玩家UID :</span>
+                                    <span className='SubTitle'>玩家UID :</span>
                                 </div>
                                 <input type='text' placeholder='Genshin UID' 
                                         className='h-[40px] max-w-[170px] pl-2 
@@ -673,7 +674,7 @@ function Importer(){
                             </div>
                             <div className='flex flex-row items-center [&>*]:mr-2 my-3 max-[400px]:!flex-col'>
                                 <div className='ImporterFlex'>
-                                    <span className='text-white whitespace-nowrap'>Characters 腳色:</span>
+                                    <span className='SubTitle whitespace-nowrap'>Characters 腳色:</span>
                                 </div>                       
                                 <div className='flex flex-row items-center'>
                                     <CharSelect  />
@@ -684,27 +685,30 @@ function Importer(){
                             </div>
                             <div className={`mt-4 [&>*]:mr-2 flex flex-row items-baseline max-[400px]:!flex-col` } >
                                 <div className='ImporterFlex'>
-                                    <span className='text-white whitespace-nowrap'>Affix 有效詞條:</span>
+                                    <span className='SubTitle whitespace-nowrap'>Affix 有效詞條:</span>
                                 </div>
                                 <div className='flex flex-row items-center'>
                                     <StandardSelect />
                                 </div>
                             </div>
-                            <div className={`mt-3 [&>*]:mr-2 flex flex-row max-[400px]:!flex-col ${(selfStand.length===0)?'hidden':''}`}>
-                                <div className='ImporterFlex'>
-                                    <span className='text-white'>Params 參數:</span>
-                                </div>
-                                <div className='flex flex-row items-baseline'>
-                                    <ShowStand lock={true}/>
-                                    <div className='hintIcon ml-2 overflow-visible'
-                                        data-tooltip-id="ParamsHint">
-                                        <span className='text-white'>?</span>
+                            {
+                                (selfStand&&selfStand.length!==0)?
+                                <div className={`mt-3 [&>*]:mr-2 flex flex-row max-[400px]:!flex-col ${(selfStand.length===0)?'hidden':''}`}>
+                                    <div className='ImporterFlex'>
+                                        <span className='SubTitle'>Params 參數:</span>
                                     </div>
-                                </div>
-                            </div>
+                                    <div className='flex flex-row items-baseline'>
+                                        <ShowStand lock={true}/>
+                                        <div className='hintIcon ml-2 overflow-visible'
+                                            data-tooltip-id="ParamsHint">
+                                            <span className='text-white'>?</span>
+                                        </div>
+                                    </div>
+                                </div>:null
+                            }
                             <div className={`flex flex-row my-3`}>
                                 <div className='ImporterFlex'>
-                                    <span className='text-white'>Limit 保底次數:</span>
+                                    <span className='SubTitle'>Limit 保底次數:</span>
                                 </div>
                                 <div className='pl-1 flex flex-row items-center'>
                                     <input
@@ -716,12 +720,12 @@ function Importer(){
                                             onChange={(event) => {
                                                     const value = event.target.value;
                                                     if (value !== '') {
-                                                    const intVal = parseInt(value);
-                                                    if (!isNaN(intVal)) {
-                                                        setLimit(intVal);
+                                                        const intVal = parseInt(value);
+                                                        if (!isNaN(intVal)) {
+                                                            setLimit(intVal);
+                                                        }
                                                     }
-                                                }
-                                            }}/>
+                                                }}/>
                                     <div className='hintIcon ml-1 overflow-visible'data-tooltip-id="LimitHint">
                                         <span className='text-white'>?</span>
                                     </div>
@@ -734,7 +738,7 @@ function Importer(){
                             
                         </div>
                     </div>
-                    <div className={`w-[55%] pb-3 pt-1 h-fit flex-wrap max-[1250px]:w-[100%] max-[1250px]:mb-5 ml-2 bg-black/50 rounded-md max-[1250px]:ml-0 max-[1250px]:mt-2`}>
+                    <div className={`w-[55%] pb-3 pt-1 h-fit flex-wrap max-[1250px]:w-[100%] max-[1250px]:mb-5 ml-2 SectionBg rounded-md max-[1250px]:ml-0 max-[1250px]:mt-2`}>
                         <div className='flex flex-row items-baseline px-2 max-[600px]:justify-center'>
                             <span className='text-red-600 text-lg font-bold'>過往紀錄</span>
                             <div className='hintIcon ml-2 overflow-visible'
@@ -748,7 +752,7 @@ function Importer(){
                     </div>
                 </div>
             </div>
-            <div className={`flex flex-row flex-wrap mt-2 w-[100%] bg-black/50 shadowBox px-2 mb-5 rounded-md`} >
+            <div className={`flex flex-row flex-wrap mt-2 w-[100%] SectionBg shadowBox px-2 mb-5 rounded-md`} >
                 {
                     (RelicDataArr&&RelicDataArr.length!==0)?
                     <>

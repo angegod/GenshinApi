@@ -379,21 +379,22 @@ function Main(){
             <div className='flex flex-col w-4/5 mx-auto max-[600px]:w-[95%]'>
                 <div>
                     <div className='flex flex-row flex-wrap max-[600px]:w-[95%]'>
-                        <div className='w-2/5 bg-black/50 rounded-md max-[1200px]:w-full'>
+                        <div className='w-2/5 SectionBg rounded-md max-[1200px]:w-full'>
                             <div className='flex flex-row items-center ml-2 mt-2'>
-                                <span className='text-2xl text-red-500 font-bold'>聖遺物重洗模擬</span>
+                                <span className='text-2xl text-red-500 font-bold'>手動輸入</span>
                                 <div className='hintIcon ml-2 overflow-visible' 
                                     data-tooltip-id="SimulatorHint">
                                     <span className='text-white'>?</span>
                                 </div>
-                                <div className='relative ml-auto mr-3' onClick={()=>openWindow()}>
+                                <div className='flex flex-row relative ml-auto mr-3' onClick={()=>openWindow()}>
+                                    <img src={`${ process.env.NEXT_PUBLIC_BASE_PATH || ''}/image/breakingNews.svg`} alt="icon"/>
                                     <span className='text-white underline cursor-pointer'>最新更新</span>
                                 </div>
                             </div>
                             <div className='flex flex-col px-2'>
                                 <div className='flex flex-row my-3 items-center max-[400px]:!flex-col max-[600px]:items-baseline'>
                                     <div className='SimulatorFlex'>
-                                        <span className='text-white'>Char 腳色:</span>
+                                        <span className='SubTitle'>Char 腳色:</span>
                                     </div>
                                     <div className='ml-1 flex flex-row items-center'>
                                         <CharSelect />
@@ -404,80 +405,93 @@ function Main(){
                                 </div>
                                 <div className='flex flex-row my-3 max-[400px]:!flex-col'>
                                     <div className='SimulatorFlex'>
-                                        <span className='text-white'>Parts 部位:</span>
+                                        <span className='SubTitle'>Parts 部位:</span>
                                     </div>
                                     <div className='ml-1'>
                                         <PartSelect />
                                     </div>
                                 </div>
-                                <div className={`flex flex-row my-3 ${(partsIndex===undefined)?'hidden':''} max-[400px]:!flex-col`}>
-                                    <div className='SimulatorFlex'>
-                                        <span className='text-white'>Main 主詞條:</span>
-                                    </div>
-                                    <div className='ml-1'>
-                                        <MainAffixSelect />
-                                    </div>
-                                </div>
-                                <div className={`flex flex-row my-3 max-[600px]:flex-wrap ${(!MainSelectOptions)?'hidden':''} max-[400px]:!flex-col`}>
-                                    <div className='SimulatorFlex'>
-                                        <span className='text-white'>Sub 副詞條:</span>
-                                    </div>
-                                    <div className='flex flex-row max-[600px]:mx-auto'>
-                                        <SubAffixList />
-                                        <div className='hintIcon ml-2 overflow-visible'
-                                            data-tooltip-id="SubAffixHint">
-                                            <span className='text-white'>?</span>
+                                {
+                                    (partsIndex!==undefined)?
+                                    <div className={`flex flex-row my-3 max-[400px]:!flex-col`}>
+                                        <div className='SimulatorFlex'>
+                                            <span className='SubTitle'>Main 主詞條:</span>
                                         </div>
-                                    </div>
-                                </div>
-                                <div className={`flex flex-row my-3 items-center ${(!MainSelectOptions)?'hidden':''} max-[400px]:!flex-col max-[600px]:items-baseline`}>
-                                    <div className='SimulatorFlex'>
-                                        <span className='text-white'>Affix 有效詞條:</span>
-                                    </div>
-                                    <StandardSelect />
-                                </div>
-                                <div className={`flex flex-row my-3 ${(!MainSelectOptions)?'hidden':''} max-[400px]:!flex-col`}>
-                                    <div className='SimulatorFlex'>
-                                        <span className='text-white'>Limit 保底次數:</span>
-                                    </div>
-                                    <div className='pl-1 flex flex-row items-center'>
-                                        <input type='text-white' className='bgInput w-[40px] text-center' 
-                                                onChange={(event)=>{
-                                                    if(!isNaN(parseInt(event.target.value)))
-                                                        setLimit(parseInt(event.target.value))
-                                                }} 
-                                                defaultValue={2} max={4}/>
-                                        <div className='hintIcon ml-1 overflow-visible'data-tooltip-id="LimitHint">
-                                            <span className='text-white'>?</span>
+                                        <div className='ml-1'>
+                                            <MainAffixSelect />
                                         </div>
-                                    </div>
-                                </div>
-                                <div className={`mt-2 [&>*]:mr-2 flex flex-row max-[400px]:!flex-col ${(selfStand.length===0)?'hidden':''} max-[400px]:!flex-col`} >
-                                    <div className='SimulatorFlex'>
-                                        <span className='text-white'>Params 參數:</span>
-                                    </div>
-                                    <div className='flex flex-row'>
-                                        <ShowStand lock={false} />
-                                        <div className='hintIcon ml-2 overflow-visible'
-                                            data-tooltip-id="ParamsHint"> 
-                                            <span className='text-white'>?</span>
+                                    </div>:null
+                                }
+                                {
+                                    (MainSelectOptions)?
+                                    <>
+                                        <div className={`flex flex-row my-3 max-[600px]:flex-wrap max-[400px]:!flex-col`}>
+                                            <div className='SimulatorFlex'>
+                                                <span className='SubTitle'>Sub 副詞條:</span>
+                                            </div>
+                                            <div className='flex flex-row max-[600px]:mx-auto'>
+                                                <SubAffixList />
+                                                <div className='hintIcon ml-2 overflow-visible'
+                                                    data-tooltip-id="SubAffixHint">
+                                                    <span className='text-white'>?</span>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-
-                                </div>
-                                <div className={`${(partsIndex===undefined)?'hidden':''} mt-2 mb-2 max-w-[400px] flex flex-row [&>*]:mr-2 justify-end max-[400px]:justify-start`}>
-                                    <div className='flex flex-row mt-1'>
-                                        <button className='processBtn mr-2 whitespace-nowrap' 
-                                            onClick={()=>calScore()} 
-                                            disabled={!processBtn}>計算分數</button>
-                                        <button className='processBtn mr-2 whitespace-nowrap' 
-                                            onClick={()=>saveRecord()} 
-                                            disabled={!isSaveAble}>儲存紀錄</button>
-                                    </div>
-                                </div>
+                                        <div className={`flex flex-row my-3 items-center max-[400px]:!flex-col max-[600px]:items-baseline`}>
+                                            <div className='SimulatorFlex'>
+                                                <span className='SubTitle'>Affix 有效詞條:</span>
+                                            </div>
+                                            <StandardSelect />
+                                        </div>
+                                        <div className={`flex flex-row my-3 max-[400px]:!flex-col`}>
+                                            <div className='SimulatorFlex'>
+                                                <span className='SubTitle'>Limit 保底次數:</span>
+                                            </div>
+                                            <div className='pl-1 flex flex-row items-center'>
+                                                <input type='text-white' className='bgInput w-[40px] text-center' 
+                                                        onChange={(event)=>{
+                                                            if(!isNaN(parseInt(event.target.value)))
+                                                                setLimit(parseInt(event.target.value))
+                                                        }} 
+                                                        defaultValue={2} max={4}/>
+                                                <div className='hintIcon ml-1 overflow-visible'data-tooltip-id="LimitHint">
+                                                    <span className='text-white'>?</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </>:null
+                                }
+                                {
+                                    (selfStand&&selfStand.length!==0)?
+                                    <div className={`mt-2 [&>*]:mr-2 flex flex-row max-[400px]:!flex-col ${(selfStand.length===0)?'hidden':''} max-[400px]:!flex-col`} >
+                                        <div className='SimulatorFlex'>
+                                            <span className='SubTitle'>Params 參數:</span>
+                                        </div>
+                                        <div className='flex flex-row'>
+                                            <ShowStand lock={false} />
+                                            <div className='hintIcon ml-2 overflow-visible'
+                                                data-tooltip-id="ParamsHint"> 
+                                                <span className='text-white'>?</span>
+                                            </div>
+                                        </div>
+                                    </div>:null
+                                }
+                                {
+                                    (partsIndex!==undefined)?
+                                    <div className={`mt-2 mb-2 max-w-[400px] flex flex-row [&>*]:mr-2 justify-end max-[400px]:justify-start`}>
+                                        <div className='flex flex-row mt-1'>
+                                            <button className='processBtn mr-2 whitespace-nowrap' 
+                                                onClick={()=>calScore()} 
+                                                disabled={!processBtn}>計算分數</button>
+                                            <button className='processBtn mr-2 whitespace-nowrap' 
+                                                onClick={()=>saveRecord()} 
+                                                disabled={!isSaveAble}>儲存紀錄</button>
+                                        </div>
+                                    </div>:null
+                                }
                             </div>  
                         </div>
-                        <div className='w-[55%] ml-2 bg-black/50 rounded-md p-2 h-fit max-[1200px]:w-[100%] max-[1200px]:ml-0 max-[1200px]:mt-2'>
+                        <div className='w-[55%] ml-2 SectionBg rounded-md p-2 h-fit max-[1200px]:w-[100%] max-[1200px]:ml-0 max-[1200px]:mt-2'>
                             <div className='flex flex-row items-baseline px-2 max-[600px]:justify-center'>
                                 <span className='text-red-600 text-lg font-bold'>過往紀錄</span>
                                 <div className='hintIcon ml-2 overflow-visible'
@@ -493,7 +507,7 @@ function Main(){
                     {
                         (PieNums)?
                         <div className='w-full my-2'>
-                            <div className={`w-full flex flex-row bg-black/50 p-2 rounded-md flex-wrap`}>
+                            <div className={`w-full flex flex-row SectionBg p-2 rounded-md flex-wrap`}>
                                 <div className={`flex flex-row flex-wrap w-[18vw] max-[700px]:w-[50%] max-[500px]:w-4/5 max-[500px]:mx-auto`} >
                                     <RelicData  />
                                 </div>

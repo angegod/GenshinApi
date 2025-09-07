@@ -7,7 +7,8 @@ function HintImporter(){
                 <li>翻盤機率是指該聖遺物透過啟聖之塵後分數變高的機率為何</li>
                 <li>目前該工具只支援計算五星強化至滿等聖遺物</li>
                 <li>此工具相關數據或算法仍有更改的可能，敬請見諒!</li>
-                <li>如果發現服務頻繁發生錯誤，可以先暫時使用simulator。</li>
+                <li>如果發現服務頻繁發生錯誤，可以先暫時使用simulator</li>
+                <li>本工具數據來源於enka所開發出的API</li>
                 <li>更詳細的操作說明可以參考
                 <a href='https://home.gamer.com.tw/artwork.php?sn=6191675' className='!underline'>這篇</a></li>
             </ul>
