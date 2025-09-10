@@ -427,6 +427,10 @@ function Importer(){
     //刪除過往紀錄 
     const deleteHistoryData=useCallback((index:number)=>{
         //如果刪除紀錄是目前顯示的 則會清空目前畫面上的
+
+        if(!confirm("確定要刪除紀錄嗎?")){
+            return;
+        }
         const result = getHistory();
         let oldHistory: historyData[] = Array.isArray(result)
             ? result.filter((item): item is historyData => 'userID' in item)

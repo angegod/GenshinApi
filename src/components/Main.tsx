@@ -223,6 +223,9 @@ function Main(){
 
     //刪除紀錄
     function deleteHistoryData(index:number){
+        if(!confirm("確定要刪除紀錄嗎?")){
+            return;
+        }
         deleteHistory(index);
 
         //取得更動後的資料
