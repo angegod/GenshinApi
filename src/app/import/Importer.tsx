@@ -759,10 +759,10 @@ function Importer(){
                         <div className={`w-[100%] max-[500px]:justify-center`}>
                             <RelicSelect />
                         </div>
-                        <div className={`mt-3 flex flex-row flex-wrap w-1/4  max-[700px]:w-[50%]  max-[500px]:w-4/5 max-[500px]:mx-auto`}>
+                        <div className={`mt-3 flex flex-row flex-wrap w-1/4  max-[700px]:w-[45%] max-[400px]:w-[60%] max-[400px]:mx-auto`}>
                             <RelicData  />
                         </div>
-                        <div className={`mt-3 w-1/4 max-[700px]:w-[50%] max-[500px]:w-4/5 max-[500px]:mx-auto`} >
+                        <div className={`mt-3 w-1/4 max-[700px]:w-[45%] w-[400px]:w-[90%] max-[500px]:mx-auto`} >
                             <StandDetails />
                         </div>
                     </>:null

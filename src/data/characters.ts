@@ -727,6 +727,25 @@ let characters:characters[]= [
         "cn_name": "伊涅芙",
         "element": "Electric",
         "rarity": 5
+    },{
+        "charId": "10000119",
+        "name": "Lauma",
+        "cn_name": "菈烏瑪",
+        "element": "Grass",
+        "rarity": 5
+    },{
+        "charId": "10000120",
+        "name": "Flins",
+        "cn_name": "菲林斯",
+        "element": "Electric",
+        "rarity": 5
+    },
+    {
+        "charId": "10000121",
+        "name": "Aino",
+        "cn_name": "愛諾",
+        "element": "Water",
+        "rarity": 4
     }
 ];
 

@@ -137,14 +137,14 @@ input[type="number"]::-webkit-outer-spin-button {
 .PastPreview {
     @apply flex flex-row flex-wrap max-[400px]:flex-nowrap;
 
-    @apply min-w-[100px] max-w-[300px] max-[800px]:max-w-[280px];
+    @apply min-w-[100px] max-w-[320px] max-[800px]:max-w-[280px];
     @apply max-[800px]:w-4/5 max-[400px]:w-[85%];
 
     @apply max-h-[120px] bg-slate-700 rounded-md p-2 m-2;
 }
 
 .PastPreviewTitle{
-  @apply w-[70px] max-[400px]:w-[60px] text-stone-400 font-bold break-keep;
+  @apply w-[60px] text-stone-400 font-bold break-keep text-sm;
 }
 
 .PastPreviewSection{
@@ -155,4 +155,13 @@ input[type="number"]::-webkit-outer-spin-button {
     @apply w-full min-w-[300px] mb-5 my-1; 
     @apply max-[500px]:!w-[95%] max-[500px]:flex max-[500px]:flex-col max-[500px]:justify-center; 
     @apply max-[800px]:min-w-0 max-[800px]:w-[100vw];
+}
+
+//歷史紀錄頭貼
+.rarity-5{
+    background-image: linear-gradient(to right bottom, #695453, #90655b, #b3785d, #d1905a, #e6ac54);
+}
+
+.rarity-4{
+    background-image: linear-gradient(to right bottom, #595482, #6e6195, #866da7, #9e7ab9, #b886ca)
 }
