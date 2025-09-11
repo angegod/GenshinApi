@@ -410,7 +410,7 @@ const Enchant=React.memo(()=>{
     }
 
     const ResultSection=(simulatorData.newData!==undefined&&simulatorData.oldData!==undefined)?(
-        <div className='flex flex-row flex-wrap  max-[600px]:!flex-col'>
+        <div className='rowWrap  max-[600px]:!flex-col'>
             <DataList standDetails={standDetails} data={simulatorData.oldData} title={'重洗前'} />
             <div className={`flex my-auto w-[30px] moveAnimate moveAnimate2 max-[600px]:w-full h-[30px] ${(simulatorData.newData===null)?'hidden':''}`} >
                 <svg xmlns="http://www.w3.org/2000/svg" className='max-[600px]:hidden mx-auto'
@@ -439,8 +439,8 @@ const Enchant=React.memo(()=>{
     return(
         <SiteContext.Provider value={EnchantStatus}>
             <div className='flex flex-col w-4/5 mx-auto max-[600px]:w-[90%]'>
-                <div className="w-full border-gray-600 my-4 justify-center flex flex-row flex-wrap max-[900px]:flex-col">
-                    <div className='flex flex-row flex-wrap w-1/2 max-[900px]:w-full justify-evenly max-[900px]:mb-2'>
+                <div className="w-full border-gray-600 my-4 justify-center rowWrap max-[900px]:flex-col">
+                    <div className='rowWrap w-1/2 max-[900px]:w-full justify-evenly max-[900px]:mb-2'>
                         <div className='w-[45%] h-fit flex flex-row max-[900px]:w-fit bg-black/50 p-2 rounded-md'>
                             {(mode==="Importer")?
                                 <RelicData  />:
@@ -581,13 +581,13 @@ const Pie=React.memo(()=>{
     const {PieNums,successCount,count,MinMaxScore} =useContext(SiteContext);
     if(PieNums!==undefined){
         const pieParams = {
-            height: (count === 0)?0:200,
+            height: (count === 0)? 0: 200,
             margin:{ top: 10, right: 0, bottom: 0, left: 0 },
             egend: { hidden: true }
         };
 
         return(
-           <div className='w-full flex flex-row flex-wrap justify-evenly max-[500px]:flex-col-reverse'>
+           <div className='w-full rowWrap justify-evenly max-[500px]:flex-col-reverse'>
                 <div className='w-[200px]'>
                     <PieChart  
                         series={[
@@ -625,7 +625,6 @@ const Pie=React.memo(()=>{
                         </div>
                     </div>
                 </div>
-               
            </div>
         );
 

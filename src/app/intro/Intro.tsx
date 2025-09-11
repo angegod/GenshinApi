@@ -28,9 +28,10 @@ function Intro(){
                 <div className='introSub'>
                     <div className='flex flex-row items-center'>
                         <span className='question'>Q:為啥需要重洗?</span>
-                        <img    src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/image/yafa.png`}
-                                alt="Good.png" width={25} height={25}
-                                className='inline'/>
+                        <img    
+                            src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/image/yafa.png`}
+                            alt="Good.png" width={25} height={25}
+                            className='inline'/>
                     </div>
                     <div>
                         <span className='text-white'>A:原神雖然有自定義聖遺物道具，但成本昂貴且素材不能隨時取得，更何況使用後也不能保證獲得高品質的聖遺物。</span>
@@ -40,8 +41,9 @@ function Intro(){
                 <div className="introSub ">
                     <div className='flex flex-row items-center'>
                         <span className='question'>Q:這件適合重洗嗎?</span>
-                        <img src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/image/mika.png`}
-                                    alt="Good.png" width={25} height={25}/>
+                        <img 
+                            src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/image/mika.png`}
+                            alt="Good.png" width={25} height={25}/>
                     </div>
                     <div className='flex flex-col'>
                         <span className='text-white'>A:這個就是為何要使用本工具了!本工具不僅可以根據你想要的詞條配置</span>

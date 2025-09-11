@@ -19,14 +19,14 @@
 
 // 共用 class 樣式
 @mixin toast-animation($animation-name) {
-  animation: $animation-name 0.8s ease forwards;
+    animation: $animation-name 0.8s ease forwards;
 }
 
 // 使用
 .toast-enter {
-  @include toast-animation(slideFadeIn);
+    @include toast-animation(slideFadeIn);
 }
 
 .toast-exit {
-  @include toast-animation(slideFadeOut);
+    @include toast-animation(slideFadeOut);
 }

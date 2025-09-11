@@ -123,6 +123,11 @@ input[type="number"]::-webkit-outer-spin-button {
     }
 }
 
+//row布局
+.rowWrap{
+    @apply flex flex-row flex-wrap
+}
+
 
 .shadowBox{
     box-shadow: 0 10px 30px #00000080;

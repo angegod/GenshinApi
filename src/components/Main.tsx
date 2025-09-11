@@ -381,7 +381,7 @@ function Main(){
         <SiteContext.Provider value={MainStatus}>
             <div className='flex flex-col w-4/5 mx-auto max-[600px]:w-[95%]'>
                 <div>
-                    <div className='flex flex-row flex-wrap max-[600px]:w-[95%]'>
+                    <div className='rowWrap max-[600px]:w-[95%]'>
                         <div className='w-2/5 SectionBg rounded-md max-[1200px]:w-full'>
                             <div className='flex flex-row items-center ml-2 mt-2'>
                                 <span className='text-2xl text-red-500 font-bold'>手動輸入</span>
@@ -494,7 +494,7 @@ function Main(){
                                 }
                             </div>  
                         </div>
-                        <div className='w-[55%] ml-2 SectionBg rounded-md p-2 h-fit max-[1200px]:w-[100%] max-[1200px]:ml-0 max-[1200px]:mt-2'>
+                        <div className='w-[55%] ml-2 SectionBg rounded-md p-2 h-fit max-[1200px]:w-full max-[1200px]:ml-0 max-[1200px]:mt-2'>
                             <div className='flex flex-row items-baseline px-2 max-[600px]:justify-center'>
                                 <span className='text-red-600 text-lg font-bold'>過往紀錄</span>
                                 <div className='hintIcon ml-2 overflow-visible'
@@ -502,7 +502,7 @@ function Main(){
                                     <span className='text-white'>?</span>
                                 </div>
                             </div>
-                            <div className='flex flex-row flex-wrap h-max max-h-[300px] overflow-y-scroll hiddenScrollBar max-[600px]:!flex-col max-[600px]:!flex-nowrap max-[600px]:items-center'>
+                            <div className='rowWrap h-max max-h-[300px] overflow-y-scroll hiddenScrollBar max-[600px]:!flex-col max-[600px]:!flex-nowrap max-[600px]:items-center'>
                                 <PastPreviewList_simulator />
                             </div>
                         </div>
@@ -511,13 +511,13 @@ function Main(){
                         (PieNums)?
                         <div className='w-full my-2'>
                             <div className={`w-full flex flex-row SectionBg p-2 rounded-md flex-wrap`}>
-                                <div className={`flex flex-row flex-wrap w-[18vw] max-[700px]:w-[60%] max-[400px]:w-[60%] max-[400px]:mx-auto`} >
+                                <div className={`rowWrap w-[18vw] max-[700px]:w-[60%] max-[400px]:w-[60%] max-[400px]:mx-auto`} >
                                     <RelicData  />
                                 </div>
                                 <div className={`w-1/4 max-[700px]:w-[30%] max-[400px]:w-[90%] max-[400px]:mx-auto`} >
                                     <StandDetails />
                                 </div>
-                                <div className='flex flex-row flex-wrap w-1/2 max-[800px]:w-[100%] max-[500px]:w-4/5 max-[500px]:mx-auto' id="resultDetails">
+                                <div className='rowWrap w-1/2 max-[800px]:w-full max-[500px]:w-4/5 max-[500px]:mx-auto' id="resultDetails">
                                     <Result />
                                 </div>
                             </div>
