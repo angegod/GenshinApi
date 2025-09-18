@@ -12,4 +12,13 @@
 
 .introSub{
     @apply flex flex-col [&>div]:my-1 h-fit my-2 w-[45%] max-[750px]:w-full;
+
+
+    .images{
+        @apply flex flex-row items-center;
+    }
+
+    .answer{
+        @apply [&>span]:text-white flex flex-col
+    }
 }

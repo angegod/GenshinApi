@@ -756,34 +756,32 @@ function Importer(){
                     </div>
                 </div>
             </div>
-            <div className={`rowWrap mt-2 w-full SectionBg shadowBox px-2 mb-5 rounded-md`} >
-                {
-                    (RelicDataArr&&RelicDataArr.length!==0)?
-                    <>
-                        <div className={`w-full max-[500px]:justify-center`}>
-                            <RelicSelect />
-                        </div>
-                        <div className={`mt-3 rowWrap w-1/4  max-[700px]:w-[45%] max-[400px]:w-[60%] max-[400px]:mx-auto`}>
-                            <RelicData  />
-                        </div>
-                        <div className={`mt-3 w-1/4 max-[700px]:w-[45%] w-[400px]:w-[90%] max-[500px]:mx-auto`} >
-                            <StandDetails />
-                        </div>
-                    </>:null
-                }                
-                <div className={`mt-3 rowWrap w-1/2 max-[700px]:items-center max-[700px]:w-full ${(!Rscore)?'hidden':''} max-[500px]:w-4/5 max-[500px]:mx-auto`} id="resultDetails">
-                    {(PieNums)?
-                        <div className='flex flex-row max-[600px]:items-center'>
-                            <button className='underline cursor-pointer' onClick={()=>changeAffixCount()}>{(AffixCount===3)?'目前為3詞條':'目前為4詞條'}</button>
-                            <div className='hintIcon ml-2 overflow-visible'
-                                data-tooltip-id="AffixCountChangeHint">
-                                <span className='text-white'>?</span>
-                            </div>
-                        </div>:null
-                    }
-                    <Result />
-                </div>
-            </div>
+            {
+                (RelicDataArr && RelicDataArr.length >0)?
+                <div className={`rowWrap mt-2 w-full SectionBg shadowBox px-2 mb-5 rounded-md`} >
+                    <div className={`w-full max-[500px]:justify-center`}>
+                        <RelicSelect />
+                    </div>
+                    <div className={`mt-3 rowWrap w-1/4  max-[700px]:w-[45%] max-[400px]:w-[60%] max-[400px]:mx-auto`}>
+                        <RelicData  />
+                    </div>
+                    <div className={`mt-3 w-1/4 max-[700px]:w-[45%] w-[400px]:w-[90%] max-[500px]:mx-auto`} >
+                        <StandDetails />
+                    </div>                
+                    <div className={`mt-3 rowWrap w-1/2 max-[700px]:items-center max-[700px]:w-full ${(!Rscore)?'hidden':''} max-[500px]:w-4/5 max-[500px]:mx-auto`} id="resultDetails">
+                        {(PieNums)?
+                            <div className='flex flex-row max-[600px]:items-center'>
+                                <button className='underline cursor-pointer' onClick={()=>changeAffixCount()}>{(AffixCount===3)?'目前為3詞條':'目前為4詞條'}</button>
+                                <div className='hintIcon ml-2 overflow-visible'
+                                    data-tooltip-id="AffixCountChangeHint">
+                                    <span className='text-white'>?</span>
+                                </div>
+                            </div>:null
+                        }
+                        <Result />
+                    </div>
+                </div>:null
+            }
         </div>
         <div>
             <Tooltip id="CharHint"  
