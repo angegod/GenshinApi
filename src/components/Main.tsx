@@ -154,8 +154,10 @@ function Main(){
         let selectChar:characters=characters.find((c)=>c.charId===charID)!;
 
         //如果目前則沒有紀錄 則初始化
-        if(!historyData)
+        if(!historyData){
             setHistory([]);
+            historyData = [];
+        }
         
         limitHistory();
         
