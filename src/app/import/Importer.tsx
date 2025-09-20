@@ -789,7 +789,7 @@ function Importer(){
                     render={()=>
                         <div className='flex flex-col'>
                             <span className='text-white'>選擇指定腳色，可以使用中文或英文關鍵字</span>
-                            <span className='text-white'>例如:Jingliu&rarr;鏡流</span>
+                            <span className='text-white'>例如:霄宮&rarr;Yoimiya</span>
                         </div>
                     }/>
             <Tooltip id="HistoryHint"  
