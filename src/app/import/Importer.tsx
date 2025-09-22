@@ -770,7 +770,7 @@ function Importer(){
                     </div>                
                     <div className={`mt-3 rowWrap w-1/2 max-[700px]:items-center max-[700px]:w-full ${(!Rscore)?'hidden':''} max-[500px]:w-4/5 max-[500px]:mx-auto`} id="resultDetails">
                         {(PieNums)?
-                            <div className='flex flex-row max-[600px]:items-center'>
+                            <div className='flex flex-row items-center max-[700px]:mx-auto'>
                                 <button className='underline cursor-pointer' onClick={()=>changeAffixCount()}>{(AffixCount===3)?'目前為3詞條':'目前為4詞條'}</button>
                                 <div className='hintIcon ml-2 overflow-visible'
                                     data-tooltip-id="AffixCountChangeHint">
