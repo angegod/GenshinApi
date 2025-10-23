@@ -97,7 +97,7 @@ export interface historyData{
     limit:number            //強化保底次數
 }
 
-export interface hisoryDataSimulate{
+export interface historyDataSimulate{
     version:number,   //歷史紀錄版本
     char:characters,  //對應的腳色
     part:string,      //部位

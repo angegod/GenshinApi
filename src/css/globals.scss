@@ -123,6 +123,36 @@ input[type="number"]::-webkit-outer-spin-button {
     }
 }
 
+.grayScrollBar {
+    overflow: auto; /* 只在需要時顯示滾軸 */
+    /* IE、舊版 Edge */
+    -ms-overflow-style: auto;
+
+    /* Firefox */
+    scrollbar-width: thin;
+    scrollbar-color: gray transparent;
+
+    /* Chrome、Safari、新版 Edge */
+    &::-webkit-scrollbar {
+        width: 2px;
+        height: 2px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: transparent; /* 軌道背景 */
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: gray;  /* 滾動條顏色 */
+        border-radius: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        background-color: #a0a0a0; /* 滑過時變亮一點 */
+    }
+}
+
+
 //row布局
 .rowWrap{
     @apply flex flex-row flex-wrap
@@ -140,12 +170,10 @@ input[type="number"]::-webkit-outer-spin-button {
 
 /*過往紀錄UI*/
 .PastPreview {
-    @apply flex flex-row flex-wrap max-[400px]:flex-nowrap;
+    @apply flex flex-col justify-center cursor-pointer flex-wrap max-[400px]:flex-nowrap;
 
     @apply min-w-[100px] max-w-[320px] max-[800px]:max-w-[280px];
-    @apply max-[800px]:w-4/5 max-[400px]:w-[85%];
-
-    @apply max-h-[120px] bg-slate-700 rounded-md p-2 m-2;
+    @apply max-h-[160px] bg-slate-700 rounded-md p-2 m-2;
 }
 
 .PastPreviewTitle{

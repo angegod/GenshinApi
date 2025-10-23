@@ -750,7 +750,7 @@ function Importer(){
                                 <span className='text-white'>?</span>
                             </div>
                         </div>
-                        <div className='max-h-[300px] overflow-y-scroll p-2 hiddenScrollBar rowWrap max-[600px]:!flex-col max-[600px]:!flex-nowrap max-[600px]:items-center'>
+                        <div className='max-h-[300px] overflow-x-scroll grayScrollBar p-2 flex flex-row max-[600px]:items-center'>
                             <PastPreviewList  />
                         </div> 
                     </div>

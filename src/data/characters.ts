@@ -746,6 +746,12 @@ let characters:characters[]= [
         "cn_name": "愛諾",
         "element": "Water",
         "rarity": 4
+    },{
+        "charId":"10000122",
+        "name" : "Nefer",
+        "cn_name":"奈芙爾",
+        "element":"Grass",
+        "rarity" : 5
     }
 ];
 

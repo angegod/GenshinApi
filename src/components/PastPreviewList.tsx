@@ -3,7 +3,7 @@ import {PastPreview, PastPreview_simulator} from './PastPreview';
 import SiteContext from '../context/SiteContext';
 import HistoryStore, { HistoryItem } from '@/model/historyStore';
 import Link from 'next/link';
-import { historyData, hisoryDataSimulate } from '@/data/RelicData';
+import { historyData, historyDataSimulate } from '@/data/RelicData';
 
 
 const PastPreviewList=React.memo(()=>{
@@ -56,7 +56,7 @@ const PastPreviewList_simulator=React.memo(()=>{
             historyData.map((item,i:number)=>
                 <PastPreview_simulator 
                             index={i} 
-                            data={item as hisoryDataSimulate}    
+                            data={item as historyDataSimulate}    
                             key={'historyData'+i}/>
             )
         )

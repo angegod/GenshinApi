@@ -16,7 +16,7 @@ import '../css/simulator.scss';
 import SubAffixHint from './Hint/SubAffixHint';
 import HintSimulator from './Hint/HintSimulator';
 import HintParams from './Hint/HintParams';
-import {hisoryDataSimulate, PieNums, Rank, selfStand, selfStandItem, SimulateRelic, SubData, SubDataItem, SubSimulateDataItem} from '../data/RelicData';
+import {historyDataSimulate, PieNums, Rank, selfStand, selfStandItem, SimulateRelic, SubData, SubDataItem, SubSimulateDataItem} from '../data/RelicData';
 import HintHistory from './Hint/HintHistory';
 import updateDetailsWindow from '@/model/updateDetailsStatus';
 
@@ -98,11 +98,11 @@ function Main(){
         setSubData(initSubData);
 
         //先填入過往歷史紀錄
-        let history = JSON.parse(localStorage.getItem(dataStorageLocation)!);
+        let history = JSON.parse(localStorage.getItem(dataStorageLocation)!) as historyDataSimulate[];
         setHistory((!history)?[]:history);
 
         if(history!=null&&history.length>0){
-            history=history.filter((h:hisoryDataSimulate)=>h.version===version);
+            history=history.filter((h)=>h.version===version);
             localStorage.setItem('HistoryData',JSON.stringify(history));
             setHistory(history);
 
@@ -149,7 +149,7 @@ function Main(){
     //儲存紀錄
     function saveRecord(){
         const historyraw = localStorage.getItem(dataStorageLocation);
-        let historyData:hisoryDataSimulate[]=(historyraw)?JSON.parse(historyraw):null;
+        let historyData:historyDataSimulate[]=(historyraw)?JSON.parse(historyraw):null;
         let partName=partArr[partsIndex!-1];
         let selectChar:characters=characters.find((c)=>c.charId===charID)!;
 
@@ -174,7 +174,7 @@ function Main(){
 
 
         //儲存紀錄
-        let data:hisoryDataSimulate={
+        let data:historyDataSimulate={
             version:version,
             char:selectChar,
             part:partName,
@@ -198,7 +198,7 @@ function Main(){
     function checkDetails(index:number){
         const result = getHistory(index);
 
-        let data:hisoryDataSimulate|null = null;
+        let data:historyDataSimulate|null = null;
         if (result && !Array.isArray(result) && 'part' in result) {
             data = result;
         }
@@ -504,7 +504,7 @@ function Main(){
                                     <span className='text-white'>?</span>
                                 </div>
                             </div>
-                            <div className='rowWrap h-max max-h-[300px] overflow-y-scroll hiddenScrollBar max-[600px]:!flex-col max-[600px]:!flex-nowrap max-[600px]:items-center'>
+                            <div className='h-max max-h-[300px] overflow-x-scroll flex flex-row grayScrollBar max-[600px]:!flex-col max-[600px]:!flex-nowrap max-[600px]:items-center'>
                                 <PastPreviewList_simulator />
                             </div>
                         </div>
