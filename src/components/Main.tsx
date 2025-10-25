@@ -504,7 +504,7 @@ function Main(){
                                     <span className='text-white'>?</span>
                                 </div>
                             </div>
-                            <div className='h-max max-h-[300px] overflow-x-scroll flex flex-row grayScrollBar max-[600px]:!flex-col max-[600px]:!flex-nowrap max-[600px]:items-center'>
+                            <div className='h-max max-h-[300px] overflow-x-scroll flex flex-row grayScrollBar max-[600px]:items-center'>
                                 <PastPreviewList_simulator />
                             </div>
                         </div>
@@ -531,6 +531,7 @@ function Main(){
             <div>
                 <Tooltip id="CharHint"  
                         place="right-start" 
+                        arrowColor='gray'
                         render={()=>
                             <div className='flex flex-col'>
                                 <span className='text-white'>選擇指定腳色，可以使用中文或英文關鍵字</span>
@@ -538,33 +539,38 @@ function Main(){
                             </div>
                         }/>
                 <Tooltip id="PartSelectHint"  
-                        place="right-start" 
+                        place="right-start"
+                        arrowColor='gray' 
                         render={()=>
                             <div className='flex flex-col max-w-[230px]'>
                                 <span className='text-white'>選擇聖遺物部位</span>
                                 <span className='text-white'>"主詞條"跟"副詞條"區塊中會自動帶入該部位詞條種類</span>
                             </div>
                         }/>
-
                 <Tooltip id="SubAffixHint"  
-                        place="right-start" 
+                        place="right-start"
+                        arrowColor='gray' 
                         render={()=>
                             <SubAffixHint />
                         }/>
                 <Tooltip id="ParamsHint"  
-                        place="right-start" 
+                        place="right-start"
+                        arrowColor='gray' 
                         render={()=>
                             <HintParams />
                         }/>
                 <Tooltip id="HistoryHint"  
-                    place="top-start"
-                    render={()=><HintHistory/>}/>
+                        place="top-start"
+                        arrowColor='gray'
+                        render={()=><HintHistory/>}/>
                 <Tooltip id="SimulatorHint"
                         place='right-start'
+                        arrowColor='gray'
                         render={()=><HintSimulator/>}
                         clickable={true}/>
                 <Tooltip id="LimitHint"
                         place='right-start'
+                        arrowColor='gray'
                         render={()=>
                             <div className='flex flex-col'>
                                 <span>指定詞條強化保底次數，可以根據個人目前使用強化情況調整</span>

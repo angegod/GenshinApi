@@ -33,7 +33,8 @@ const PastPreview=React.memo(({index,data}:PastPreviewProps)=>{
 
     return(
         <div className={`PastPreview clip-both-corners`} >
-            <div className='flex flex-col justify-center mt-2 max-[500px]:mt-0' data-tooltip-id={toolTipId} onClick={()=>checkDetails(index)}>
+            <div className='flex flex-col justify-center mt-2 max-[500px]:mt-0' 
+                data-tooltip-id={toolTipId} onClick={isChangeAble?()=>checkDetails(index):undefined}>
                 <div className={`w-[75px] h-[75px] mx-auto rounded-[10px] ${charBgColor} overflow-hidden`}>
                     <LazyImage 
                         BaseLink={BaseLink} 
@@ -48,7 +49,8 @@ const PastPreview=React.memo(({index,data}:PastPreviewProps)=>{
             </div>
             <Tooltip
                     id={toolTipId}
-                    place='bottom-start' 
+                    place='bottom-start'
+                    arrowColor='gray' 
                     style={{zIndex:9999}}
                     clickable={true}
                     render={()=>
@@ -60,7 +62,7 @@ const PastPreview=React.memo(({index,data}:PastPreviewProps)=>{
 
 //簡易瀏覽_模擬器版本
 const PastPreview_simulator=React.memo(({index,data}:PastPrevieSimulatewProps)=>{
-    const {checkDetails} = useContext(SiteContext);
+    const {checkDetails,isChangeAble} = useContext(SiteContext);
     const hue = data.expRate * 120;
 
     //const textColor =`hsl(${hue}, 100%, 50%)`;  
@@ -72,7 +74,8 @@ const PastPreview_simulator=React.memo(({index,data}:PastPrevieSimulatewProps)=>
 
     return(
         <div className='PastPreview clip-both-corners' >
-            <div className='flex flex-col mt-2' data-tooltip-id={toolTipId} onClick={()=>checkDetails(index)}>
+            <div className='flex flex-col mt-2' data-tooltip-id={toolTipId} 
+                onClick={isChangeAble?()=>checkDetails(index):undefined}>
                 <div className={`w-[75px] rounded-[10px] flex mx-auto ${charBgColor} overflow-hidden`}  >
                     <LazyImage 
                         BaseLink={BaseLink} 
@@ -90,7 +93,8 @@ const PastPreview_simulator=React.memo(({index,data}:PastPrevieSimulatewProps)=>
             </div>
             <Tooltip
                     id={toolTipId}
-                    place='bottom-start' 
+                    place='bottom-start'
+                    arrowColor='gray' 
                     style={{zIndex:9999}}
                     clickable={true}
                     render={()=>

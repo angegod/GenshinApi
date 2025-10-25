@@ -785,7 +785,8 @@ function Importer(){
         </div>
         <div>
             <Tooltip id="CharHint"  
-                    place="right-start" 
+                    place="right-start"
+                    arrowColor='gray' 
                     render={()=>
                         <div className='flex flex-col'>
                             <span className='text-white'>選擇指定腳色，可以使用中文或英文關鍵字</span>
@@ -794,11 +795,13 @@ function Importer(){
                     }/>
             <Tooltip id="HistoryHint"  
                     place="top-start"
+                    arrowColor='gray'
                     render={()=>
                         <HintHistory />
                     }/>
             <Tooltip id="RelicSelectHint"  
                     place="top-start"
+                    arrowColor='gray'
                     render={()=>
                         <div className='flex flex-col [&>span]:text-white max-w-[250px] p-1'>
                             <span>下方會顯示出該腳色符合條件的所有聖遺物</span>
@@ -811,14 +814,17 @@ function Importer(){
                     }/>
             <Tooltip id="ImporterHint" 
                     place='right-start'
+                    arrowColor='gray'
                     render={()=><HintImporter/>}
                     clickable={true}/>
             <Tooltip id="ParamsHint" 
                     place='right-start'
+                    arrowColor='gray'
                     render={()=><HintParams />}
                     clickable={true}/>
             <Tooltip id="LimitHint" 
                     place='right-start'
+                    arrowColor='gray'
                     render={()=>
                         <div className='flex flex-col'>
                             <span>指定詞條強化保底次數，可以根據個人目前使用強化情況調整</span>
@@ -828,6 +834,7 @@ function Importer(){
                     clickable={true}/>
             <Tooltip id="AffixCountChangeHint" 
                     place='right-start'
+                    arrowColor='gray'
                     render={()=>{
                         return(
                             <div className='max-w-[300px]'>

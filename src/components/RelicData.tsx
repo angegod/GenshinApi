@@ -101,6 +101,7 @@ const RelicData=()=>{
                     </div>:<></>}
                 <Tooltip id="RelicDataHint"  
                         place="right-start"
+                        arrowColor='gray'
                         style={{ zIndex: 99 }}
                         render={()=>
                             <div className='flex flex-col [&>span]:text-white max-w-[250px] p-1'>
@@ -227,6 +228,7 @@ const RelicData_simulate=()=>{
                 </div>:null}
                 <Tooltip id="RelicDataHint"  
                         place="right-start"
+                        arrowColor='gray'
                         render={()=>
                             <RelicDataHint />
                         }/>

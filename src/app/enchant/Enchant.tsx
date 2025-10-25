@@ -258,10 +258,9 @@ const Enchant=React.memo(()=>{
         let MainAffix=AffixName.find((a)=>a.name===relic.main_affix);
 
         let SubData:any=[];
-
+        let relicAffixCount = 0;
 
         if(simulatorData.oldData===null){
-            console.log(relic);
             relic.subaffix.forEach((s:SubSimulateDataItem,i:number)=>{
                 let typeName=AffixName.find((a)=>a.name===s.subaffix);
                
@@ -272,11 +271,12 @@ const Enchant=React.memo(()=>{
                     count:s.count,//強化次數
                     isSelect:s.isSelect
                 }
-    
+                relicAffixCount +=s.count;
                 SubData.push(data);
             });
 
         }else{
+            relicAffixCount = Affix+1;
             SubData = simulatorData.oldData.returnData;
         }
         
@@ -295,9 +295,11 @@ const Enchant=React.memo(()=>{
             SubData:SubData,
             partsIndex:relic.type,
             standard:standDetails,
-            enchanceCount:Affix+1,
+            enchanceCount:relicAffixCount,
             limit:limit
         };
+
+        console.log(postData);
         
         if(isCheck){
             worker.postMessage(postData);
@@ -485,6 +487,7 @@ const Enchant=React.memo(()=>{
             </div>
             <Tooltip id="EnchantHint"  
                     place="right-start" 
+                    arrowColor='gray'
                     render={()=>
                         <HintEnchant />
                     }/>

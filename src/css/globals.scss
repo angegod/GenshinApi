@@ -125,6 +125,7 @@ input[type="number"]::-webkit-outer-spin-button {
 
 .grayScrollBar {
     overflow: auto; /* 只在需要時顯示滾軸 */
+
     /* IE、舊版 Edge */
     -ms-overflow-style: auto;
 
@@ -133,24 +134,32 @@ input[type="number"]::-webkit-outer-spin-button {
     scrollbar-color: gray transparent;
 
     /* Chrome、Safari、新版 Edge */
-    &::-webkit-scrollbar {
-        width: 2px;
-        height: 2px;
-    }
-
-    &::-webkit-scrollbar-track {
-        background: transparent; /* 軌道背景 */
-    }
-
-    &::-webkit-scrollbar-thumb {
-        background-color: gray;  /* 滾動條顏色 */
-        border-radius: 4px;
-    }
-
-    &::-webkit-scrollbar-thumb:hover {
-        background-color: #a0a0a0; /* 滑過時變亮一點 */
-    }
 }
+.grayScrollBar::-webkit-scrollbar {
+    width: 2px;
+    height: 2px;
+}
+
+.grayScrollBar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.grayScrollBar::-webkit-scrollbar-thumb {
+    background-color: gray;
+    border-radius: 4px;
+}
+
+.grayScrollBar::-webkit-scrollbar-thumb:hover {
+    background-color: #a0a0a0;
+}
+
+/* 🔹 隱藏滾軸箭頭（上下或左右） */
+.grayScrollBar::-webkit-scrollbar-button {
+    width: 0;
+    height: 0;
+    display: none;
+}
+
 
 
 //row布局
@@ -189,6 +198,11 @@ input[type="number"]::-webkit-outer-spin-button {
     @apply max-[500px]:!w-[95%] max-[500px]:flex max-[500px]:flex-col max-[500px]:justify-center; 
     @apply max-[800px]:min-w-0 max-[800px]:w-[100vw];
 }
+
+.react-tooltip {
+    border: 2px solid gray;
+}
+
 
 //歷史紀錄頭貼
 .rarity-5{

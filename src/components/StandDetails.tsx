@@ -61,6 +61,7 @@ const StandDetails=React.memo(()=>{
                 <Tooltip
                     id="StandDetailsHint"
                     place="right"
+                    arrowColor='gray'
                     render={() => <HintStandDetails />}
                     style={{ zIndex: 9999 }} 
                     />

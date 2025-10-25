@@ -7,7 +7,6 @@ import { Tooltip } from 'react-tooltip';
 import { AffixListItem, RelicDataItem, selfStand, selfStandItem, SubSimulateDataItem } from '@/data/RelicData';
 import Select, { SingleValue, ActionMeta } from 'react-select';
 import dynamic from "next/dynamic";
-import zIndex from '@mui/material/styles/zIndex';
 const LazyImage = dynamic(() => import("./LazyImage"), { ssr: false });
 
 //部位選擇器
@@ -389,6 +388,7 @@ const StandardSelect=React.memo(()=>{
                     </div>
                     <Tooltip id="StandardHint" 
                         place="top-start"
+                        arrowColor='gray'
                         render={()=>
                             <div className='flex flex-col'>
                                 <span className='text-white'>根據個人需求</span>
