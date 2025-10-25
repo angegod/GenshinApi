@@ -17,7 +17,8 @@ let updateDetails:updateDetailsItem = {
     updateTitle:"聖遺物重洗模擬器 原神6.1更新公告",
     updateContent:[
         "新增6.1腳色:奈芙爾",
-        "優化歷史紀錄數值呈現以及相關排版"
+        "優化歷史紀錄數值呈現以及相關排版",
+        "修正強化模擬初始化bug"
     ]
 };
 
