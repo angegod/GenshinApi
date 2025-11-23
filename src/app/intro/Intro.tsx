@@ -6,7 +6,7 @@ function Intro(){
     //之後intro頁面可能會改成json控管
     return(
         <div className='w-4/5 mx-auto'>
-            <div className='intro p-[1rem] mb-3 rounded-md w-fit flex flex-col flex-wrap h-[85vh] max-[800px]:!w-[95%] max-[800px]:h-fit'>
+            <div className='intro p-[1rem] mb-3 rounded-md w-fit flex flex-col flex-wrap h-[90vh] max-[800px]:!w-[95%] max-[800px]:h-fit'>
                 <div className='flex flex-col'>
                     <span className='text-2xl text-red-500 font-bold'>常見Q&A</span>
                     <span className='text-white'>這裡列出比較常見的幾個問題，如果有其他問題也歡迎利用巴哈私訊我</span>
@@ -62,6 +62,7 @@ function Intro(){
                         <ol className='[&>li]:text-stone-400'>
                             <li><strong className='text-amber-600'>幽境危戰：</strong>最主要的獲得來源，打過指定難度或累積1200樹酯消耗可以獲得最多3根羽毛</li>
                             <li><strong className='text-amber-600'>大月卡購買：</strong>珍珠紀行跟珍珠之歌兩者購買可以均獲得1根</li>
+                            <li><strong className='text-amber-600'>地圖探索：</strong>挪德卡萊地區寶庫獎勵，各個寶庫各一根</li>
                         </ol>                   
                     </div>
                 </div>

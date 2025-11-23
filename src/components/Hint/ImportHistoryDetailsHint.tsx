@@ -28,11 +28,11 @@ function ImportHistoryDetailsHint({index,data}:PastPreviewProps){
             </div>
             <div className='PastPreviewSection'>
                 <span className='PastPreviewTitle'>平均分數:</span>
-                <span className='pl-1 font-bold text-sm' style={{color:data.avgRank?.color}}>{data.avgScore}</span>
+                <span className='pl-1 font-bold text-sm' style={{color:data.avgRank?.color}}>{data.avgScore.toFixed(1)}</span>
             </div>
             <div className='PastPreviewSection'>
                 <span className='PastPreviewTitle'>平均期望:</span>
-                <span className='pl-1 font-bold text-sm' style={{color:textColor}}>{data.avgRate}%</span>
+                <span className='pl-1 font-bold text-sm' style={{color:textColor}}>{data.avgRate.toFixed(1)}%</span>
             </div>
             <div className='PastPreviewSection'>
                 <span className='PastPreviewTitle'>保底次數:</span>

@@ -759,14 +759,11 @@ function Importer(){
             {
                 (RelicDataArr && RelicDataArr.length >0)?
                 <div className={`rowWrap mt-2 w-full SectionBg shadowBox px-2 mb-5 rounded-md`} >
-                    <div className={`w-full max-[500px]:justify-center`}>
+                    <div className={`w-1/2 max-[800px]:w-full max-[500px]:w-4/5 max-[500px]:mx-auto`}>
                         <RelicSelect />
                     </div>
-                    <div className={`mt-3 rowWrap w-1/4  max-[700px]:w-[45%] max-[400px]:w-[60%] max-[400px]:mx-auto`}>
+                    <div className={`rowWrap w-1/2 max-[800px]:w-full max-[500px]:w-4/5 max-[500px]:mx-auto`}>
                         <RelicData  />
-                    </div>
-                    <div className={`mt-3 w-1/4 max-[700px]:w-[45%] w-[400px]:w-[90%] max-[500px]:mx-auto`} >
-                        <StandDetails />
                     </div>                
                     <div className={`mt-3 rowWrap w-1/2 max-[700px]:items-center max-[700px]:w-full ${(!Rscore)?'hidden':''} max-[500px]:w-4/5 max-[500px]:mx-auto`} id="resultDetails">
                         {(PieNums)?

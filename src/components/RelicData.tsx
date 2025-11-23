@@ -8,6 +8,7 @@ import EnchantDataStore from '@/model/enchantDataSlice';
 import SiteContext from '../context/SiteContext';
 import RelicDataHint from './Hint/RelicDataHint';
 import { standDetailItem, SubData, SubDataItem, SubSimulateDataItem } from '@/data/RelicData';
+import { StandDetails } from './StandDetails';
 
 
 //顯示儀器分數區間
@@ -59,34 +60,41 @@ const RelicData=()=>{
         
         return(
             <div className={`w-[100%] my-1 ${(relic!==undefined)?'':'hidden'} max-[500px]:w-[330px] max-[400px]:w-[100%]`}>
-                <div className='flex flex-row items-center'>
-                    <span className='text-red-600 text-lg font-bold'>聖遺物資訊</span>
-                    <div className='hintIcon ml-2 overflow-visible' data-tooltip-id="RelicDataHint">
-                        <span className='text-white'>?</span>
-                    </div>
-                </div>
-                <div className='mt-1 flex flex-col'>
-                    <span className='text-stone-400'>部位</span>
-                    <div className='flex flex-row'>
-                        <span className='text-white'>
-                            {typeof EquipType[relic.flat?.equipType as keyof typeof EquipType] === 'number'
-                                ? partArr[EquipType[relic.flat?.equipType as keyof typeof EquipType]! - 1]
-                                : '未知部位'}
-                        </span>   
-                    </div>
-                </div>
-                <div className='mt-1'>
-                    <span className='text-stone-400'>主詞條</span><br/>
-                    <div className='flex flex-row'>
-                        <div className='flex flex-row max-w-[140px]'>
-                            <span className='text-white whitespace-nowrap overflow-hidden text-ellipsis'>{MainAffixName}</span>
+                <div className='flex flex-row'>
+                    <div className='w-1/2'>
+                        <div className='flex flex-row items-center'>
+                            <span className='text-red-600 text-lg font-bold'>聖遺物資訊</span>
+                            <div className='hintIcon ml-2 overflow-visible' data-tooltip-id="RelicDataHint">
+                                <span className='text-white'>?</span>
+                            </div>
                         </div>
-                        <span className='text-stone-400'>:{relic.flat.reliquaryMainstat.statValue}{(isMainPercent)?'%':''}</span>
+                        <div className='mt-1 flex flex-col'>
+                            <span className='text-stone-400'>部位</span>
+                            <div className='flex flex-row'>
+                                <span className='text-white'>
+                                    {typeof EquipType[relic.flat?.equipType as keyof typeof EquipType] === 'number'
+                                        ? partArr[EquipType[relic.flat?.equipType as keyof typeof EquipType]! - 1]
+                                        : '未知部位'}
+                                </span>   
+                            </div>
+                        </div>
+                        <div className='mt-1'>
+                            <span className='text-stone-400'>主詞條</span><br/>
+                            <div className='flex flex-row'>
+                                <div className='flex flex-row max-w-[140px]'>
+                                    <span className='text-white whitespace-nowrap overflow-hidden text-ellipsis'>{MainAffixName}</span>
+                                </div>
+                                <span className='text-stone-400'>:{relic.flat.reliquaryMainstat.statValue}{(isMainPercent)?'%':''}</span>
+                            </div>
+                        </div>
+                        <div className='mt-2 flex flex-col'>
+                            <span className='text-stone-400'>強化保底次數</span>
+                            <span className='text-white'>{limit}</span>
+                        </div>
                     </div>
-                </div>
-                <div className='mt-2 flex flex-col'>
-                    <span className='text-stone-400'>強化保底次數</span>
-                    <span className='text-white'>{limit}</span>
+                    <div className='w-1/2'>
+                        <StandDetails />
+                    </div>
                 </div>
                 <div className='mt-2'>
                     <span className='text-stone-400'>副詞條</span>
@@ -193,45 +201,54 @@ const RelicData_simulate=()=>{
         })
         
         return(
-            <div className={`w-[100%] my-1 max-[400px]:min-w-[250px]`}>
-                <div className='flex flex-row items-center'>
-                    <span className='text-red-600 text-lg font-bold'>聖遺物資訊</span>
-                    <div className='hintIcon ml-2 overflow-visible'
-                        data-tooltip-id="RelicDataHint">
-                        <span className='text-white'>?</span>
+            <div className={`w-full my-1 max-[400px]:min-w-[300px]`}>
+                <div className='flex flex-row [&>div]:w-1/2'>
+                    <div>
+                        <div className='flex flex-row items-center'>
+                            <span className='text-red-600 text-lg font-bold'>聖遺物資訊</span>
+                            <div className='hintIcon ml-2 overflow-visible'
+                                data-tooltip-id="RelicDataHint">
+                                <span className='text-white'>?</span>
+                            </div>
+                        </div>
+                        <div className='mt-1 flex flex-col'>
+                            <span className='text-stone-400'>部位</span>
+                            <div className='flex flex-row'>
+                                <span className='text-white'>{partArr[relic.type-1]}</span>   
+                            </div>
+                        </div>
+                        <div className='mt-1 flex flex-col'>
+                            <span className='text-stone-400'>主詞條</span>
+                            <div className='flex flex-row'>
+                                <span className='text-white'>{relic.main_affix}</span>   
+                            </div>
+                        </div>
+                        <div className='mt-2 flex flex-col'>
+                            <span className='text-stone-400'>強化保底次數</span>
+                            <span className='text-white'>{limit}</span>
+                        </div>
+                        <Tooltip id="RelicDataHint"  
+                            place="right-start"
+                            arrowColor='gray'
+                            render={()=>
+                                <RelicDataHint />
+                            }/>
+                    </div>
+                    <div>
+                        <StandDetails />
                     </div>
                 </div>
-                <div className='mt-1 flex flex-col'>
-                    <span className='text-stone-400'>部位</span>
-                    <div className='flex flex-row'>
-                        <span className='text-white'>{partArr[relic.type-1]}</span>   
+                <div className='flex flex-col'>
+                    <div className='mt-2'>
+                        <span className='text-stone-400 font-bold'>副詞條</span>
+                        <div className='flex flex-col w-[200px]'>
+                            {list}
+                        </div>
                     </div>
+                    {(button)?<div className='mt-3'>
+                        <button className='processBtn' onClick={()=>navEnchant()}  disabled={!isChangeAble}>重洗模擬</button>
+                    </div>:null}
                 </div>
-                <div className='mt-1 flex flex-col'>
-                    <span className='text-stone-400'>主詞條</span>
-                    <div className='flex flex-row'>
-                        <span className='text-white'>{relic.main_affix}</span>   
-                    </div>
-                </div>
-                <div className='mt-2 flex flex-col'>
-                    <span className='text-stone-400'>強化保底次數</span>
-                    <span className='text-white'>{limit}</span>
-                </div>
-                <div className='mt-2'>
-                    <span className='text-stone-400 font-bold'>副詞條</span>
-                    <div className='flex flex-col w-[200px]'>
-                        {list}
-                    </div>
-                </div>
-                {(button)?<div className='mt-3'>
-                    <button className='processBtn' onClick={()=>navEnchant()}  disabled={!isChangeAble}>重洗模擬</button>
-                </div>:null}
-                <Tooltip id="RelicDataHint"  
-                        place="right-start"
-                        arrowColor='gray'
-                        render={()=>
-                            <RelicDataHint />
-                        }/>
             </div>
         )
     }else{

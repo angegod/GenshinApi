@@ -443,14 +443,12 @@ const Enchant=React.memo(()=>{
             <div className='flex flex-col w-4/5 mx-auto max-[600px]:w-[90%]'>
                 <div className="w-full border-gray-600 my-4 justify-center rowWrap max-[900px]:flex-col">
                     <div className='rowWrap w-1/2 max-[900px]:w-full justify-evenly max-[900px]:mb-2'>
-                        <div className='w-[45%] h-fit flex flex-row max-[900px]:w-fit bg-black/50 p-2 rounded-md'>
+                        <div className='w-[95%] h-fit flex flex-row max-[900px]:w-fit bg-black/50 p-2 rounded-md'>
                             {(mode==="Importer")?
                                 <RelicData  />:
                                 <RelicData_simulate />}
                         </div>
-                        <div className='w-[45%] h-fit max-[900px]:w-fit bg-black/50 p-2 rounded-md ml-1 max-[900px]:ml-0 max-[900px]:my-2'>
-                            <StandDetails />
-                        </div>
+                        
                     </div>
                     <div className='w-1/2 bg-black/50 h-fit p-2 rounded-md max-[900px]:w-full flex flex-col max-[900px]:items-center'>
                         <div className='flex flex-row max-[600px]:!flex-col'>

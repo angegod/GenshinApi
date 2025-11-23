@@ -47,7 +47,7 @@ const StandDetails=React.memo(()=>{
         })
 
         return(
-            <div className={`w-[100%] mb-5  my-1 max-[600px]:!min-w-[0px]`}>
+            <div className={`w-full mb-5 max-[600px]:!min-w-[0px]`}>
                 <div className='flex flex-row items-center'>
                     <span className='text-red-600 text-lg font-bold'>標準加權</span>
                     <div className='hintIcon ml-2 overflow-visible'

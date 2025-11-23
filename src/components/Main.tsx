@@ -513,11 +513,8 @@ function Main(){
                         (PieNums)?
                         <div className='w-full my-2'>
                             <div className={`w-full flex flex-row SectionBg p-2 rounded-md flex-wrap`}>
-                                <div className={`rowWrap w-[18vw] max-[700px]:w-[60%] max-[400px]:w-[60%] max-[400px]:mx-auto`} >
+                                <div className={`rowWrap w-1/2 max-[800px]:w-full max-[500px]:w-4/5 max-[500px]:mx-auto`} >
                                     <RelicData  />
-                                </div>
-                                <div className={`w-1/4 max-[700px]:w-[30%] max-[400px]:w-[90%] max-[400px]:mx-auto`} >
-                                    <StandDetails />
                                 </div>
                                 <div className='rowWrap w-1/2 max-[800px]:w-full max-[500px]:w-4/5 max-[500px]:mx-auto' id="resultDetails">
                                     <Result />

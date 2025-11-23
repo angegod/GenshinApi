@@ -430,8 +430,8 @@ const RelicSelect=React.memo(()=>{
         })
     
         return(
-            <div className='w-4/5 flex flex-col pt-1 max-[500px]:w-[100%]'>
-                <div className='flex flex-row items-baseline max-[500px]:w-[90%] max-[500px]:mx-auto'>
+            <div className='w-4/5 flex flex-col pt-1 max-[500px]:w-full'>
+                <div className='flex flex-row items-baseline max-[500px]:w-full max-[500px]:mx-auto'>
                     <span className='text-red-600 font-bold text-lg'>聖遺物匹配結果</span>
                     <div className='hintIcon ml-2 overflow-visible'
                         data-tooltip-id="RelicSelectHint">
