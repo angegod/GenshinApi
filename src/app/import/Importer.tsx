@@ -26,6 +26,7 @@ import HintParams from '@/components/Hint/HintParams';
 import { AffixItem, PieNums, Rank, RelicDataArr, RelicDataItem, Stand, selfStand, selfStandItem, sendData, SubData, SubDataItem, historyData } from '@/data/RelicData';
 import { UpdatedSection } from '@/components/UpdatedSection';
 import updateDetailsWindow from '@/model/updateDetailsStatus';
+import ProcessBtn from '@/components/ProcessBtn';
 
 
 function Importer(){
@@ -736,10 +737,9 @@ function Importer(){
                                 </div>
                             </div>
                             <div className='my-3 flex flex-row [&>*]:mr-2 justify-end max-w-[400px] max-[900px]:justify-center'>
-                                <button className='processBtn' onClick={()=>getRecord({})}  disabled={!isChangeAble}>開始匹配</button>
-                                <button className='processBtn' onClick={()=>saveRecord()} disabled={!isSaveAble}>儲存紀錄</button>
+                                <ProcessBtn text={'開始匹配'} handler={()=>getRecord({})} disabled={!isChangeAble}/>
+                                <ProcessBtn text={'儲存紀錄'} handler={()=>saveRecord()} disabled={!isSaveAble}/>
                             </div>
-                            
                         </div>
                     </div>
                     <div className={`w-[55%] pb-3 pt-1 h-fit flex-wrap max-[1250px]:w-full max-[1250px]:mb-5 ml-2 SectionBg rounded-md max-[1250px]:ml-0 max-[1250px]:mt-2`}>

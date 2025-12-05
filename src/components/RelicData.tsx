@@ -9,6 +9,7 @@ import SiteContext from '../context/SiteContext';
 import RelicDataHint from './Hint/RelicDataHint';
 import { standDetailItem, SubData, SubDataItem, SubSimulateDataItem } from '@/data/RelicData';
 import { StandDetails } from './StandDetails';
+import ProcessBtn from './ProcessBtn';
 
 
 //顯示儀器分數區間
@@ -105,7 +106,7 @@ const RelicData=()=>{
                 
                 {(button)?
                     <div className='mt-3'>
-                        <button className='processBtn' onClick={navEnchant} disabled={!isChangeAble}>重洗模擬</button>
+                        <ProcessBtn text={'重洗模擬'} handler={()=>navEnchant()} disabled={!isChangeAble}/>
                     </div>:<></>}
                 <Tooltip id="RelicDataHint"  
                         place="right-start"
@@ -246,7 +247,7 @@ const RelicData_simulate=()=>{
                         </div>
                     </div>
                     {(button)?<div className='mt-3'>
-                        <button className='processBtn' onClick={()=>navEnchant()}  disabled={!isChangeAble}>重洗模擬</button>
+                        <ProcessBtn text={'重洗模擬'} handler={()=>navEnchant()} disabled={!isChangeAble}/>
                     </div>:null}
                 </div>
             </div>

@@ -11,14 +11,12 @@ interface updateDetailsItem {
 
 let updateDetails:updateDetailsItem = {
     type:"Importer",
-    updateKey:'Genshin_20251024',
+    updateKey:'Genshin_20251205',
     updateType:'GenshinUpdateDetails',
-    updateDate: new Date('2025-10-24'),
-    updateTitle:"聖遺物重洗模擬器 原神6.1更新公告",
+    updateDate: new Date('2025-12-06'),
+    updateTitle:"聖遺物重洗模擬器 原神6.2更新公告",
     updateContent:[
-        "新增6.1腳色:奈芙爾",
-        "優化歷史紀錄數值呈現以及相關排版",
-        "修正強化模擬初始化bug"
+        "新增6.2腳色:杜林、雅柯達"
     ]
 };
 

@@ -345,7 +345,7 @@ const StandardSelect=React.memo(()=>{
             const exists = selfStand.some((s:selfStandItem) => s.name === m);
             
             return(
-                <div className='my-0.5 mx-1 hover:bg-stone-500 hover:text-white cursor-pointer flex flex-row items-center'
+                <div className='my-0.5 mx-1 hover:bg-stone-500 hover:text-white cursor-pointer flex flex-row items-center '
                     onClick={()=>addAffix(m)}
                     key={"options"+i}>
                         <div className='mr-1 flex items-center'>
@@ -377,7 +377,7 @@ const StandardSelect=React.memo(()=>{
                                 </div>
                             </div>
                             {expand&&(
-                                <div className="absolute overflow-y-scroll bg-stone-700 w-[inherit] h-[150px] border-[1px] hide-scrollbar border-stone-700 p-1">
+                                <div className="absolute overflow-y-scroll bg-stone-700 w-[inherit] h-[150px] border-[1px] hide-scrollbar border-stone-700 p-1 z-10">
                                     {optionsList}
                                 </div>
                             )}

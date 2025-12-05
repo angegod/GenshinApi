@@ -19,6 +19,7 @@ import HintParams from './Hint/HintParams';
 import {historyDataSimulate, PieNums, Rank, selfStand, selfStandItem, SimulateRelic, SubData, SubDataItem, SubSimulateDataItem} from '../data/RelicData';
 import HintHistory from './Hint/HintHistory';
 import updateDetailsWindow from '@/model/updateDetailsStatus';
+import ProcessBtn from './ProcessBtn';
 
 function Main(){
     //紀錄版本號
@@ -485,12 +486,8 @@ function Main(){
                                     (partsIndex!==undefined)?
                                     <div className={`mt-2 mb-2 max-w-[400px] flex flex-row [&>*]:mr-2 justify-end max-[400px]:justify-start`}>
                                         <div className='flex flex-row mt-1'>
-                                            <button className='processBtn mr-2 whitespace-nowrap' 
-                                                onClick={()=>calScore()} 
-                                                disabled={!processBtn}>計算分數</button>
-                                            <button className='processBtn mr-2 whitespace-nowrap' 
-                                                onClick={()=>saveRecord()} 
-                                                disabled={!isSaveAble}>儲存紀錄</button>
+                                            <ProcessBtn text={'開始匹配'} handler={()=>calScore()} disabled={!isChangeAble}/>
+                                            <ProcessBtn text={'儲存紀錄'} handler={()=>saveRecord()} disabled={!isSaveAble}/>
                                         </div>
                                     </div>:null
                                 }

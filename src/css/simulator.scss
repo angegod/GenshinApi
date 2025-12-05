@@ -17,3 +17,13 @@
     @apply max-[400px]:text-left ;
     @apply max-[600px]:w-[120px];
 }
+
+
+.swiper-button-prev , .swiper-button-next{
+    display: none;
+}
+
+.swiper-slide{
+    display: flex !important;
+    justify-content: center !important;
+}
