@@ -179,6 +179,15 @@ export interface caltype{
     affixmutl:number   //對應有效詞條名稱
 }
 
+export default interface SelfDefinedSelectProps{
+    selectName:string,
+    options:string[],
+    changeHandler: (...args: any[]) => void;
+    selectedValue:string,
+    selectWidth?:number
+}
+
+
 
 
 

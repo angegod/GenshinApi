@@ -4,14 +4,15 @@ import AffixList from '../data/AffixList';
 import characters from '@/data/characters';
 import SiteContext from '../context/SiteContext';
 import { Tooltip } from 'react-tooltip';
-import { AffixListItem, RelicDataItem, selfStand, selfStandItem, SubSimulateDataItem } from '@/data/RelicData';
+import SelfDefinedSelectProps, { AffixListItem, RelicDataItem, selfStand, selfStandItem, SubSimulateDataItem } from '@/data/RelicData';
 import Select, { SingleValue, ActionMeta } from 'react-select';
 import dynamic from "next/dynamic";
+import AffixName, { AffixItem } from '@/data/AffixName';
 const LazyImage = dynamic(() => import("./LazyImage"), { ssr: false });
 
 //部位選擇器
 const PartSelect=React.memo(()=>{
-    const {partArr,partsIndex,setPartsIndex,setIsSaveAble,isChangeAble}=useContext(SiteContext);
+    const {partArr,partsIndex,setPartsIndex,setIsSaveAble}=useContext(SiteContext);
     
     let options=[<option value={'undefined'} key={'PartsUndefined'}>請選擇</option>];
 
@@ -21,17 +22,25 @@ const PartSelect=React.memo(()=>{
         )
     });
 
-    return(
-        <select value={partsIndex} 
-                onChange={(event)=>{
-                    if(event.target.value==='undefined')
-                        setPartsIndex(undefined)
-                    else{
-                        setPartsIndex(event.target.value);setIsSaveAble(false);
-                    }
+    const changeHandler = (value:any)=>{
+        let targetIndex = (partArr as string[]).findIndex((p)=>p===value);
+        
+        console.log(targetIndex);
+        if(Number.isInteger(targetIndex)){
+            setPartsIndex(targetIndex+1);
+            setIsSaveAble(false);
+        }else
+            setPartsIndex(undefined);
+        
+    }
 
-                }}
-                disabled={!isChangeAble} className='h-[25px] w-[150px] graySelect'>{options}</select>
+    return(
+        <SelfDefinedSelect
+            selectName='PartSelect'
+            changeHandler={changeHandler}
+            options={partArr}
+            selectWidth={150}
+            selectedValue={partArr[partsIndex-1]} />
     )
 });
 
@@ -57,6 +66,10 @@ const MainAffixSelect = React.memo(() => {
         }
     }, [range]);
 
+    function MainAffixHandler(value:string){
+        setMainSelectOptions(value === 'undefined' ? undefined : value);
+    }
+
     if (!range) return null;
 
     if (range.length === 1) {
@@ -66,25 +79,28 @@ const MainAffixSelect = React.memo(() => {
             </div>
         )
     } else {
-        const options = [
-            <option value={'undefined'} key={'MainAfffixUndefined'}>請選擇</option>,
-            ...range.map((s, i) => (
-                <option value={s} key={`Mainaffix${i}`}>{s}</option>
-            ))
-        ];
+        const options = ['請選擇',...range];
 
-        return (
+        /*return (
             <select
                 defaultValue={MainSelectOptions}
                 onChange={(event) => {
-                    const val = event.target.value;
-                    setMainSelectOptions(val === 'undefined' ? undefined : val);
+                    
                 }}
                 disabled={!isChangeAble}
                 className='w-[150px] graySelect'>
                 {options}
             </select>
-        );
+        );*/
+
+        return(
+            <SelfDefinedSelect
+                changeHandler={MainAffixHandler}
+                selectName='MainAffixSelect'
+                selectedValue={MainSelectOptions}
+                selectWidth={150}
+                options={options} />
+        )
     }
 });
 
@@ -161,14 +177,23 @@ const SubAffixSelect=({index}:SubAffixSelectProps)=>{
             options.push(<option value={s} key={`Subaffix${s}`}>{s}</option>)
         });
 
+        /*
+        <select defaultValue={SubData[index].subaffix} 
+                onChange={(event)=>updateSubAffix(event.target.value,index)} 
+                className='graySelect'
+                disabled={!isChangeAble}>
+                {options}
+        </select>
+        */
+
         return(
             <div className='my-1 flex flex-row items-center' key={'SubAffixSelect'+index}>
-                <select defaultValue={SubData[index].subaffix} 
-                        onChange={(event)=>updateSubAffix(event.target.value,index)} 
-                        className='graySelect'
-                        disabled={!isChangeAble}>
-                        {options}
-                </select>
+                <SelfDefinedSelect
+                    options={filteredRange}
+                    changeHandler={(val: string) => updateSubAffix(val, index)}
+                    selectName={'SubAffix'+index}
+                    selectedValue={SubData[index].subaffix} 
+                    selectWidth={120}/>
                 <input type='text' defaultValue={SubData[index].data}
                         onChange={(event)=>setInputValue(event.target.value)}
                         onBlur={(event)=>updateSubData(index)}
@@ -342,18 +367,26 @@ const StandardSelect=React.memo(()=>{
 
         //模仿原生select標籤 渲染每個option之div
         let optionsList=mergedArray.map((m, i) => {
+            const targetAffix = AffixName.find((a)=>a.name === m) as AffixItem;
+            const attrIcon = targetAffix.icon;
             const exists = selfStand.some((s:selfStandItem) => s.name === m);
             
             return(
-                <div className='my-0.5 mx-1 hover:bg-stone-500 hover:text-white cursor-pointer flex flex-row items-center '
+                <div className='gap-1 px-1 hover:bg-stone-500 hover:text-white cursor-pointer flex flex-row items-center '
                     onClick={()=>addAffix(m)}
                     key={"options"+i}>
-                        <div className='mr-1 flex items-center'>
-                            <input  type='checkbox' checked={exists} 
-                                    className='border-[0px] w-4 h-4 accent-[dimgrey]' 
-                                    onChange={(event)=>console.log(event.target.value)}
-                                    disabled={!exists&&selfStand.length===6}/>
-                        </div>
+                    <div className='mr-1 flex items-center'>
+                        <input  type='checkbox' checked={exists} 
+                                className='border-0 w-4 h-4 accent-[dimgrey]' 
+                                onChange={(event)=>console.log(event.target.value)}
+                                disabled={!exists&&selfStand.length===6}/>
+                    </div>
+                    <div>
+                        <img 
+                            className='text-red-500'
+                            src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/image/attr/${targetAffix.icon}.svg`} 
+                            height={18} width={18} alt={targetAffix.fieldName} />
+                    </div>
                     <div>
                         <span className='text-white text-sm'>{m}</span>
                     </div>
@@ -364,7 +397,7 @@ const StandardSelect=React.memo(()=>{
         return(
                 <div className='flex flex-col' ref={selectContainer}>
                     <div className='flex flex-row flex-wrap items-baseline'>
-                        <div className='w-[150px] min-w-fit'>
+                        <div className='w-[180px] min-w-fit'>
                             <div className='relative border-b-2 border-white flex flex-row justify-between' onClick={()=>setExpand(!expand)}>
                                 <div>
                                     <span className='ml-1 text-white'>請選擇</span>
@@ -377,7 +410,7 @@ const StandardSelect=React.memo(()=>{
                                 </div>
                             </div>
                             {expand&&(
-                                <div className="absolute overflow-y-scroll bg-stone-700 w-[inherit] h-[150px] border-[1px] hide-scrollbar border-stone-700 p-1 z-10">
+                                <div className="absolute overflow-y-scroll flex flex-col gap-1 graySelect w-[inherit] h-[150px] border-[1px] hide-scrollbar border-stone-700 p-1 z-10">
                                     {optionsList}
                                 </div>
                             )}
@@ -448,6 +481,83 @@ const RelicSelect=React.memo(()=>{
     }
 });
 
+
+//自訂義單選select
+//選項 相關方法 設定state
+const SelfDefinedSelect=(props:SelfDefinedSelectProps)=>{
+    const {options,changeHandler,selectedValue,selectName,selectWidth}=props; 
+    const {isChangeAble}=useContext(SiteContext);
+    const [expand,setExpand]=useState(false);
+
+    const selectContainer = useRef<HTMLDivElement>(null);
+
+    //偵測點擊位置 如果點擊非本元件 則直接展開設為false
+    useEffect(()=>{
+        function handleClickOutside(event:MouseEvent) {
+            // 如果 containerRef 有值，且點擊目標不在 container 裡面
+            if(event.target){
+                if (selectContainer.current &&  event.target instanceof Node &&!selectContainer.current.contains(event.target)) {
+                    setExpand(false);
+                }
+            }
+            
+        }
+
+        if (expand&&isChangeAble) {
+            document.addEventListener('mousedown', handleClickOutside);
+        } else {
+            document.removeEventListener('mousedown', handleClickOutside);
+        }
+
+        // 清理事件
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    },[expand])
+
+    
+    function selectHandler(value:any){
+        changeHandler(value);
+        setExpand(false);
+    }
+
+    const optionsList = options.map((option,i)=>{
+        return(
+            <div key={`${selectName}_options${i}`} className='cursor-pointer  hover:bg-stone-500 px-1 w-[inherit]' onClick={()=>selectHandler(option)}>
+                <span className={`${(option===selectedValue)?'text-yellow-400':'text-white'}`}>{option}</span>
+            </div>
+        )
+    });
+
+    return (
+        <div className="relative flex flex-col" ref={selectContainer}>
+            <div className={`relative flex flex-row w-[${selectWidth}px] justify-between border-b-2 border-white cursor-pointer`} 
+                    onClick={() => setExpand(!expand)}>
+                <div>
+                    <span className="ml-1 text-white text-md">
+                    {selectedValue || '請選擇'}
+                    </span>
+                </div>
+                <div className='flex items-center'>
+                    <img 
+                        src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/image/arrow_drop.svg`}
+                        className={`transition-transform duration-300 ${expand && isChangeAble ? 'rotate-180' : 'rotate-0'}`}
+                        width={15} height={15}
+                        alt="arrow"/>
+                </div>
+            </div>
+
+            {expand && isChangeAble && (
+                <div className="absolute top-full left-0 z-10 w-full max-h-[150px]  
+                        overflow-y-auto graySelect border border-stone-700 hide-scrollbar flex flex-col gap-0.5 p-1">
+                    {optionsList} 
+                </div>
+            )}
+        </div>
+    );
+
+
+}
 
 
 export {StandardSelect,MainAffixSelect,SubAffixSelect,PartSelect,CharSelect,RelicSelect}
