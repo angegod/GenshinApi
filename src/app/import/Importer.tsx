@@ -757,7 +757,7 @@ function Importer(){
             {
                 (RelicDataArr && RelicDataArr.length >0)?
                 <div className={`rowWrap mt-2 w-full SectionBg shadowBox px-2 mb-5 rounded-md`} >
-                    <div className={`w-1/2 max-[800px]:w-full max-[500px]:w-4/5 max-[500px]:mx-auto`}>
+                    <div className={`w-full max-[500px]:w-4/5 max-[500px]:mx-auto`}>
                         <RelicSelect />
                     </div>
                     <div className={`rowWrap w-1/2 max-[800px]:w-full max-[500px]:w-4/5 max-[500px]:mx-auto`}>

@@ -25,7 +25,6 @@ const PartSelect=React.memo(()=>{
     const changeHandler = (value:any)=>{
         let targetIndex = (partArr as string[]).findIndex((p)=>p===value);
         
-        console.log(targetIndex);
         if(Number.isInteger(targetIndex)){
             setPartsIndex(targetIndex+1);
             setIsSaveAble(false);
@@ -47,7 +46,7 @@ const PartSelect=React.memo(()=>{
 
 //主詞條選擇
 const MainAffixSelect = React.memo(() => {
-    const { partsIndex, MainSelectOptions, setMainSelectOptions, isChangeAble } = useContext(SiteContext);
+    const { partsIndex, MainSelectOptions, setMainSelectOptions } = useContext(SiteContext);
     const [range, setRange] = useState<string[]|null>(null);
 
     useEffect(() => {
@@ -80,18 +79,6 @@ const MainAffixSelect = React.memo(() => {
         )
     } else {
         const options = ['請選擇',...range];
-
-        /*return (
-            <select
-                defaultValue={MainSelectOptions}
-                onChange={(event) => {
-                    
-                }}
-                disabled={!isChangeAble}
-                className='w-[150px] graySelect'>
-                {options}
-            </select>
-        );*/
 
         return(
             <SelfDefinedSelect
