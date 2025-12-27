@@ -17,7 +17,8 @@ let updateDetails:updateDetailsItem = {
     updateTitle:"聖遺物重洗模擬器 原神6.2更新公告",
     updateContent:[
         "新增6.2腳色:杜林、雅柯達",
-        "修正排版"
+        "修正排版",
+        "修正特定情況更新歷史紀錄有概率錯誤"
     ]
 };
 

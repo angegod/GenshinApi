@@ -347,6 +347,7 @@ function Importer(){
 
     //更新紀錄
     const updateDetails=useCallback(async (index:number)=>{
+        RelicDataArrRef.current=null;
         showStatus('正在更新資料中');
         const result = getHistory(index);
 
@@ -412,6 +413,8 @@ function Importer(){
 
                     updateStatus('已更新','success');
                     setIsSaveAble(false);
+                }else{
+                    updateStatus('該腳色似乎不存在於展示櫃上','error');
                 }   
             }).catch((error)=>{
                 console.error("錯誤發生：", error);             // 原始錯誤物件
