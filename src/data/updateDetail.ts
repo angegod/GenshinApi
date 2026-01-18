@@ -18,7 +18,7 @@ let updateDetails:updateDetailsItem = {
     updateContent:[
         "新增6.3腳色:少女(哥倫比婭)、茲白、葉洛亞",
         "替換背景圖片為挪德卡萊相關",
-        "細項文本動"
+        "細項文本改動"
     ]
 };
 
