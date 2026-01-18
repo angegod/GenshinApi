@@ -764,6 +764,24 @@ let characters:characters[]= [
         "cn_name":"雅柯達",
         "element":"Wind",
         "rarity":4
+    },{
+        "charId":"10000125",
+        "name":"Columbina",
+        "cn_name":"哥倫比婭",
+        "element":"Water",
+        "rarity":5
+    },{
+        "charId":"10000126",
+        "name":"Zibai",
+        "cn_name":"茲白",
+        "element":"Rock",
+        "rarity":5
+    },{
+        "charId":"10000127",
+        "name":"Illuga",
+        "cn_name":"葉洛亞",
+        "element":"Rock",
+        "rarity":4
     }
 ];
 
