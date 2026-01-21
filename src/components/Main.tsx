@@ -63,7 +63,8 @@ function Main(){
     const [relic,setRelic]=useState<SimulateRelic>();
 
     //保底次數 最低為2
-    const [limit,setLimit]=useState(2);
+    //const [limit,setLimit]=useState(2);
+    const limit = useRef(2);
     const limitRef = useRef(2);
 
     //獲取操作歷史紀錄的function
@@ -321,7 +322,7 @@ function Main(){
             setRank(event.data.relicrank);
             saveRelic();
             standDetails.current = selfStand;
-            limitRef.current = limit;
+            limitRef.current = limit.current;
             //恢復點擊
             updateStatus('計算完畢!!','success');
             setProcessBtn(true);
@@ -457,7 +458,7 @@ function Main(){
                                                 <input type='text-white' className='bgInput w-[40px] text-center' 
                                                         onChange={(event)=>{
                                                             if(!isNaN(parseInt(event.target.value)))
-                                                                setLimit(parseInt(event.target.value))
+                                                                limit.current=parseInt(event.target.value);
                                                         }} 
                                                         defaultValue={2} max={4}/>
                                                 <div className='hintIcon ml-1 overflow-visible'data-tooltip-id="LimitHint">

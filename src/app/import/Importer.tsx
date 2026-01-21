@@ -44,7 +44,8 @@ function Importer(){
     const [relicIndex,setRelicIndex] = useState<number>(0);
     
     //顯示資訊
-    const [limit,setLimit]=useState<number>(2);
+    //const [limit,setLimit]=useState<number>(2);
+    const limit = useRef(2);
     const showLimit = useRef(2);
 
     //期望值、儀器分數、評級、圖表資料、以及 切換成3詞條或4詞條模擬模式
@@ -126,7 +127,7 @@ function Importer(){
         //標記歷史紀錄尚未處理完
         setIsLoad(false);
         //將保底次數設為2
-        setLimit(2);
+        limit.current=2;
 
         //清空儲存的歷史紀錄
         resetHistory();
@@ -191,7 +192,7 @@ function Importer(){
                 return;
             }
 
-            if(limit>4||limit<2){
+            if(limit.current>4||limit.current<2){
                 updateStatus("保底次數只能為2,3或4次!","error");
                 return;
             }
@@ -205,7 +206,7 @@ function Importer(){
         if(!standard)
             standard = [...(selfStand ?? [])];
 
-        Limit = (!sendlimit)?limit:sendlimit;
+        Limit = (!sendlimit)?limit.current:sendlimit;
         //送出之前先清空一次資料
         setIsSaveAble(false);
         showStatus('正在尋找匹配資料......','process');
@@ -268,7 +269,7 @@ function Importer(){
         })
     }
 
-    async function processData(relicArr:any,standard:selfStand,limit:number){
+    async function processData(relicArr:any,standard:selfStand,getLimit:number){
         let temparr = [];
         
         //針對三詞條跟四詞條分別進行一次模擬
@@ -278,7 +279,7 @@ function Importer(){
 
             for(var i=3;i<=4;i++){
                 
-                const ExpData = await calscore(r,standard,i+1,limit);  
+                const ExpData = await calscore(r,standard,i+1,getLimit);  
             
                 calData[i]= ExpData;
             }
@@ -294,7 +295,7 @@ function Importer(){
         }
         setRelicDataArr(temparr);
         RelicDataArrRef.current=temparr;
-        showLimit.current = limit;
+        showLimit.current = getLimit;
         
         setIsSaveAble(true);
     }
@@ -329,7 +330,7 @@ function Importer(){
         if(data){
             setRelicDataArr([...data.dataArr]);
             setRelicIndex(0);
-            setLimit(data.limit);
+            //limit.current=data.limit;
             showLimit.current=data.limit;
             setAffixCount(3);
             setIsSaveAble(false);
@@ -366,7 +367,7 @@ function Importer(){
                 ? data.dataArr[0][3].standDetails.map((item: any) => ({ ...item }))
                 : [];
 
-            setLimit(data.limit);
+            //setLimit(data.limit);
             await getRecord({sendData:sendData, standard:cloneDetails, sendlimit:data.limit})
             .then(()=>{
                 console.log(RelicDataArrRef.current);
@@ -547,7 +548,7 @@ function Importer(){
             return;
         }
 
-        if(limit>4||limit<2){
+        if(limit.current>4||limit.current<2){
             updateStatus("保底次數有誤!!","error");
             return;
         }
@@ -728,7 +729,7 @@ function Importer(){
                                                     if (value !== '') {
                                                         const intVal = parseInt(value);
                                                         if (!isNaN(intVal)) {
-                                                            setLimit(intVal);
+                                                            limit.current=intVal;
                                                         }
                                                     }
                                                 }}/>
