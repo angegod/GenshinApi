@@ -1,5 +1,7 @@
 // 強化詞條種類組合（含共享保底條件）
 export function findCombinations(sum:number, length:number, selectedIndexes:number[] = [], minShared:number = 0):number[][] {
+  console.log(sum,length,selectedIndexes,minShared);
+  
   const result:number[][] = [];
 
   function generateCombination(arr:number[], currentSum:number) {

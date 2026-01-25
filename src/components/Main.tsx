@@ -302,7 +302,7 @@ function Main(){
             SubData:SubData,
             partsIndex:partsIndex,
             standard:selfStand,
-            limit:limit,
+            limit:limit.current,
             enchanceCount:enchanceCount
         };
         console.log(postData);

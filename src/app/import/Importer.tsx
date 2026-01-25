@@ -679,7 +679,7 @@ function Importer(){
                                         disabled={!isChangeAble}
                                         autoComplete="off"/>
                             </div>
-                            <div className='flex flex-row items-baseline [&>*]:mr-2 my-3 max-[400px]:!flex-col'>
+                            <div className='flex flex-row items-center [&>*]:mr-2 my-3 max-[400px]:!flex-col'>
                                 <div className='ImporterFlex'>
                                     <span className='SubTitle whitespace-nowrap'>Characters 腳色:</span>
                                 </div>                       

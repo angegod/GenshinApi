@@ -64,6 +64,7 @@ onmessage = function (event) {
             num:Number(charStandard[SubAffixType.type])
         });
     });
+
     //將沒有被鎖住不可計算的詞條倒裝
     let MainData=charStandard[MainAffix.type];
     let result:number[] = [];
@@ -139,6 +140,7 @@ onmessage = function (event) {
             {rank:'C',stand:15,color:'rgb(163, 230, 53)',tag:'C'},
             {rank:'D',stand:0 ,color:'rgb(22,163,74)',tag:'D'}
         ];
+        console.log(result);
         let overScoreList=JSON.parse(JSON.stringify(result)).filter((num:number)=>num-deviation>Number(origin));
         let expRate = Number((overScoreList.length / result.length));
         let copy=JSON.parse(JSON.stringify(result));
