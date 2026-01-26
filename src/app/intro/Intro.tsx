@@ -77,6 +77,12 @@ function Intro(){
                         <span>花跟羽毛雖然說不算主詞條為有效詞條數，但這也導致同樣都是缺一個詞條的情況下，花跟羽毛評分降的會比其他三個部位還來的多。</span>                  
                     </div>
                 </div>
+                <div className='flex flex-col gap-1'>
+                    <span className='text-white'>如果還有更多疑問之類的，可以參考我這寫的這篇文章，可能會給你一些幫助。</span>
+                    <a href='https://home.gamer.com.tw/artwork.php?sn=6278374' 
+                        target='_blank' 
+                        className='underline text-amber-600'>文章</a>
+                </div>
             </div>
         </div>
         
