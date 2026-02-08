@@ -469,7 +469,8 @@ function Importer(){
                 let data={
                     index:i, 
                     subaffix:typeName.name,
-                    data:val, //詞條數值    
+                    data:val, //詞條數值
+                    count:0    
                 }
 
                 SubData.push(data);
@@ -493,6 +494,8 @@ function Importer(){
                 limit:limit,
                 enchanceCount:enchanceCount
             };
+
+            console.log('目前處理裝備:',SubData);
             
             if(isCheck){
                 showStatus('數據計算處理中......','process');

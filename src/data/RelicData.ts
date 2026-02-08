@@ -123,11 +123,13 @@ export type selfStand = selfStandItem[] | [];
 
 //SubData
 export interface SubDataItem{
-    index:number 
+    index:number, 
     subaffix:string,
-    data:number //詞條數值,
+    data:number, //詞條數值,
     isSelect?:boolean,
-    count?:number    
+    count:number,
+    initVal?:number,
+    initValMax?:number,
 }
 
 export interface SubSimulateDataItem{
@@ -137,7 +139,9 @@ export interface SubSimulateDataItem{
     data:number,     //詞條數值,
     count:number,    //強化次數
     display?:string, //對應數值
-    isSelect:boolean //是否被指定為保底詞條   
+    isSelect:boolean, //是否被指定為保底詞條
+    initVal?:number,   //初始值  
+    initValMax?:number 
 }
 
 export type SubData = SubDataItem[]|SubSimulateDataItem[];

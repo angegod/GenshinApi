@@ -1,8 +1,8 @@
 import standard from '../data/standard';
 import weight from '../data/weight';
 import AffixName from '../data/AffixName';
-import {findCombinations,EnchanceAllCombinations} from '../data/combination';
-import { AffixItem, caltype, PieNums, RelicScoreStand, selfStand, SubData } from '@/data/RelicData';
+import {findCombinations,EnchanceAllCombinations, findSubDataInitVal} from '../data/combination';
+import { AffixItem, caltype, PieNums, RelicScoreStand, selfStand, SubData, SubDataItem, SubSimulateDataItem } from '@/data/RelicData';
 
 onmessage = function (event) {
     //宣告變數
@@ -58,6 +58,8 @@ onmessage = function (event) {
     let coeEfficent:any=[];//當前遺器係數arr
     SubData.forEach((sub)=>{
         let SubAffixType:AffixItem=AffixName.find((s)=>s.name===sub.subaffix)!;
+
+        findSubDataInitVal(sub);
         coeEfficent.push({
             type:SubAffixType.type,
             fieldName:SubAffixType.fieldName,
@@ -140,7 +142,6 @@ onmessage = function (event) {
             {rank:'C',stand:15,color:'rgb(163, 230, 53)',tag:'C'},
             {rank:'D',stand:0 ,color:'rgb(22,163,74)',tag:'D'}
         ];
-        console.log(result);
         let overScoreList=JSON.parse(JSON.stringify(result)).filter((num:number)=>num-deviation>Number(origin));
         let expRate = Number((overScoreList.length / result.length));
         let copy=JSON.parse(JSON.stringify(result));
@@ -172,14 +173,13 @@ onmessage = function (event) {
             returnData.find((r)=>r.label === relicrank!.rank)!.value =100;
         }
 
-        /*
-        //如果區間數量為0 則不予顯示*/
+        //如果區間數量為0 則不予顯示
         this.postMessage({
             expRate:(!expRate)?0:expRate,//期望值
             relicscore:score,//遺器分數
             relicrank:relicrank,//遺器區間
             returnData:returnData//區間機率        
-        })
+        });
         
     });
 };
