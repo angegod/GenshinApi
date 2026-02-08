@@ -679,7 +679,7 @@ function Importer(){
                                         disabled={!isChangeAble}
                                         autoComplete="off"/>
                             </div>
-                            <div className='flex flex-row items-center [&>*]:mr-2 my-3 max-[400px]:!flex-col'>
+                            <div className='flex flex-row [&>*]:mr-2 my-3 max-[400px]:!flex-col'>
                                 <div className='ImporterFlex'>
                                     <span className='SubTitle whitespace-nowrap'>Characters 腳色:</span>
                                 </div>                       
@@ -761,10 +761,10 @@ function Importer(){
             {
                 (RelicDataArr && RelicDataArr.length >0)?
                 <div className={`rowWrap mt-2 w-full SectionBg shadowBox px-2 mb-5 rounded-md`} >
-                    <div className={`w-full max-[500px]:w-4/5 max-[500px]:mx-auto`}>
+                    <div className={`w-full max-[500px]:w-[90%] max-[500px]:mx-auto`}>
                         <RelicSelect />
                     </div>
-                    <div className={`rowWrap w-1/2 max-[800px]:w-full max-[500px]:w-4/5 max-[500px]:mx-auto`}>
+                    <div className={`rowWrap w-1/2 max-[800px]:w-full max-[500px]:w-[90%] max-[500px]:mx-auto`}>
                         <RelicData  />
                     </div>                
                     <div className={`mt-3 rowWrap w-1/2 max-[700px]:items-center max-[700px]:w-full ${(!Rscore)?'hidden':''} max-[500px]:w-4/5 max-[500px]:mx-auto`} id="resultDetails">
@@ -801,6 +801,7 @@ function Importer(){
             <Tooltip id="RelicSelectHint"  
                     place="top-start"
                     arrowColor='gray'
+                    style={{zIndex:100}}
                     render={()=>
                         <div className='flex flex-col [&>span]:text-white max-w-[250px] p-1'>
                             <span>下方會顯示出該腳色符合條件的所有聖遺物</span>
@@ -824,6 +825,7 @@ function Importer(){
             <Tooltip id="LimitHint" 
                     place='right-start'
                     arrowColor='gray'
+                    style={{zIndex:100,width:'90%'}}
                     render={()=>
                         <div className='flex flex-col'>
                             <span>指定詞條強化保底次數，可以根據個人目前使用強化情況調整</span>

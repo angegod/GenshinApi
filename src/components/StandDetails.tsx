@@ -184,7 +184,7 @@ const ShowStand = React.memo(({ lock }:showStandProps) => {
                             }`}
                             style={{ backgroundImage: `url('${basePath}/image/lock.svg')` }}
                         ></div>
-                        <span className="relative top-[2px] z-10 text-xs font-bold text-gray-300 flex items-center justify-center w-full h-full">
+                        <span className="relative top-[2px] z-0 text-xs font-bold text-gray-300 flex items-center justify-center w-full h-full">
                             {s.SelectPriority! > 0 ? s.SelectPriority : ''}
                         </span>
                     </div>

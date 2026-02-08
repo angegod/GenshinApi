@@ -458,7 +458,7 @@ const RelicSelect=React.memo(()=>{
                         <span className='text-white'>?</span>
                     </div>
                 </div>
-                <div className='flex flex-row flex-wrap max-[500px]:justify-center my-2 max-[900px]:w-[100%]'>
+                <div className='flex flex-row flex-wrap max-[500px]:justify-between my-2 max-[900px]:w-[100%]'>
                     {list}
                 </div>
             </div>
@@ -515,6 +515,7 @@ const SelfDefinedSelect=(props:SelfDefinedSelectProps)=>{
             </div>
         )
     });
+    
 
     return (
         <div className="relative flex flex-col" ref={selectContainer}>
@@ -535,8 +536,7 @@ const SelfDefinedSelect=(props:SelfDefinedSelectProps)=>{
             </div>
 
             {expand && isChangeAble && (
-                <div className="absolute top-full left-0 z-10 w-full max-h-[150px]  
-                        overflow-y-auto graySelect border border-stone-700 hide-scrollbar flex flex-col gap-0.5 p-1">
+                <div className={`absolute top-full left-0 z-10 w-[${selectWidth}px] max-h-[150px] overflow-y-auto graySelect border border-stone-700 hide-scrollbar flex flex-col gap-0.5 p-1`}>
                     {optionsList} 
                 </div>
             )}
