@@ -443,7 +443,7 @@ const Enchant=React.memo(()=>{
             <div className='flex flex-col w-4/5 mx-auto max-[600px]:w-[90%]'>
                 <div className="w-full border-gray-600 my-4 justify-center rowWrap max-[900px]:flex-col">
                     <div className='rowWrap w-1/2 max-[900px]:w-full justify-evenly max-[900px]:mb-2'>
-                        <div className='w-[95%] h-fit flex flex-row max-[900px]:w-fit bg-black/50 p-2 rounded-md'>
+                        <div className='w-[95%] h-fit flex flex-row max-[900px]:w-full bg-black/50 p-2 rounded-md'>
                             {(mode==="Importer")?
                                 <RelicData  />:
                                 <RelicData_simulate />}
@@ -451,22 +451,22 @@ const Enchant=React.memo(()=>{
                         
                     </div>
                     <div className='w-1/2 bg-black/50 h-fit p-2 rounded-md max-[900px]:w-full flex flex-col max-[900px]:items-center'>
-                        <div className='flex flex-row max-[600px]:!flex-col'>
+                        <div className='flex flex-row max-[600px]:!flex-col '>
                             <div className='items-center flex flex-row max-[600px]:justify-center max-[600px]:mb-3'>
                                 <span className='text-red-600 text-lg font-bold'>模擬強化</span>
                                 <div className='hintIcon ml-2 overflow-visible' data-tooltip-id="EnchantHint">
                                     <span className='text-white'>?</span>
                                 </div>
                             </div>
-                            <div>
-                                <button className='processBtn ml-2' onClick={()=>execute()} >再洗一次</button>
-                                <button className='processBtn ml-2' onClick={()=>changeToNew()}>套用新強化</button>
+                            <div className='flex flex-row gap-2 flex-wrap'>
+                                <button className='processBtn' onClick={()=>execute()} >再洗一次</button>
+                                <button className='processBtn' onClick={()=>changeToNew()}>套用新強化</button>
                                 {
                                     (AffixBtn)
-                                        ?<button className='processBtn ml-2' onClick={()=>AffixCountChange()}>更改模式</button>
+                                        ?<button className='processBtn' onClick={()=>AffixCountChange()}>更改模式</button>
                                         :null
                                 }
-                                <button className='processBtn ml-2' onClick={()=>reInit()} disabled={!isRecoverable}>還原</button>
+                                <button className='processBtn' onClick={()=>reInit()} disabled={!isRecoverable}>還原</button>
                             </div>
                         </div>
                         <div className='my-2 flex flex-row'>

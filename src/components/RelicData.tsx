@@ -60,7 +60,7 @@ const RelicData=()=>{
         
         
         return(
-            <div className={`w-[100%] my-1 ${(relic!==undefined)?'':'hidden'} max-[500px]:w-[330px] max-[400px]:w-[100%]`}>
+            <div className={`w-[100%] my-1 ${(relic!==undefined)?'':'hidden'} max-[400px]:w-[100%]`}>
                 <div className='flex flex-row'>
                     <div className='w-1/2'>
                         <div className='flex flex-row items-center'>

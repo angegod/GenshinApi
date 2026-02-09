@@ -523,7 +523,7 @@ const SelfDefinedSelect=(props:SelfDefinedSelectProps)=>{
                     onClick={() => setExpand(!expand)}>
                 <div>
                     <span className="ml-1 text-white text-md">
-                    {selectedValue || '請選擇'}
+                        {selectedValue || '請選擇'}
                     </span>
                 </div>
                 <div className='flex items-center'>
@@ -534,7 +534,6 @@ const SelfDefinedSelect=(props:SelfDefinedSelectProps)=>{
                         alt="arrow"/>
                 </div>
             </div>
-
             {expand && isChangeAble && (
                 <div className={`absolute top-full left-0 z-10 w-[${selectWidth}px] max-h-[150px] overflow-y-auto graySelect border border-stone-700 hide-scrollbar flex flex-col gap-0.5 p-1`}>
                     {optionsList} 
