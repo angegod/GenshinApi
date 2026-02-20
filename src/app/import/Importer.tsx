@@ -325,24 +325,6 @@ function Importer(){
             //3.計算出可能的聖遺物配置
             
 
-            /*for(var i=3;i<=4;i++){
-                let copySubData = JSON.parse(JSON.stringify(SubData));
-                //更改:只傳入subdataItem的陣列  
-                const ExpData = await calscore(r,standard,i+1,getLimit,copySubData);  
-            
-                calData[i]= ExpData;
-            }*/
-
-            /*possibleCount.forEach(async (p)=>{
-                //深拷貝一份subdata
-                let copySubData = JSON.parse(JSON.stringify(SubData));
-                ensureSubDataCount(copySubData,relicSubDataCombinations,p+1);
-
-                const ExpData = await calscore(r,standard,p+1,getLimit,copySubData);  
-            
-                calData[p]= ExpData;
-            });*/
-
             for (const p of possibleCount) {
                 let copySubData = JSON.parse(JSON.stringify(SubData));
 
@@ -371,6 +353,7 @@ function Importer(){
     function ensureSubDataCount
         (SubData:SubDataItem[],relicSubDataCombinations:SubDataEnchanceCombinations[],totalCount:number){
         
+        console.log(relicSubDataCombinations);
         let remainCount = totalCount;
         //遍歷所有subdata
         SubData.forEach((s,i)=>{
@@ -396,8 +379,9 @@ function Importer(){
 
         //第二次遍歷
         let remainAffix = 
-            SubData.find((s,i)=>s.count === 0 && !relicSubDataCombinations[i].isinitVal && relicSubDataCombinations.length!==0)
+            SubData.find((s,i)=>s.count === 0 && !relicSubDataCombinations[i].isinitVal && relicSubDataCombinations[i].combinations?.length!==0)
 
+        console.log(remainAffix);
         if(remainAffix)
             remainAffix.count = remainCount;
 
@@ -824,7 +808,7 @@ function Importer(){
                                                         }
                                                     }
                                                 }}/>
-                                    <div className='hintIcon ml-1 overflow-visible'data-tooltip-id="LimitHint">
+                                    <div className='hintIcon ml-1 overflow-visible' data-tooltip-id="LimitHint">
                                         <span className='text-white'>?</span>
                                     </div>
                                 </div>
@@ -908,10 +892,11 @@ function Importer(){
             <Tooltip id="LimitHint" 
                     place='right-start'
                     arrowColor='gray'
-                    style={{zIndex:100,width:'90%'}}
+                    style={{zIndex:100}}
                     render={()=>
                         <div className='flex flex-col'>
-                            <span>指定詞條強化保底次數，可以根據個人目前使用強化情況調整</span>
+                            <span>指定詞條強化保底次數</span>
+                            <span>可以根據個人目前使用強化情況調整</span>
                             <span>指定詞條們的共享保底次數，最低為2、最高為4</span>
                         </div>
                     }
