@@ -35,7 +35,8 @@ export interface RelicDataItem{
     Rank:Rank,
     Rscore:number,//0到100
     relic:any,//暫時先不限制該物件模樣
-    standDetails:standDetails
+    standDetails:standDetails,
+    SubData:SubDataItem[] //濃縮版SubData
 }
 
 export interface SimulateRelic{
@@ -142,6 +143,13 @@ export interface SubSimulateDataItem{
     isSelect:boolean, //是否被指定為保底詞條
     initVal?:number,   //初始值  
     initValMax?:number 
+}
+
+export interface SubDataEnchanceCombinations {
+    subaffix: string;      // 詞條名稱
+    data: number;          // 最終數值
+    isinitVal: boolean;    // 是否初始詞條
+    combinations: number[][] | null; // 每個可能的強化分配
 }
 
 export type SubData = SubDataItem[]|SubSimulateDataItem[];

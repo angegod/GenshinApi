@@ -1,7 +1,7 @@
 import standard from '../data/standard';
 import weight from '../data/weight';
 import AffixName from '../data/AffixName';
-import {findCombinations,EnchanceAllCombinations, findSubDataInitVal} from '../data/combination';
+import {findCombinations,EnchanceAllCombinations} from '../data/combination';
 import { AffixItem, caltype, PieNums, RelicScoreStand, selfStand, SubData, SubDataItem, SubSimulateDataItem } from '@/data/RelicData';
 
 onmessage = function (event) {
@@ -59,7 +59,6 @@ onmessage = function (event) {
     SubData.forEach((sub)=>{
         let SubAffixType:AffixItem=AffixName.find((s)=>s.name===sub.subaffix)!;
 
-        findSubDataInitVal(sub);
         coeEfficent.push({
             type:SubAffixType.type,
             fieldName:SubAffixType.fieldName,

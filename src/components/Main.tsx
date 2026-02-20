@@ -25,9 +25,6 @@ function Main(){
     //紀錄版本號
     const version = 1.2;
 
-    //過往歷史紀錄最大筆數
-    const maxHistoryLength = 6;
-
     //資料儲存位置
     const dataStorageLocation = 'GenshinSimulatorData';
     

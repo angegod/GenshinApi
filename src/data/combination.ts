@@ -1,4 +1,4 @@
-import { SubDataItem, SubSimulateDataItem } from "./RelicData";
+import { SubDataEnchanceCombinations, SubDataItem, SubSimulateDataItem } from "./RelicData";
 import AffixName, { AffixItem } from "./AffixName";
 
 // 強化詞條種類組合（含共享保底條件）
@@ -78,60 +78,97 @@ export  function EnchanceAllCombinations(enhanceCounts:number[]) {
 }
 
 
-export function findSubDataInitVal(SubData: SubDataItem | SubSimulateDataItem) {
-    let targetAffix = AffixName.find((a) => a.name === SubData.subaffix) as AffixItem;
+export function findSubDatacombinations(relic:SubDataItem[]|SubSimulateDataItem[]) {
+    let result:SubDataEnchanceCombinations[] = [];
 
-    if (!targetAffix || !targetAffix.range) return 0;
 
-    // 1. 強化次數為 0
-    //if (SubData.count === 0) {
-    //    return SubData.data;
-    //}
+    relic.forEach((SubData:SubDataItem|SubSimulateDataItem) => {
+        let data:SubDataEnchanceCombinations|null = null;
 
-    const range = targetAffix.range;
-    const EPSILON = 0.05;
+        let targetAffix = AffixName.find((a) => a.name === SubData.subaffix) as AffixItem;
 
-    // 2. 沒有強化過的數值判斷(強化次數為0的)
-    const minVal = range[0];
-    const maxVal = range[range.length - 1];
+        if (!targetAffix || !targetAffix.range) return 0;
 
-    const target = Number(SubData.data.toFixed(1));
-    
-    const noEnchantNum = range.find(r =>
-        Math.floor(r * 10) / 10 === target
-    );
+        const range = targetAffix.range;
+        const EPSILON = 0.05;
 
-    if(noEnchantNum!==null && noEnchantNum!==undefined){
-        console.log(`${SubData.subaffix}該詞條沒有被強化過，直接回傳初始值${noEnchantNum}`);
-        return noEnchantNum;
-    }
+        // 2. 沒有強化過的數值判斷(強化次數為0的)
+        const minVal = range[0];
+        const maxVal = range[range.length - 1];
 
-    // 3.排列組合
+        const target = Number(SubData.data.toFixed(1));
+        
+        const noEnchantNum = range.find(r => {
+            if (targetAffix.percent) {
+                // 四捨五入到小數第 1 位
+                return Math.round(r * 10) / 10 === target;
+            } else {
+                // 四捨五入到整數位
+                return Math.round(r) === target;
+            }
+        });
 
-    //可能的強化次數
 
-    const minCount = Math.ceil(SubData.data / maxVal); // 無條件進位 → 至少要幾次
-    const maxCount = Math.floor(SubData.data / minVal); // 無條件捨去 → 至多幾次
+        if(noEnchantNum!==null && noEnchantNum!==undefined){
+            //console.log(`${SubData.subaffix}該詞條沒有被強化過，直接回傳初始值${noEnchantNum}`);
+            
+            data = {
+                subaffix:SubData.subaffix,
+                data:SubData.data,
+                isinitVal:true,
+                combinations:null
+            }
 
-    let enchanceArr = [];
-    for(var i=1;i<=6;i++){
-        if(i >= minCount && i<= maxCount){
-            enchanceArr.push(i);
+            result.push(data);
+            return;
         }
-    }
 
-    //獲得所有可能的強化幅度組合
-    let enchantCombinations = generateEnhanceCombinations(enchanceArr);
+        // 3.排列組合
+
+        //可能的強化次數
+
+        const minCount = Math.ceil(SubData.data / maxVal); // 無條件進位 → 至少要幾次
+        const maxCount = Math.floor(SubData.data / minVal); // 無條件捨去 → 至多幾次
+
+        let enchanceArr = [];
+        for(var i=1;i<=6;i++){
+            if(i >= minCount && i<= maxCount){
+                enchanceArr.push(i);
+            }
+        }
+
+        //獲得所有可能的強化幅度組合
+        let enchantCombinations = generateEnhanceCombinations(enchanceArr);
 
 
-    //針對所有組合 計算總和數值 最後再去跟原本的數值 (SubData.data)
-    // 篩選符合 SubData.data 的組合
-    enchantCombinations = enchantCombinations.filter(arr => {
-        const calData = arr.reduce((sum, idx) => sum + range[idx], 0);
-        return Number(calData.toFixed(1)) === Number(SubData.data.toFixed(1));
+        //針對所有組合 計算總和數值 最後再去跟原本的數值 (SubData.data)
+        // 篩選符合 SubData.data 的組合
+        enchantCombinations = enchantCombinations.filter(arr => {
+            const calData = arr.reduce((sum, idx) => sum + range[idx], 0);
+
+            if (targetAffix.percent) {
+                // 百分比 → 保留 1 位小數比較
+                return Number(calData.toFixed(1)) === Number(SubData.data.toFixed(1));
+            } else {
+                // 整數 → 四捨五入到整數比較
+                return Math.round(calData) === Math.round(SubData.data);
+            }
+        });
+
+
+        //console.log(`${SubData.subaffix}剩餘可能組合:`,enchantCombinations);
+        data = {
+            subaffix:SubData.subaffix,
+            data:SubData.data,
+            isinitVal:false,
+            combinations:enchantCombinations
+        }
+
+        result.push(data);
+        return;
     });
 
-    console.log(`${SubData.subaffix}剩餘可能組合:`,enchantCombinations);
+    return result;
 }
 
 /**
@@ -162,5 +199,59 @@ export function generateEnhanceCombinations(enhanceCounts: number[],maxValue = 3
 
     return results;
 }
+
+// 過濾非法組合 → 回傳可能的初始詞條數量
+export function filterInvalidCombinations(SubData: SubDataEnchanceCombinations[]): number[] {
+
+    const countOptions: number[][] = [];
+
+    SubData.forEach((s, i) => {
+        countOptions[i] = [];
+
+        if (!s.combinations || s.combinations.length === 0) {
+            countOptions[i].push(0);
+            return;
+        }
+
+        const set = new Set<number>();
+
+        s.combinations.forEach(c => {
+            const enhanceCount = Math.max(0, c.length - 1); // ⭐ 修正點
+            set.add(enhanceCount);
+        });
+
+        countOptions[i] = Array.from(set).sort((a, b) => a - b);
+    });
+
+    let canBe4 = false; // 總強化 = 4 → 初始 4 詞條
+    let canBe5 = false; // 總強化 = 5 → 初始 3 詞條
+
+    function dfs(index: number, sum: number) {
+        if (index === countOptions.length) {
+            if (sum === 4) canBe4 = true;
+            if (sum === 5) canBe5 = true;
+            return;
+        }
+
+        for (const c of countOptions[index]) {
+            const next = sum + c;
+            
+            if (next > 5) continue;
+            
+            dfs(index + 1, next);
+        }
+    }
+
+    dfs(0, 0);
+
+    const result: number[] = [];
+
+    if (canBe5) result.push(4);
+    if (canBe4) result.push(3);
+
+    return result;
+}
+
+
 
 

@@ -194,7 +194,8 @@ const Enchant=React.memo(()=>{
                 let data={
                     index:i, 
                     subaffix:typeName.name,
-                    data:val, //詞條數值    
+                    data:val, //詞條數值
+                    count:0    
                 }
 
                 SubData.push(data);

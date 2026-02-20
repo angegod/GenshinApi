@@ -1,5 +1,5 @@
 'use client';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import AffixName, { AffixItem } from '../data/AffixName';
 import EquipType from '@/data/EquipType';
 import { Tooltip } from 'react-tooltip';
@@ -7,46 +7,112 @@ import { useRouter } from 'next/navigation';
 import EnchantDataStore from '@/model/enchantDataSlice';
 import SiteContext from '../context/SiteContext';
 import RelicDataHint from './Hint/RelicDataHint';
-import { standDetailItem, SubData, SubDataItem, SubSimulateDataItem } from '@/data/RelicData';
+import { RelicDataItem, standDetailItem, SubData, SubDataItem, SubSimulateDataItem } from '@/data/RelicData';
 import { StandDetails } from './StandDetails';
 import ProcessBtn from './ProcessBtn';
 
 
 //顯示儀器分數區間
 const RelicData=()=>{
-    const {relic,Rrank,Rscore,standDetails,isChangeAble,partArr,limit,mode,button} = useContext(SiteContext);
+    const {RelicDataArr,relicIndex,isChangeAble,partArr,limit,mode,button,AffixCount} = useContext(SiteContext);
     const router = useRouter();
-
     //獲取enchant資料
     const {setEnchantData} = EnchantDataStore();
+    const [targetData,setTargetData] = useState<RelicDataItem|null>(null);
     
+    useEffect(() => {
+        if (!RelicDataArr.length) return;
+
+        const relicObj = RelicDataArr[relicIndex];
+        if (!relicObj) return;
+
+        let key: 3 | 4 | undefined;
+
+        const has3 = relicObj[3];
+        const has4 = relicObj[4];
+
+        if (has3 && has4) {
+            key = AffixCount === 3 ? 3 : 4;
+        } else if (has3) {
+            key = 3;
+        } else if (has4) {
+            key = 4;
+        } else {
+            return; // 沒資料直接中斷
+        }
+
+        const targetData = relicObj[key];
+        if (!targetData) return;
+
+        setTargetData(targetData);
+
+    }, [RelicDataArr, relicIndex, AffixCount]);
+
     //導航至模擬強化頁面
     function navEnchant(){
-        let sendData={
-            relic:relic,
-            Rrank:Rrank,
-            Rscore:Rscore,
-            standDetails:standDetails,
-            limit:limit,
-            mode:mode
+
+        if(targetData){
+            let sendData={
+                relic:targetData.relic,
+                Rrank:targetData.Rank,
+                Rscore:targetData.Rscore,
+                standDetails:targetData.standDetails,
+                limit:limit,
+                mode:mode
+            }
+            setEnchantData(sendData);
+            
+            router.push('./enchant');
         }
-        setEnchantData(sendData);
         
-        router.push('./enchant');
     }
 
-    if(relic!==undefined){
-        const MainAffixName:string = AffixName.find((a)=>a.fieldName===relic.flat.reliquaryMainstat.mainPropId)!.name;
+    if(targetData){
+        const MainAffixName:string = AffixName.find((a)=>a.fieldName === targetData.relic.flat.reliquaryMainstat.mainPropId)!.name;
         //主詞條是否要顯示百分比?
-        const isMainPercent:boolean = AffixName.find((a)=>a.fieldName === relic.flat.reliquaryMainstat.mainPropId)!.percent;
+        const isMainPercent:boolean = AffixName.find((a)=>a.fieldName === targetData.relic.flat.reliquaryMainstat.mainPropId)!.percent;
         const list:any=[];
-        relic.flat.reliquarySubstats.forEach((s:any)=>{
+        targetData.relic.flat.reliquarySubstats.forEach((s:any,i:number)=>{
             let targetAffix:AffixItem|undefined = AffixName.find((a)=>a.fieldName===s.appendPropId);
             let showAffix = targetAffix!.name;
-            let isBold=(standDetails.find((st:standDetailItem)=>st.name===showAffix)!==undefined)?true:false;
+            let isBold=(targetData.standDetails.find((st:standDetailItem)=>st.name===showAffix)!==undefined)?true:false;
+
+
+            let AffixEnchanceCount = targetData.SubData[i].count;
+            let markcolor="";
+
+            switch(AffixEnchanceCount){
+                case 0:
+                    markcolor='rgb(122, 122, 122)';
+                    break;
+                case 1:
+                    markcolor='rgb(67, 143, 67)';
+                    break;
+                case 2:
+                    markcolor='rgb(23, 93, 232)';
+                    break;
+                case 3:
+                    markcolor='rgb(67, 17, 184)';
+                    break;
+                case 4:
+                    markcolor='rgb(219, 171, 15)';
+                    break;
+                case 5:
+                    markcolor='#FF55FF';
+                    break;
+                default:
+                    break;
+            }
+
 
             list.push(
                 <div className='flex flex-row' key={'Subaffix_'+s.appendPropId}>
+                    <div className='flex justify-center items-center'>
+                        <span className='mr-0.5 text-white w-[20px] h-[20px] rounded-[20px]
+                            flex justify-center items-center' style={{backgroundColor:markcolor}}>
+                            {AffixEnchanceCount}
+                        </span>
+                    </div>  
                     <div className='w-[150px] flex flex-row'>
                         <span className={`${(isBold)?'text-yellow-500 font-bold':'text-white'} text-left flex` }>{showAffix}</span>
                     </div>
@@ -60,7 +126,7 @@ const RelicData=()=>{
         
         
         return(
-            <div className={`w-[100%] my-1 ${(relic!==undefined)?'':'hidden'} max-[400px]:w-[100%]`}>
+            <div className={`w-[100%] my-1 ${(targetData.relic!==undefined)?'':'hidden'} max-[400px]:w-[100%]`}>
                 <div className='flex flex-row'>
                     <div className='w-1/2'>
                         <div className='flex flex-row items-center'>
@@ -68,13 +134,14 @@ const RelicData=()=>{
                             <div className='hintIcon ml-2 overflow-visible' data-tooltip-id="RelicDataHint">
                                 <span className='text-white'>?</span>
                             </div>
+                            
                         </div>
                         <div className='mt-1 flex flex-col'>
                             <span className='text-stone-400'>部位</span>
                             <div className='flex flex-row'>
                                 <span className='text-white'>
-                                    {typeof EquipType[relic.flat?.equipType as keyof typeof EquipType] === 'number'
-                                        ? partArr[EquipType[relic.flat?.equipType as keyof typeof EquipType]! - 1]
+                                    {typeof EquipType[targetData.relic.flat?.equipType as keyof typeof EquipType] === 'number'
+                                        ? partArr[EquipType[targetData.relic.flat?.equipType as keyof typeof EquipType]! - 1]
                                         : '未知部位'}
                                 </span>   
                             </div>
@@ -85,7 +152,7 @@ const RelicData=()=>{
                                 <div className='flex flex-row max-w-[140px]'>
                                     <span className='text-white whitespace-nowrap overflow-hidden text-ellipsis'>{MainAffixName}</span>
                                 </div>
-                                <span className='text-stone-400'>:{relic.flat.reliquaryMainstat.statValue}{(isMainPercent)?'%':''}</span>
+                                <span className='text-stone-400'>:{targetData.relic.flat.reliquaryMainstat.statValue}{(isMainPercent)?'%':''}</span>
                             </div>
                         </div>
                         <div className='mt-2 flex flex-col'>
@@ -107,7 +174,7 @@ const RelicData=()=>{
                 {(button)?
                     <div className='mt-3'>
                         <ProcessBtn text={'重洗模擬'} handler={()=>navEnchant()} disabled={!isChangeAble}/>
-                    </div>:<></>}
+                    </div>:null}
                 <Tooltip id="RelicDataHint"  
                         place="right-start"
                         arrowColor='gray'

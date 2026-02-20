@@ -428,12 +428,19 @@ const StandardSelect=React.memo(()=>{
 });
 
 //遺器選擇
-const RelicSelect=React.memo(()=>{
-    const {RelicDataArr,relicIndex,setRelicIndex,AffixCount}=useContext(SiteContext);
+const RelicSelect=()=>{
+    const {RelicDataArr,relicIndex,setRelicIndex}=useContext(SiteContext);
     const unknowRelicImg = `${process.env.NEXT_PUBLIC_BASE_PATH || ''}/image/unknownRelic.png`;
-    if(RelicDataArr.length !==0){
+    console.log('Relic select:',RelicDataArr);
+    if(RelicDataArr.length !== 0 ){
         let list = RelicDataArr.map((r:any,i:number)=>{
-            const reliclink =  `https://enka.network/ui/${r[AffixCount].relic.flat.icon}.png`;
+            const firstData = Object.values(r)[0] as RelicDataItem;
+            if (!firstData) return null;
+
+            const icon = firstData?.relic?.flat?.icon;
+            if (!icon) return null;
+
+            const reliclink = `https://enka.network/ui/${icon}.png`;
     
             return(
                 <div className={`rounded-[50px] mx-2 mb-2 cursor-pointer p-2 border-[3px] max-[500px]:mx-1 max-[500px]:p-1 max-[500px]:border-[2px] ${(relicIndex === i)?"border-yellow-600":"border-gray-300"}`} 
@@ -464,9 +471,9 @@ const RelicSelect=React.memo(()=>{
             </div>
         )
     }else{
-        return null
+        return null;
     }
-});
+};
 
 
 //自訂義單選select
@@ -545,5 +552,58 @@ const SelfDefinedSelect=(props:SelfDefinedSelectProps)=>{
 
 }
 
+//遺器模式自選
+const RelicDataModeSelect = () =>{
+    const {changeAffixCount,RelicDataArr,relicIndex,PieNums,AffixCount} = useContext(SiteContext);
 
-export {StandardSelect,MainAffixSelect,SubAffixSelect,PartSelect,CharSelect,RelicSelect}
+    if(!PieNums) return null;
+
+
+    //如果該聖遺物有三詞條跟四詞條的可能 則提供切換按鈕
+    if(RelicDataArr[relicIndex][3] && RelicDataArr[relicIndex][4]){
+        return(
+            <>
+                <div className='flex flex-row items-center max-[700px]:mx-auto'>
+                    <button className='underline cursor-pointer' onClick={()=>changeAffixCount()}>{(AffixCount===3)?'目前為3詞條':'目前為4詞條'}</button>
+                    <div className='hintIcon ml-2 overflow-visible'
+                        data-tooltip-id="AffixCountChangeHint">
+                        <span className='text-white'>?</span>
+                    </div>
+                </div>
+                <Tooltip id="AffixCountChangeHint" 
+                    place='right-start'
+                    arrowColor='gray'
+                    render={()=>{
+                        return(
+                            <div className='max-w-[300px]'>
+                                <div>
+                                    <span>此按鈕可以切換該聖遺物至3詞條或4詞條模式</span>
+                                </div>
+                                <div className='mt-2'>
+                                    <span className='text-yellow-400'>目前API無法提供該聖遺物屬於初始3或4詞條，才會設計切換按鈕。</span>
+                                </div>
+                            </div>
+                        )
+                    }}/>
+            </>
+        )
+    }
+    
+    //反之則只顯示提示語
+    let hint = "";
+    
+    if(RelicDataArr[relicIndex][3] ){
+        hint = "該聖遺物必為3詞條";
+    }else if(RelicDataArr[relicIndex][4]){
+        hint = "該聖遺物必為4詞條";
+    }
+    
+    return(
+        <div className='flex flex-row items-center max-[700px]:mx-auto'>
+            <span className='text-white'>{hint}</span>
+        </div>
+    )
+}
+
+
+export {StandardSelect,MainAffixSelect,SubAffixSelect,PartSelect,CharSelect,RelicSelect,RelicDataModeSelect}
