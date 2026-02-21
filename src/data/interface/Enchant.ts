@@ -6,6 +6,7 @@ export interface EnchantData{
     Rscore:number,
     standDetails:standDetailItem[],
     limit:number,
+    SubData?:SubDataItem[],
     mode:"Importer"|"Simulator"
 }
 

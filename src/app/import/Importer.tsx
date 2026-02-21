@@ -104,9 +104,7 @@ function Importer(){
 
     //當聖遺物資料更新時
     useEffect(()=>{
-        
         if(RelicDataArr.length !==0){
-            console.log('Main:',RelicDataArr,AffixCount,relicIndex);
             const relicObj = RelicDataArr[relicIndex];
 
             // 3 詞條 → key 3
@@ -381,7 +379,6 @@ function Importer(){
         let remainAffix = 
             SubData.find((s,i)=>s.count === 0 && !relicSubDataCombinations[i].isinitVal && relicSubDataCombinations[i].combinations?.length!==0)
 
-        console.log(remainAffix);
         if(remainAffix)
             remainAffix.count = remainCount;
 

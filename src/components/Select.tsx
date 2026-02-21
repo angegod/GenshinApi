@@ -431,7 +431,6 @@ const StandardSelect=React.memo(()=>{
 const RelicSelect=()=>{
     const {RelicDataArr,relicIndex,setRelicIndex}=useContext(SiteContext);
     const unknowRelicImg = `${process.env.NEXT_PUBLIC_BASE_PATH || ''}/image/unknownRelic.png`;
-    console.log('Relic select:',RelicDataArr);
     if(RelicDataArr.length !== 0 ){
         let list = RelicDataArr.map((r:any,i:number)=>{
             const firstData = Object.values(r)[0] as RelicDataItem;

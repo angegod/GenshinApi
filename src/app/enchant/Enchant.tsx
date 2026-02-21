@@ -5,8 +5,7 @@ import EquipType from '@/data/EquipType';
 import { useState } from 'react';
 import '../../css/simulator.scss';
 import '../../css/enchant.scss';
-import { StandDetails } from '../../components/StandDetails';
-import { RelicData, RelicData_simulate } from '../../components/RelicData';
+import { RelicData_Enchant, RelicData_simulate } from '../../components/RelicData';
 import { PieChart } from '@mui/x-charts/PieChart';
 import SiteContext from '@/context/SiteContext';
 import EnchantDataStore from '@/model/enchantDataSlice';
@@ -14,7 +13,7 @@ import { useRouter } from 'next/navigation';
 import { Tooltip } from 'react-tooltip';
 import HintEnchant from '@/components/Hint/HintEnchant';
 import { EnchantData, MinMaxScore, RelicBackup, SimulatorData, Statics } from '@/data/interface/Enchant';
-import { PieNums, Rank, RelicScoreStand, standDetailItem, SubData, SubDataItem, SubSimulateDataItem } from '@/data/RelicData';
+import { Rank, RelicScoreStand, standDetailItem, SubDataItem, SubSimulateDataItem } from '@/data/RelicData';
 import { JSX } from 'react/jsx-runtime';
 
 //此物件為單次模擬隨機強化後的結果
@@ -22,7 +21,7 @@ const Enchant=React.memo(()=>{
 
     //從enchantstore取得
     const [data,setData] = useState<EnchantData>();
-    const {relic,standDetails,Rscore,Rrank,mode}:any=data || {};
+    const {relic,standDetails,Rscore,Rrank,mode,SubData}:any = data || {};
     const {getEnchantData} = EnchantDataStore();
     
     const relicBackUp =useRef<RelicBackup|null>(null);
@@ -78,12 +77,21 @@ const Enchant=React.memo(()=>{
     useEffect(()=>{
         //偵測初始化數據是否帶有指定屬性
         if(data !== undefined){
-            if(mode==="Simulator"){
-                let AffixCount = 0;
+            let AffixCount = 0;
+            if(mode === "Simulator"){
+
                 let subArr = data.relic.subaffix as SubSimulateDataItem[];
                 subArr.forEach((s)=>AffixCount+=s.count);
-                (AffixCount===5)?setAffixCount(4):setAffixCount(3);
+                
             }
+
+            if(mode === "Importer"){
+                let subArr = data.SubData! as SubDataItem[];
+                subArr.forEach((s)=>AffixCount+=s.count);
+            }
+
+            (AffixCount===5)?setAffixCount(4):setAffixCount(3);
+            return;
         }
        
     },[data])
@@ -92,7 +100,7 @@ const Enchant=React.memo(()=>{
     //必須有data 才能計算
     useEffect(()=>{
         //調整按鈕render
-        (mode==="Importer")?setAffixBtn(true):setAffixBtn(false);
+        //(mode==="Importer")?setAffixBtn(true):setAffixBtn(false);
 
         //回到畫面最上方
         requestAnimationFrame(()=>{
@@ -183,39 +191,19 @@ const Enchant=React.memo(()=>{
         //將運行結果丟到背景執行 跟模擬所有組合的worker分開
         let worker=new Worker(new URL('../../worker/worker2.ts', import.meta.url));
         let MainAffix=AffixName.find((a)=>a.fieldName===relic.flat.reliquaryMainstat.mainPropId)!;
-        let SubData:SubDataItem[]=[];
+        let getSubData:SubDataItem[]=[];
           
         if(simulatorData.oldData===null){
-            relic.flat.reliquarySubstats.forEach((s:any,i:number)=>{
-                let typeName=AffixName.find((a)=>a.fieldName===s.appendPropId)!;
-
-                let val= s.statValue;
-                
-                let data={
-                    index:i, 
-                    subaffix:typeName.name,
-                    data:val, //詞條數值
-                    count:0    
-                }
-
-                SubData.push(data);
-            });
+            getSubData = SubData;
         }else{
-            SubData = simulatorData.oldData.returnData;
+            getSubData = simulatorData.oldData.returnData;
         }
-        
 
-        //檢查標準是否合法
-        /*standDetails.forEach((s)=>{
-            if(s.value===''){
-                isCheck=false;
-            }
-        });*/
         
         //制定送出資料格式
         let postData={
             MainData:MainAffix.name,
-            SubData:SubData,
+            SubData:getSubData,
             partsIndex:EquipType[relic.flat.equipType],
             standard:standDetails,
             enchanceCount:Affix+1,
@@ -230,7 +218,7 @@ const Enchant=React.memo(()=>{
                     oldData:{
                         relicscore:(simulatorData.oldData===null)?parseInt(Rscore):simulatorData.oldData.relicscore,
                         relicrank:(simulatorData.oldData===null)?Rrank:simulatorData.oldData.relicrank,
-                        returnData:SubData
+                        returnData:getSubData
                     },
                     newData:event.data
                 });
@@ -245,9 +233,7 @@ const Enchant=React.memo(()=>{
                     if(parseInt(event.data.relicscore) > Rscore)
                         setSuccessCount((c)=>c+=1);
                 }
-            };
-
-           
+            };           
         }
     }
 
@@ -401,17 +387,6 @@ const Enchant=React.memo(()=>{
         initStatics();
     }
 
-    //切換成3詞條或4詞條檢視方式
-    function AffixCountChange(){
-        if(Affix===3)
-            setAffixCount(4);
-        else if(Affix===4)
-            setAffixCount(3);
-
-        //切換模式後要回到初始狀態
-        reInit();
-    }
-
     const ResultSection=(simulatorData.newData!==undefined && simulatorData.oldData!==undefined)?(
         <div className='rowWrap gap-2 max-[600px]:!flex-col'>
             <DataList standDetails={standDetails} data={simulatorData.oldData} title={'重洗前'} />
@@ -430,8 +405,11 @@ const Enchant=React.memo(()=>{
         successCount:successCount,
         count:count,
         limit:limit,
+        SubData:SubData, //這個可能會是空的
         MinMaxScore:MinMaxScore
     };
+
+    console.log(EnchantStatus);
     
     return(
         <SiteContext.Provider value={EnchantStatus}>
@@ -439,9 +417,7 @@ const Enchant=React.memo(()=>{
                 <div className="w-full border-gray-600 my-4 justify-center rowWrap max-[900px]:flex-col">
                     <div className='rowWrap w-1/2 max-[900px]:w-full justify-evenly max-[900px]:mb-2'>
                         <div className='w-[95%] h-fit flex flex-row max-[900px]:w-full bg-black/50 p-2 rounded-md'>
-                            {(mode==="Importer")?
-                                <RelicData  />:
-                                <RelicData_simulate />}
+                            {(mode === "Importer")?<RelicData_Enchant />:<RelicData_simulate />}
                         </div>
                     </div>
                     <div className='w-1/2 bg-black/50 h-fit p-2 rounded-md max-[900px]:w-full flex flex-col max-[900px]:items-center'>
@@ -455,17 +431,12 @@ const Enchant=React.memo(()=>{
                             <div className='flex flex-row gap-2 flex-wrap'>
                                 <button className='processBtn' onClick={()=>execute()} >再洗一次</button>
                                 <button className='processBtn' onClick={()=>changeToNew()}>套用新強化</button>
-                                {
-                                    (AffixBtn)
-                                        ?<button className='processBtn' onClick={()=>AffixCountChange()}>更改模式</button>
-                                        :null
-                                }
                                 <button className='processBtn' onClick={()=>reInit()} disabled={!isRecoverable}>還原</button>
                             </div>
                         </div>
                         <div className='my-2 flex flex-row'>
                             <span>目前重洗次數:<span className='text-white ml-1'>{count}</span></span>
-                            <span className='ml-2'>目前模式:<span className='text-white ml-1'>{Affix+"詞條"}</span></span>
+                            <span className='ml-2'>目前該聖遺物:<span className='text-white ml-1'>{"初始"+Affix+"詞條"}</span></span>
                         </div>
                         <div>
                             {ResultSection}
