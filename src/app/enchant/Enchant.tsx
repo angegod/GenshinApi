@@ -581,7 +581,7 @@ const Pie=React.memo(()=>{
         };
 
         return(
-           <div className='w-full rowWrap justify-evenly max-[500px]:flex-col-reverse'>
+           <div className='w-full rowWrap justify-evenly max-[700px]:flex-col-reverse'>
                 <div className='w-[200px]'>
                     <PieChart  
                         series={[
@@ -593,7 +593,7 @@ const Pie=React.memo(()=>{
                             }
                         ]}  {...pieParams} />
                 </div>
-                <div className={`flex-col w-2/5 max-[500px]:w-full mt-2 ${(PieNums.find((p:Rank)=>p.value!==0)===undefined)?'hidden':''}`}>
+                <div className={`flex-col w-2/5 max-[700px]:w-full mt-2 ${(PieNums.find((p:Rank)=>p.value!==0)===undefined)?'hidden':''}`}>
                     <div className='flex flex-row items-center max-[600px]:w-3/5 max-[600px]:mx-auto'>
                         <div className='flex justify-start'>
                             <span className='text-stone-400'>翻盤次數</span>
