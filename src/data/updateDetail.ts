@@ -11,15 +11,13 @@ interface updateDetailsItem {
 
 let updateDetails:updateDetailsItem = {
     type:"Importer",
-    updateKey:'Genshin_20260125',
+    updateKey:'Genshin_20260227',
     updateType:'GenshinUpdateDetails',
-    updateDate: new Date('2026-01-25'),
-    updateTitle:"聖遺物重洗模擬器 原神6.3更新公告",
+    updateDate: new Date('2026-02-27'),
+    updateTitle:"聖遺物重洗模擬器 原神6.4更新公告",
     updateContent:[
-        "新增6.3腳色:少女(哥倫比婭)、茲白、葉洛亞",
-        "替換背景圖片為挪德卡萊相關",
-        "細項文本改動",
-        "修正保底詞條有概率誤植之錯誤"
+        "新增6.4腳色:法爾迦",
+        "細項修正與優化"
     ]
 };
 
