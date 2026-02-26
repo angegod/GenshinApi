@@ -48,7 +48,7 @@ function Footer(){
 
     return(
         <div className='flex flex-row justify-center bg-[rgb(40,40,40)] min-h-[20vh] text-left [&>div]:w-4/5 max-[600px]:min-h-[30vh] max-[600px]:!flex-col'>  
-            <div className='mx-auto rowWrap h-fit justify-center [&>div]:mx-3 mt-3 [&>div]:first:mr-0 max-[800px]:flex-col max-[800px]:items-center max-[600px]:!items-start max-[600px]:[&>div]:mb-1'>
+            <div className='w-4/5 mx-auto rowWrap h-fit justify-center mt-3 gap-6 max-[800px]:!flex-col max-[800px]:gap-2 max-[600px]:!justify-start max-[600px]:[&>div]:mb-1'>
                 {list}
             </div>
             <div className='mx-auto text-stone-500 flex flex-col [&>span]:text-left [&>span]:text-sm [&>span]:font-bold [&>span]:mt-1 py-2 max-[600px]:[&>span]:!text-sm'>
