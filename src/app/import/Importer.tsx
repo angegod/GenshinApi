@@ -39,7 +39,7 @@ function Importer(){
     //部位代碼
     const partsIndex=6;
 
-    //找到的聖遺器陣列以及目前檢視索引，預設為0
+    //找到的聖遺物陣列以及目前檢視索引，預設為0
     const [relic,setRelic]=useState();
     const [relicIndex,setRelicIndex] = useState<number>(0);
     
@@ -55,7 +55,7 @@ function Importer(){
     const [PieNums,setPieNums]=useState<PieNums>(undefined);
     const [AffixCount,setAffixCount]=useState<3|4>(3);
 
-    // 找到所有遺器後計算的所有數據，包含期望值、分數等
+    // 找到所有聖遺物後計算的所有數據，包含期望值、分數等
     const [RelicDataArr,setRelicDataArr]=useState<RelicDataArr>([]);
     const RelicDataArrRef = useRef<RelicDataArr>(null);
     
@@ -102,7 +102,7 @@ function Importer(){
         init();
     },[pathname]);
 
-    //當遺器資料更新時
+    //當聖遺物資料更新時
     useEffect(()=>{
         if(RelicDataArr.length !==0){
             //顯示第一個儀器 並顯示三詞條
@@ -162,7 +162,7 @@ function Importer(){
         sendlimit?: number;
     };
 
-    //獲得遺器資料
+    //獲得聖遺物資料
     async function getRecord({ sendData, standard, sendlimit }: GetRecordParams){
         
         let apiLink=(window.location.origin==='http://localhost:3000')?`http://localhost:5000/artifact/get`:`https://expressapi-o9du.onrender.com/artifact/get`;
@@ -454,7 +454,7 @@ function Importer(){
     function calscore(relic:any,standard:selfStand,enchanceCount:number,limit:number){
         return new Promise((resolve)=>{
             let isCheck=true;
-            //將獲得到遺器先儲存起來
+            //將獲得到聖遺物先儲存起來
 
             //將運行結果丟到背景執行
             let worker=new Worker(new URL('../../worker/worker.ts', import.meta.url));
@@ -560,7 +560,7 @@ function Importer(){
         let copyRelicDataArr:RelicDataArr = [...RelicDataArr];
         copyRelicDataArr = copyRelicDataArr.filter((r)=>{
             for(var i = 3;i<=4;i++){
-                //如果該遺器並沒有計算出機率 則會跳過
+                //如果該聖遺物並沒有計算出機率 則會跳過
                 if(r[i].ExpRate ===null||r[i].PieNums === null)
                     return false;
             }

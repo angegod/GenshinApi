@@ -59,7 +59,7 @@ function Main(){
     //自訂義標準
     const [selfStand,setSelfStand]=useState<selfStand>([]);
 
-    //找到的遺器
+    //找到的聖遺物
     const [relic,setRelic]=useState<SimulateRelic>();
 
     //保底次數 最低為2
@@ -125,7 +125,7 @@ function Main(){
         setRelic(undefined);
     }
 
-    //整合並儲存遺器資訊
+    //整合並儲存聖遺物資訊
     function saveRelic() {
         const data = {
             main_affix: MainSelectOptions,

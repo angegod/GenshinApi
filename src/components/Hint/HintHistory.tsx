@@ -16,7 +16,7 @@ function HintHistory(){
             </div>
             <div className='mt-2 flex flex-col'>
                 <span className='text-md font-bold text-white'>檢視</span>
-                <span className='text-stone-400'>點擊腳色頭像即可查看曾經查詢出來的資訊、包括遺器、評分標準等</span>
+                <span className='text-stone-400'>點擊腳色頭像即可查看曾經查詢出來的資訊、包括聖遺物、評分標準等</span>
             </div>
             {(mode === "Importer")?
                 <div className='mt-2 flex flex-col'>
