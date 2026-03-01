@@ -102,6 +102,7 @@ function Importer(){
         init();
     },[pathname]);
 
+    //觸發時機:AffixCount變更、選擇其餘部位的遺器時
     //當聖遺物資料更新時
     useEffect(()=>{
         if(RelicDataArr.length !==0){
@@ -124,6 +125,8 @@ function Importer(){
             const firstData = relicObj?.[key] as RelicDataItem | undefined;
             if (!firstData) return;
 
+            console.log(firstData);
+
             setRelic(firstData.relic);
             setExpRate(firstData.ExpRate);
             setRscore(firstData.Rscore);
@@ -136,7 +139,7 @@ function Importer(){
 
             
         }
-    },[RelicDataArr,relicIndex]);
+    },[RelicDataArr,relicIndex,AffixCount]);
 
     //防止使用者更改資料後想要再儲存 而儲存到錯誤資訊
     useEffect(()=>{
