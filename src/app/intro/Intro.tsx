@@ -6,7 +6,7 @@ function Intro(){
     //之後intro頁面可能會改成json控管
     return(
         <div className='w-4/5 mx-auto'>
-            <div className='intro p-[1rem] mb-3 rounded-md w-fit flex flex-col flex-wrap h-[90vh] max-[800px]:!w-[95%] max-[800px]:h-fit'>
+            <div className='intro p-[1rem] mb-3 rounded-md w-fit flex flex-col gap-2 flex-wrap h-[90vh] max-[800px]:!w-[95%] max-[800px]:h-fit'>
                 <div className='flex flex-col'>
                     <span className='text-2xl text-red-500 font-bold'>常見Q&A</span>
                     <span className='text-white'>這裡列出比較常見的幾個問題，如果有其他問題也歡迎利用巴哈私訊我</span>
@@ -35,7 +35,7 @@ function Intro(){
                     </div>
                     <div className='answer'>
                         <span >A:原神雖然有自定義聖遺物道具，但成本昂貴且素材不能隨時取得，更何況使用後也不能保證獲得高品質的聖遺物。</span>
-                        <span className='flex flex-row items-center'>啟聖之塵如果使用得當，可以有效降低培養成本。</span>
+                        <span className='flex flex-row items-center'>啟聖之塵如果使用得當，可以有效降低腳色聖遺物培養成本。</span>
                     </div>
                 </div>
                 <div className="introSub">
@@ -63,6 +63,8 @@ function Intro(){
                             <li><strong className='text-amber-600'>幽境危戰：</strong>最主要的獲得來源，打過指定難度或累積1200樹酯消耗可以獲得最多3根羽毛</li>
                             <li><strong className='text-amber-600'>大月卡購買：</strong>珍珠紀行跟珍珠之歌兩者購買可以均獲得1根</li>
                             <li><strong className='text-amber-600'>地圖探索：</strong>挪德卡萊地區寶庫獎勵，各個寶庫各一根</li>
+                            <li><strong className='text-amber-600'>礪行修遠：</strong>每期的礪行修遠也都會給一根羽毛</li>
+                            <li><strong className='text-amber-600'>不定時活動：</strong>大版本或海燈節活動也有概率送一根羽毛</li>
                         </ol>                   
                     </div>
                 </div>
@@ -74,11 +76,11 @@ function Intro(){
                     </div>
                     <div className='answer'>
                         <span>A:評分的計算會牽扯到最大有效詞條數，只要你的標準帶越多，那麼你的評分會越嚴格。</span>
-                        <span>花跟羽毛雖然說不算主詞條為有效詞條數，但這也導致同樣都是缺一個詞條的情況下，花跟羽毛評分降的會比其他三個部位還來的多。</span>                  
+                        <span>基本來說有聖遺物分數有個70分以上就算是不錯的聖遺物了，80分以上都算是有點燒陽壽的產物了XD。</span>                  
                     </div>
                 </div>
                 <div className='flex flex-col gap-1'>
-                    <span className='text-white'>如果還有更多疑問之類的，可以參考我這寫的這篇文章，可能會給你一些幫助。</span>
+                    <span className='text-white'>如果還有重洗建議之類的問題，可以參考我這寫的這篇文章，可能會給你一些初步幫助。</span>
                     <a href='https://home.gamer.com.tw/artwork.php?sn=6278374' 
                         target='_blank' 
                         className='underline text-amber-600'>文章</a>

@@ -421,7 +421,7 @@ const Enchant=React.memo(()=>{
                         </div>
                     </div>
                     <div className='w-1/2 bg-black/50 h-fit p-2 rounded-md max-[900px]:w-full flex flex-col max-[900px]:items-center'>
-                        <div className='flex flex-row max-[600px]:!flex-col '>
+                        <div className='flex flex-row gap-2 max-[600px]:!flex-col '>
                             <div className='items-center flex flex-row max-[600px]:justify-center max-[600px]:mb-3'>
                                 <span className='text-red-600 text-lg font-bold'>模擬強化</span>
                                 <div className='hintIcon ml-2 overflow-visible' data-tooltip-id="EnchantHint">

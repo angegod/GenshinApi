@@ -11,7 +11,7 @@
 }
 
 .introSub{
-    @apply flex flex-col [&>div]:my-1 h-fit my-2 w-[45%] max-[750px]:w-full;
+    @apply flex flex-col [&>div]:my-1 h-fit w-[45%] max-[750px]:w-full;
 
 
     .images{

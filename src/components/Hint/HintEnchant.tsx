@@ -30,14 +30,6 @@ function HintEnchant(){
                     <span className='text-stone-400'>將重洗次數以及聖遺物配置重設為一開始的配置。</span>
                 </div>
             </div>
-            <div className="mt-2 flex flex-col">
-                <div>
-                    <span className='text-md font-bold text-white'>更改模式</span>
-                </div>
-                <div>
-                    <span className='text-stone-400'>主要目的是模擬在不同強化次數的情況下所產生的結果為何，點選即可切換成另外一個模式。</span>
-                </div>
-            </div>
             <div className='mt-2 flex flex-col'>
                 <div>
                     <span className='text-md font-bold text-white'>注意事項</span>

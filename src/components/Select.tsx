@@ -592,9 +592,9 @@ const RelicDataModeSelect = () =>{
     let hint = "";
     
     if(RelicDataArr[relicIndex][3] ){
-        hint = "該聖遺物必為3詞條";
+        hint = "該聖遺物必為初始3詞條";
     }else if(RelicDataArr[relicIndex][4]){
-        hint = "該聖遺物必為4詞條";
+        hint = "該聖遺物必為初始4詞條";
     }
     
     return(
