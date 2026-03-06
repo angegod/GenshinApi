@@ -125,8 +125,6 @@ function Importer(){
             const firstData = relicObj?.[key] as RelicDataItem | undefined;
             if (!firstData) return;
 
-            console.log(firstData);
-
             setRelic(firstData.relic);
             setExpRate(firstData.ExpRate);
             setRscore(firstData.Rscore);
@@ -324,13 +322,11 @@ function Importer(){
             let possibleCount:number[] = filterInvalidCombinations(relicSubDataCombinations);
 
             //3.計算出可能的聖遺物配置
-            
-
             for (const p of possibleCount) {
                 let copySubData = JSON.parse(JSON.stringify(SubData));
 
                 ensureSubDataCount(copySubData, relicSubDataCombinations, p + 1);
-
+                console.log(copySubData,relicSubDataCombinations);
                 const ExpData = await calscore(r, standard, p + 1, getLimit, copySubData);
 
                 calData[p] = ExpData;
@@ -353,16 +349,17 @@ function Importer(){
     //確定特定情境下的強化次數
     function ensureSubDataCount
         (SubData:SubDataItem[],relicSubDataCombinations:SubDataEnchanceCombinations[],totalCount:number){
-        
-        console.log(relicSubDataCombinations);
+
         let remainCount = totalCount;
         //遍歷所有subdata
         SubData.forEach((s,i)=>{
             let compared = relicSubDataCombinations[i];
-
-            //如果該詞條即為初始詞條數值 則強化次數必為0
-            if(compared.isinitVal)
+            let targetAffix = AffixName.find((a)=>a.name === s.subaffix) as AffixItem;
+            //如果該詞條即為初始詞條數值 則強化次數必為0 同時將初始值指向自己data
+            if(compared.isinitVal){
                 s.count = 0;
+                s.initVal = s.data;
+            }
             else if(compared.combinations){ //如果該陣列的強度一致 則根據陣列內部單個item長度減一 給予count
                 // 找出內部陣列最大長度
                 const lengths = compared.combinations.map(c => c.length);
@@ -373,6 +370,10 @@ function Importer(){
                 if(maxLen === minLen){
                     s.count = maxLen - 1;
                     remainCount = remainCount - s.count;
+                    const minVal = Math.min(...compared.combinations.map(c => c[0]));
+                    //最後賦予初始值
+                    if(targetAffix.range)
+                        s.initVal = targetAffix?.range[minVal];
                 }
             }
         });
@@ -382,8 +383,17 @@ function Importer(){
         let remainAffix = 
             SubData.find((s,i)=>s.count === 0 && !relicSubDataCombinations[i].isinitVal && relicSubDataCombinations[i].combinations?.length!==0)
 
-        if(remainAffix)
+        //如果有存在詞條尚未決定強化次數 
+        if(remainAffix){
             remainAffix.count = remainCount;
+            const targetCombinations = relicSubDataCombinations.find((r)=>r.subaffix===remainAffix.subaffix)?.combinations;
+            const targetAffix = AffixName.find((a)=>a.name === remainAffix.subaffix);
+
+            if(targetCombinations && targetAffix?.range){
+                const minVal = Math.min(...targetCombinations.map(c => c[0]));
+                remainAffix.initVal = targetAffix?.range[minVal];
+            }
+        }
 
     }
 
