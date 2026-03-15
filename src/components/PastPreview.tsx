@@ -53,6 +53,10 @@ const PastPreview=React.memo(({index,data}:PastPreviewProps)=>{
                     arrowColor='gray' 
                     style={{zIndex:9999}}
                     clickable={true}
+                    globalCloseEvents={{
+                        scroll: true,
+                        resize: true
+                    }}
                     render={()=>
                         <ImportHistoryDetailsHint index={index} data={data} />
                     } />

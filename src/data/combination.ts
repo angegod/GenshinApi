@@ -127,8 +127,11 @@ export function findSubDatacombinations(relic:SubDataItem[]|SubSimulateDataItem[
 
         //可能的強化次數
 
-        const minCount = Math.ceil(SubData.data / maxVal); // 無條件進位 → 至少要幾次
-        const maxCount = Math.floor(SubData.data / minVal); // 無條件捨去 → 至多幾次
+        let targeMinData = (targetAffix.percent) ? SubData.data : SubData.data - 0.5;
+        let targeMaxData = (targetAffix.percent) ? SubData.data : SubData.data + 0.499999;
+ 
+        const minCount = Math.ceil(targeMinData / maxVal); // 無條件進位 → 至少要幾次
+        const maxCount = Math.floor(targeMaxData / minVal); // 無條件捨去 → 至多幾次
 
         let enchanceArr = [];
         for(var i=1;i<=6;i++){
@@ -136,10 +139,10 @@ export function findSubDatacombinations(relic:SubDataItem[]|SubSimulateDataItem[
                 enchanceArr.push(i);
             }
         }
+    
 
         //獲得所有可能的強化幅度組合
         let enchantCombinations = generateEnhanceCombinations(enchanceArr);
-
 
         //針對所有組合 計算總和數值 最後再去跟原本的數值 (SubData.data)
         // 篩選符合 SubData.data 的組合
@@ -151,7 +154,7 @@ export function findSubDatacombinations(relic:SubDataItem[]|SubSimulateDataItem[
                 return Number(calData.toFixed(1)) === Number(SubData.data.toFixed(1));
             } else {
                 // 整數 → 四捨五入到整數比較
-                return Math.round(calData) === Math.round(SubData.data);
+                return Math.round(calData) === SubData.data;
             }
         });
 
@@ -167,6 +170,8 @@ export function findSubDatacombinations(relic:SubDataItem[]|SubSimulateDataItem[
         result.push(data);
         return;
     });
+
+    
 
     return result;
 }

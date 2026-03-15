@@ -73,31 +73,31 @@ onmessage = function (event) {
     //先算原本的遺器的分數
 
     let p1=new Promise(async (resolve,reject)=>{
-        combination.forEach((c,i)=>{
-            //計算各種強化程度的組合
+        combination.forEach((c,index)=>{
+            //計算各種強化幅度的組合
             let subcombination=EnchanceAllCombinations(c);
-
-            subcombination.forEach((s)=>{
+            
+            //針對每個幅度的組合進行探討
+            subcombination.forEach((s,i)=>{
+                //設定初始詞條
                 let res=0;
                 if(partsIndex!==1&&partsIndex!==2)
                     res=3*MainData;
                 
-                let total=0;
                 let caltype:caltype[]=[];//已經計算過的詞條種類
-
+                
+                //ex:[0,1,2,3]
                 s.forEach((el:any,i:number) => {//對每個屬性詞條開始進行模擬計算
                     let sub=coeEfficent[i];
+                    let InitVal = SubData[i].initVal;
                     
                     let targetRange:number[]=AffixName.find((st)=>st.fieldName===sub.fieldName)!.range!;
 
-                    //如果該詞條所獲得的強化次數為0 可以推測該數值為初始詞條數值 則直接繼承使用
-                    /*if(SubData[i].count===0)
-                        total=SubData[i].data;
-                    else
-                        total=targetRange[1];//詞條模擬出來的總和，初始為最中間的值*/
-
-                    total=targetRange[1];//詞條模擬出來的總和，初始為最中間的值
+                    //設定初始值
+                    //let total = targetRange[1];
+                    let total = (InitVal) ? InitVal : targetRange[1];
                     
+
                     el.forEach((num:number)=>total+=targetRange[num]);
 
                     //計算有效詞條數

@@ -291,7 +291,7 @@ function Importer(){
 
     async function processData(relicArr:any,standard:selfStand,getLimit:number){
         let temparr = [];
-        
+
         //針對三詞條跟四詞條分別進行一次模擬
         //對應到強化次數4次跟5次
         for (const r of relicArr) {
