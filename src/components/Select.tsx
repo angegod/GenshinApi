@@ -328,11 +328,20 @@ const StandardSelect=React.memo(()=>{
 
     //添加標準 目前設定先不超過六個有效 且不重複
     function addAffix(selectAffix:string){
+        let target=AffixList.find((a)=>a.id===parseInt(partsIndex)) as AffixListItem;
+        //檢查只會出現在主詞條的詞條種類是否選擇
+        const isMainSelect = selfStand.some((s:selfStandItem) => target.main.includes(s.name));
+        const isMainAffix = target.main.includes(selectAffix);
         //如果該詞條沒有出現在arr裡則加入 反之則移除
         if(!selfStand.some((s:selfStandItem) => s.name === selectAffix)){
             //如果為預設選項則不予選擇
             if(selectAffix===undefined)
                 return;
+
+            //如果主詞條已經有一個被勾選了 其餘皆不可以勾選 除非取消
+            if(isMainSelect && isMainAffix)
+                return;
+            
             let newItem={
                 name:selectAffix,
                 value:1
@@ -349,7 +358,7 @@ const StandardSelect=React.memo(()=>{
         //依據所選部位 給出不同的選澤
         let target=AffixList.find((a)=>a.id===parseInt(partsIndex)) as AffixListItem;
         //合併所有選項 並且移除重複值
-        let mergedArray:string[] = [...new Set([...target.main, ...target.sub])];
+        let mergedArray:string[] = [...new Set([...target.sub, ...target.main])];
         mergedArray=mergedArray.filter((item)=>item!=='生命值'&&item!=='攻擊力'&&item!=='防禦力')
 
         //模仿原生select標籤 渲染每個option之div
@@ -358,20 +367,24 @@ const StandardSelect=React.memo(()=>{
             const attrIcon = targetAffix.icon;
             const exists = selfStand.some((s:selfStandItem) => s.name === m);
             
+            //檢查只會出現在主詞條的詞條種類是否選擇
+            const isMainSelect = selfStand.some((s:selfStandItem) => target.main.includes(s.name));
+            const isMainAffix = target.main.includes(m);
             return(
                 <div className='gap-1 px-1 hover:bg-stone-500 hover:text-white cursor-pointer flex flex-row items-center '
                     onClick={()=>addAffix(m)}
                     key={"options"+i}>
                     <div className='mr-1 flex items-center'>
-                        <input  type='checkbox' checked={exists} 
+                        <input  type='checkbox' 
+                                checked={exists} 
                                 className='border-0 w-4 h-4 accent-[dimgrey]' 
                                 onChange={(event)=>console.log(event.target.value)}
-                                disabled={!exists&&selfStand.length===6}/>
+                                disabled={(!exists&&selfStand.length===6)||(isMainSelect&&isMainAffix)}/>
                     </div>
                     <div>
                         <img 
                             className='text-red-500'
-                            src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/image/attr/${targetAffix.icon}.svg`} 
+                            src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/image/attr/${attrIcon}.svg`} 
                             height={18} width={18} alt={targetAffix.fieldName} />
                     </div>
                     <div>

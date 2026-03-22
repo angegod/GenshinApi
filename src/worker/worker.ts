@@ -85,7 +85,7 @@ onmessage = function (event) {
                 if(partsIndex!==1&&partsIndex!==2)
                     res=3*MainData;
                 
-                let caltype:caltype[]=[];//已經計算過的詞條種類
+                let caltype:caltype[] = [];//已經計算過的詞條種類
                 
                 //ex:[0,1,2,3]
                 s.forEach((el:any,i:number) => {//對每個屬性詞條開始進行模擬計算
@@ -142,9 +142,7 @@ onmessage = function (event) {
             {rank:'C',stand:15,color:'rgb(163, 230, 53)',tag:'C'},
             {rank:'D',stand:0 ,color:'rgb(22,163,74)',tag:'D'}
         ];
-        console.log('計算結果arr:',result);
-        console.log('容忍誤差:',deviation);
-        console.log('聖遺物初始分數:',origin);
+        
         let overScoreList = result
             .map(num => Math.floor(num * 10) / 10)
             .filter((num:number) => num - deviation > Number(origin));
