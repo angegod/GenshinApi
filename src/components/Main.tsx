@@ -499,7 +499,7 @@ function Main(){
                                     <span className='text-white'>?</span>
                                 </div>
                             </div>
-                            <div className='h-max max-h-[300px] overflow-x-scroll flex flex-row grayScrollBar max-[600px]:items-center'>
+                            <div className='h-max max-h-[300px] overflow-x-auto flex flex-row grayScrollBar max-[600px]:items-center'>
                                 <PastPreviewList_simulator />
                             </div>
                         </div>

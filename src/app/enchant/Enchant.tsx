@@ -379,7 +379,7 @@ const Enchant=React.memo(()=>{
         setRecoverable(false);
 
         //還原至一開始記錄
-        console.log(relicBackUp.current);
+        //console.log(relicBackUp.current);
         setSimulatorData({oldData:relicBackUp.current,newData:null});
         setMinMaxScore({min:undefined,max:undefined});
 
@@ -408,8 +408,6 @@ const Enchant=React.memo(()=>{
         SubData:SubData, //這個可能會是空的
         MinMaxScore:MinMaxScore
     };
-
-    console.log(EnchantStatus);
     
     return(
         <SiteContext.Provider value={EnchantStatus}>

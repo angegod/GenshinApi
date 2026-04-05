@@ -108,7 +108,6 @@ export function findSubDatacombinations(relic:SubDataItem[]|SubSimulateDataItem[
             }
         });
 
-
         if(noEnchantNum!==null && noEnchantNum!==undefined){
             //console.log(`${SubData.subaffix}該詞條沒有被強化過，直接回傳初始值${noEnchantNum}`);
             
@@ -137,16 +136,22 @@ export function findSubDatacombinations(relic:SubDataItem[]|SubSimulateDataItem[
         for(var i=1;i<=6;i++){
             if(i >= minCount && i<= maxCount){
                 enchanceArr.push(i);
-            }
+            }   
         }
-    
+
+        //如果強化次數可能性 仍無法判斷 則直接取用minCount 跟 maxCount 的最大值來用
+        if(enchanceArr.length === 0)
+            enchanceArr.push(Math.max(minCount, maxCount));
+
 
         //獲得所有可能的強化幅度組合
         let enchantCombinations = generateEnhanceCombinations(enchanceArr);
-
-        //針對所有組合 計算總和數值 最後再去跟原本的數值 (SubData.data)
+        
+        // 針對所有組合 計算總和數值 最後再去跟原本的數值 (SubData.data)
         // 篩選符合 SubData.data 的組合
-        enchantCombinations = enchantCombinations.filter(arr => {
+        // 但是為了預防抓取數值小數點錯位
+        // 如果篩選結果長度為0 則會採用原本的結果
+        let filterEnchantCombinations = enchantCombinations.filter(arr => {
             const calData = arr.reduce((sum, idx) => sum + range[idx], 0);
 
             if (targetAffix.percent) {
@@ -158,13 +163,12 @@ export function findSubDatacombinations(relic:SubDataItem[]|SubSimulateDataItem[
             }
         });
 
-
         //console.log(`${SubData.subaffix}剩餘可能組合:`,enchantCombinations);
         data = {
             subaffix:SubData.subaffix,
             data:SubData.data,
             isinitVal:false,
-            combinations:enchantCombinations
+            combinations:(filterEnchantCombinations.length > 0) ? filterEnchantCombinations : enchantCombinations
         }
 
         result.push(data);
@@ -172,7 +176,7 @@ export function findSubDatacombinations(relic:SubDataItem[]|SubSimulateDataItem[
     });
 
     
-
+    console.log(result);
     return result;
 }
 

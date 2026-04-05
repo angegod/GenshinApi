@@ -318,6 +318,7 @@ function Importer(){
             //1.根據詞條配置計算出所有可能的強化組合
             let relicSubDataCombinations = findSubDatacombinations(SubData);
 
+            console.log('初步的強化組合',relicSubDataCombinations);
             //2.根據強化組合排除掉違法組合
             let possibleCount:number[] = filterInvalidCombinations(relicSubDataCombinations);
 
@@ -334,7 +335,7 @@ function Importer(){
                         
             temparr.push(calData);
         }
-
+        console.log('計算完成的聖遺物資料',temparr);
         //如果是剛查詢完的 則改成可以儲存
         updateStatus('資料顯示完畢',"success");  
     
@@ -837,7 +838,7 @@ function Importer(){
                                 <span className='text-white'>?</span>
                             </div>
                         </div>
-                        <div className='max-h-[300px] overflow-x-scroll grayScrollBar p-2 flex flex-row max-[600px]:items-center'>
+                        <div className='max-h-[300px] overflow-x-auto grayScrollBar p-2 flex flex-row max-[600px]:items-center'>
                             <PastPreviewList  />
                         </div> 
                     </div>

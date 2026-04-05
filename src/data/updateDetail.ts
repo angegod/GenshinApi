@@ -11,13 +11,14 @@ interface updateDetailsItem {
 
 let updateDetails:updateDetailsItem = {
     type:"Importer",
-    updateKey:'Genshin_20260227',
+    updateKey:'Genshin_20260409',
     updateType:'GenshinUpdateDetails',
-    updateDate: new Date('2026-02-27'),
-    updateTitle:"聖遺物重洗模擬器 原神6.4更新公告",
+    updateDate: new Date('2026-04-09'),
+    updateTitle:"聖遺物重洗模擬器 原神6.5更新公告",
     updateContent:[
-        "新增6.4腳色:法爾迦",
-        "細項修正與優化"
+        "新增6.5腳色:莉奈婭",
+        "聖遺物初始詞條數算法更新",
+        "聖遺物副詞條初始值算法更新"
     ]
 };
 
