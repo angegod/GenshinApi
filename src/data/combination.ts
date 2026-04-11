@@ -126,11 +126,13 @@ export function findSubDatacombinations(relic:SubDataItem[]|SubSimulateDataItem[
 
         //可能的強化次數
 
-        let targeMinData = (targetAffix.percent) ? SubData.data : SubData.data - 0.5;
-        let targeMaxData = (targetAffix.percent) ? SubData.data : SubData.data + 0.499999;
- 
+        let targeMinData = SubData.data - EPSILON;
+        let targeMaxData = SubData.data + EPSILON;
+        
         const minCount = Math.ceil(targeMinData / maxVal); // 無條件進位 → 至少要幾次
         const maxCount = Math.floor(targeMaxData / minVal); // 無條件捨去 → 至多幾次
+
+        console.log(`${SubData.subaffix}可能的強化次數範圍: ${targeMinData / maxVal} ~ ${targeMaxData / minVal}`);
 
         let enchanceArr = [];
         for(var i=1;i<=6;i++){

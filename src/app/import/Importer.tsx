@@ -292,6 +292,7 @@ function Importer(){
     async function processData(relicArr:any,standard:selfStand,getLimit:number){
         let temparr = [];
 
+        console.log('獲得的原始資料',relicArr);
         //針對三詞條跟四詞條分別進行一次模擬
         //對應到強化次數4次跟5次
         for (const r of relicArr) {
@@ -327,7 +328,6 @@ function Importer(){
                 let copySubData = JSON.parse(JSON.stringify(SubData));
 
                 ensureSubDataCount(copySubData, relicSubDataCombinations, p + 1);
-                console.log(copySubData,relicSubDataCombinations);
                 const ExpData = await calscore(r, standard, p + 1, getLimit, copySubData);
 
                 calData[p] = ExpData;
