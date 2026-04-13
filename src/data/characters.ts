@@ -789,7 +789,7 @@ let characters:characters[]= [
         "element":"Wind",
         "rarity":5
     },{
-        "charId":"10000129",
+        "charId":"10000130",
         "name":"Linnea"  ,
         "cn_name":"莉奈婭",
         "element":"Rock",
